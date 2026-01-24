@@ -1,0 +1,93 @@
+baseURL: "https://gaoyuze.com/"
+languageCode: "zh-cn"
+title: "Gao Yuze"
+theme: "PaperMod"
+
+# 构建配置
+enableRobotsTXT: true
+buildDrafts: false
+buildFuture: false
+buildExpired: false
+
+# 分页
+pagination:
+  pagerSize: 10
+
+# 菜单
+menu:
+  main:
+    - identifier: posts
+      name: 文章
+      url: /posts/
+      weight: 10
+    - identifier: about
+      name: 关于
+      url: /about/
+      weight: 20
+
+# PaperMod 主题配置
+params:
+  env: production
+  title: Gao Yuze
+  description: "个人博客 - 记录技术与生活"
+  keywords: [Blog, Portfolio, Personal]
+  author: Gao Yuze
+  
+  defaultTheme: auto  # 跟随系统深色/浅色模式
+  disableThemeToggle: false
+  
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowWordCount: true
+  ShowRssButtonInSectionTermList: true
+  UseHugoToc: true
+  disableSpecial1stPost: false
+  disableScrollToTop: false
+  comments: false
+  hidemeta: false
+  hideSummary: false
+  showtoc: true
+  tocopen: false
+
+  # 主页信息模式
+  homeInfoParams:
+    Title: "👋 你好，我是 Gao Yuze"
+    Content: 欢迎来到我的个人网站
+
+  # 社交图标 (可以取消注释并填入你的链接)
+  # socialIcons:
+  #   - name: github
+  #     url: "https://github.com/yourusername"
+  #   - name: twitter
+  #     url: "https://twitter.com/yourusername"
+  #   - name: email
+  #     url: "mailto:your@email.com"
+
+  # 搜索功能
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.4
+    minMatchCharLength: 0
+    keys: ["title", "permalink", "summary", "content"]
+
+# Markdown 渲染配置
+markup:
+  highlight:
+    noClasses: false
+    codeFences: true
+    guessSyntax: true
+    lineNos: true
+    style: monokai
+
+# 输出格式
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
