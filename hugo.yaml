@@ -20,10 +20,18 @@ menu:
       name: 文章
       url: /posts/
       weight: 10
+    - identifier: archives
+      name: 归档
+      url: /archives/
+      weight: 20
+    - identifier: search
+      name: 搜索
+      url: /search/
+      weight: 30
     - identifier: about
       name: 关于
       url: /about/
-      weight: 20
+      weight: 40
 
 # PaperMod 主题配置
 params:
@@ -52,19 +60,27 @@ params:
   showtoc: true
   tocopen: false
 
-  # 主页信息模式
-  homeInfoParams:
-    Title: "👋 你好，我是 Gao Yuze"
-    Content: 欢迎来到我的个人网站
+  # 首页个人简介卡片设置 (Profile Mode)
+  profileMode:
+    enabled: true
+    title: "Gao Yuze"
+    subtitle: "CS Master Student @ FDU | Value Investor | Ex-Entrepreneur"
+    imageUrl: "https://github.com/BenjaminGao2025.png"
+    imageTitle: "Gao Yuze"
+    imageWidth: 150
+    imageHeight: 150
+    buttons:
+      - name: "Blog"
+        url: "posts"
+      - name: "About"
+        url: "about"
 
-  # 社交图标 (可以取消注释并填入你的链接)
-  # socialIcons:
-  #   - name: github
-  #     url: "https://github.com/yourusername"
-  #   - name: twitter
-  #     url: "https://twitter.com/yourusername"
-  #   - name: email
-  #     url: "mailto:your@email.com"
+  # 社交链接
+  socialIcons:
+    - name: "github"
+      url: "https://github.com/BenjaminGao2025"
+    - name: "email"
+      url: "mailto:nothingcoder2025@gmail.com"
 
   # 搜索功能
   fuseOpts:
