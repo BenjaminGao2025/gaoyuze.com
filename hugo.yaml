@@ -14,24 +14,37 @@ pagination:
   pagerSize: 10
 
 # 菜单
+# 菜单
 menu:
   main:
-    - identifier: posts
-      name: 文章
-      url: /posts/
+    - identifier: engineering
+      name: 工程
+      url: /engineering/
       weight: 10
+    - identifier: investing
+      name: 投资
+      url: /investing/
+      weight: 20
+    - identifier: life
+      name: 生活
+      url: /life/
+      weight: 30
+    - identifier: projects
+      name: 项目
+      url: /projects/
+      weight: 40
     - identifier: archives
       name: 归档
       url: /archives/
-      weight: 20
+      weight: 50
     - identifier: search
       name: 搜索
       url: /search/
-      weight: 30
+      weight: 60
     - identifier: about
       name: 关于
       url: /about/
-      weight: 40
+      weight: 70
 
 # PaperMod 主题配置
 params:
