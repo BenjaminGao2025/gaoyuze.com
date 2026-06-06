@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content';
+import ArticleCard from '../../components/ArticleCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { languageLabels, siteConfig } from '../../config';
+import { getArticleLanguages, getCanonicalArticles, sortArticlesByDate } from '../../utils/content';
+
+const allArticles = await getCollection('articles', ({ data }) => !data.draft);
+const articles = sortArticlesByDate(getCanonicalArticles(allArticles));
+---
+
+<BaseLayout title={`Articles | ${siteConfig.name}`} description="Essays and long-form notes from Gao Yuze.">
+  <section class="page-heading">
+    <p class="section-kicker">§ 01 · Articles</p>
+    <h1>The journal</h1>
+    <p>Essays, notes, and long-term thoughts. Some pieces exist in both English and Chinese; some begin in one language.</p>
+  </section>
+  <section class="article-list" aria-label="Articles">
+    {articles.map((article) => <ArticleCard article={article} languages={getArticleLanguages(article, allArticles).map((item) => languageLabels[item.lang] ?? item.lang)} />)}
+  </section>
+</BaseLayout>
