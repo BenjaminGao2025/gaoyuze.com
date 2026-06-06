@@ -1,0 +1,27 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { siteConfig } from '../../config';
+import { getBookStatusLabel } from '../../utils/content';
+
+export async function getStaticPaths() {
+  const books = await getCollection('books');
+  return books.map((book) => ({ params: { slug: book.data.slug }, props: { book } }));
+}
+
+const { book } = Astro.props;
+const { Content } = await render(book);
+---
+
+<BaseLayout title={`${book.data.title} | ${siteConfig.name}`} description={book.data.summary}>
+  <article class="book-page">
+    <header class="reading-header">
+      <a class="back-link" href="/books/">Books</a>
+      <p class="item-meta"><span>{book.data.year}</span><span>{getBookStatusLabel(book.data.status)}</span><span>{book.data.lang === 'zh' ? '中文' : 'English'}</span></p>
+      <h1>{book.data.title}</h1>
+      <p>{book.data.summary}</p>
+    </header>
+    <div class="prose"><Content /></div>
+    {book.data.chapters.length > 0 && <section class="chapter-list" aria-label="Chapters"><h2>Chapters</h2><ol>{book.data.chapters.map((chapter) => <li>{chapter.href ? <a href={chapter.href}>{chapter.title}</a> : <span>{chapter.title}</span>}{chapter.status && <small>{chapter.status}</small>}</li>)}</ol></section>}
+  </article>
+</BaseLayout>
