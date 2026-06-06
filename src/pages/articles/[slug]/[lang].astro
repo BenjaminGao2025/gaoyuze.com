@@ -1,0 +1,33 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { siteConfig } from '../../../config';
+import { formatDate, getArticleLanguages, getReadingStats } from '../../../utils/content';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles', ({ data }) => !data.draft);
+  return articles.map((article) => ({
+    params: { slug: article.data.slug, lang: article.data.lang },
+    props: { article, translations: getArticleLanguages(article, articles) }
+  }));
+}
+
+const { article, translations } = Astro.props;
+const { Content } = await render(article);
+const stats = getReadingStats(article.body, article.data.lang);
+---
+
+<BaseLayout title={`${article.data.title} | ${siteConfig.name}`} description={article.data.summary} image={article.data.cover}>
+  <article class="reading-page" lang={article.data.lang === 'zh' ? 'zh-Hans' : 'en'}>
+    <header class="reading-header">
+      <a class="back-link" href="/articles/">Articles</a>
+      <p class="item-meta"><time datetime={article.data.date.toISOString()}>{formatDate(article.data.date, article.data.lang)}</time><span>{stats.count}</span><span>{stats.minutes}</span></p>
+      <h1>{article.data.title}</h1>
+      <p>{article.data.summary}</p>
+      {translations.length > 1 && <nav class="language-switch" aria-label="Available languages">{translations.map((item) => <a class:list={[{ active: item.lang === article.data.lang }]} href={item.href}>{item.label}</a>)}</nav>}
+    </header>
+    {article.data.cover && <img class="article-cover" src={article.data.cover} alt="" />}
+    <div class="prose"><Content /></div>
+    <footer class="reading-footer"><a href="/articles/">Back to articles</a></footer>
+  </article>
+</BaseLayout>
