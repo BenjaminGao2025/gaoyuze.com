@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../config';
+---
+
+<BaseLayout title={`About | ${siteConfig.name}`} description="About Gao Yuze and the purpose of this public mind archive.">
+  <section class="page-heading about-heading">
+    <p class="section-kicker">§ 03 · About</p>
+    <h1>Gao Yuze</h1>
+    <p>This site is a long apprenticeship in public: a place to preserve thinking, expose weak ideas to daylight, and grow through repeated writing.</p>
+  </section>
+  <section class="about-grid">
+    <div><h2>Purpose</h2><p>The archive exists to make inner work visible. Each essay is a small proof of attention: what was noticed, what was questioned, and what changed after the thinking was written down.</p></div>
+    <div><h2>Method</h2><p>Write slowly. Keep useful fragments. Turn notes into essays. Turn essays into books. Let bilingual thinking sharpen the edges instead of becoming decoration.</p></div>
+    <div><h2>Structure</h2><p>The first version stays deliberately simple: public pages, durable files, and writing that can be carried forward without depending on a complicated platform.</p></div>
+  </section>
+</BaseLayout>
