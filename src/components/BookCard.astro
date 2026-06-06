@@ -1,0 +1,19 @@
+---
+import type { BookEntry } from '../utils/content';
+import { getBookStatusLabel } from '../utils/content';
+
+interface Props {
+  book: BookEntry;
+}
+
+const { book } = Astro.props;
+---
+
+<article class="book-card">
+  <a href={`/books/${book.data.slug}/`} aria-label={`Open ${book.data.title}`}>
+    <span class="book-number">{String(book.data.order).padStart(2, '0')}</span>
+    <h3>{book.data.title}</h3>
+    <p>{book.data.summary}</p>
+    <span class="book-meta">{book.data.year} · {getBookStatusLabel(book.data.status)}</span>
+  </a>
+</article>
