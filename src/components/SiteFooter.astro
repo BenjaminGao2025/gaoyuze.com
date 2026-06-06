@@ -1,0 +1,10 @@
+---
+import { siteConfig } from '../config';
+---
+
+<footer class="site-footer">
+  <p>{siteConfig.footer}</p>
+  <nav aria-label="Elsewhere">
+    {siteConfig.socialLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+  </nav>
+</footer>
