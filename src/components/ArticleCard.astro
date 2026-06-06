@@ -1,0 +1,29 @@
+---
+import type { ArticleEntry } from '../utils/content';
+import { formatDate, getReadingStats } from '../utils/content';
+
+interface Props {
+  article: ArticleEntry;
+  languages?: string[];
+}
+
+const { article, languages = [] } = Astro.props;
+const stats = getReadingStats(article.body, article.data.lang);
+const href = `/articles/${article.data.slug}/${article.data.lang}/`;
+---
+
+<article class="article-card">
+  <p class="item-meta">
+    <time datetime={article.data.date.toISOString()}>{formatDate(article.data.date, article.data.lang)}</time>
+    <span>{stats.count}</span>
+    <span>{stats.minutes}</span>
+  </p>
+  <h3><a href={href}>{article.data.title}</a></h3>
+  <p>{article.data.summary}</p>
+  <div class="card-foot">
+    <ul class="tag-list" aria-label="Tags">
+      {article.data.tags.map((tag) => <li>{tag}</li>)}
+    </ul>
+    {languages.length > 1 && <span class="language-note">{languages.join(' · ')}</span>}
+  </div>
+</article>
