@@ -1,0 +1,17 @@
+---
+import { getCollection } from 'astro:content';
+import BookCard from '../../components/BookCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { siteConfig } from '../../config';
+
+const books = (await getCollection('books')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title={`Books | ${siteConfig.name}`} description="Long projects, serial essays, and living books from Gao Yuze.">
+  <section class="page-heading">
+    <p class="section-kicker">§ 02 · Books</p>
+    <h1>The shelf</h1>
+    <p>Living books and serial projects. They may begin as notes, become essays, and eventually settle into durable form.</p>
+  </section>
+  <section class="book-grid catalogue" aria-label="Books">{books.map((book) => <BookCard book={book} />)}</section>
+</BaseLayout>
