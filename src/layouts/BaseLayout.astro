@@ -1,0 +1,52 @@
+---
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import { siteConfig } from '../config';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  title = siteConfig.title,
+  description = siteConfig.description,
+  image = '/assets/mind-archive.svg'
+} = Astro.props;
+
+const baseUrl = Astro.site?.toString() ?? siteConfig.url;
+const canonical = new URL(Astro.url.pathname, baseUrl).toString();
+const imageUrl = new URL(image, baseUrl).toString();
+---
+
+<!doctype html>
+<html lang={siteConfig.language}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="application/rss+xml" title={`${siteConfig.name} RSS`} href="/rss.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+  </head>
+  <body>
+    <div class="site-shell">
+      <SiteHeader />
+      <main>
+        <slot />
+      </main>
+      <SiteFooter />
+    </div>
+  </body>
+</html>
