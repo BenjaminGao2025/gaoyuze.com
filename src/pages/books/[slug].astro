@@ -6,7 +6,7 @@ import { getBookStatusLabel } from '../../utils/content';
 
 export async function getStaticPaths() {
   const books = await getCollection('books');
-  return books.map((book) => ({ params: { slug: book.data.slug }, props: { book } }));
+  return books.map((book) => ({ params: { slug: book.data.pageSlug }, props: { book } }));
 }
 
 const { book } = Astro.props;
