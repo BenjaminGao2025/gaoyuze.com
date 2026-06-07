@@ -9,7 +9,7 @@ interface Props {
 
 const { article, languages = [] } = Astro.props;
 const stats = getReadingStats(article.body, article.data.lang);
-const href = `/articles/${article.data.slug}/${article.data.lang}/`;
+const href = `/articles/${article.data.pageSlug}/${article.data.lang}/`;
 ---
 
 <article class="article-card">
