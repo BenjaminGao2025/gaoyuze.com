@@ -37,7 +37,7 @@ export function getArticleLanguages(article: ArticleEntry, all: ArticleEntry[]) 
     .map((entry) => ({
       label: languageLabels[entry.data.lang] ?? entry.data.lang,
       lang: entry.data.lang,
-      href: `/articles/${entry.data.slug}/${entry.data.lang}/`
+      href: `/articles/${entry.data.pageSlug}/${entry.data.lang}/`
     }));
 }
 
