@@ -4,7 +4,7 @@ const articleCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
-    slug: z.string(),
+    pageSlug: z.string(),
     lang: z.enum(['en', 'zh']),
     translationKey: z.string(),
     date: z.coerce.date(),
@@ -19,7 +19,7 @@ const bookCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
-    slug: z.string(),
+    pageSlug: z.string(),
     lang: z.enum(['en', 'zh']).default('en'),
     translationKey: z.string(),
     year: z.number(),
