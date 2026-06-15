@@ -1,0 +1,142 @@
+---
+title: "使用 Cloudflare Pages 自动化部署 VLESS 代理节点 (脱敏版)"
+pageSlug: "deploy-vless-cloudflare-pages"
+lang: "zh"
+translationKey: "deploy-vless-cloudflare-pages"
+date: 2026-06-14
+summary: "一篇关于如何使用 Wrangler CLI 和 Bash 脚本在 Cloudflare Pages 上自动化部署 VLESS 节点的完整指南。"
+tags: ["Serverless", "Cloudflare", "DevOps", "Tutorial"]
+draft: false
+---
+
+在这篇文章中，我将分享如何使用 **Cloudflare Pages** 和 **Wrangler CLI** 自动化部署一个 Serverless 的 VLESS 代理节点。
+
+由于涉及到敏感信息，本教程中的所有密码、UUID 和域名均已脱敏处理。请在实际操作时替换为您自己的配置。
+
+## 1. 准备工作
+
+首先，确保您的本地环境已经安装了以下工具：
+- `npm` (Node.js)
+- Cloudflare `wrangler` CLI (`npm install -g wrangler`)
+- `jq` 命令行工具
+
+创建一个项目目录并进入：
+
+```bash
+mkdir -p my-vless-node/dist
+cd my-vless-node
+```
+
+## 2. 获取核心代码
+
+由于编写 VLESS 协议的解析逻辑非常复杂，推荐使用开源社区已经成熟的方案（例如 `edgetunnel`）。
+
+我们将核心的 Worker 脚本下载到 `dist` 目录中，并命名为 `_worker.js` (这是 Cloudflare Pages Functions 的规范命名)：
+
+```bash
+curl -sSL https://raw.githubusercontent.com/zizifn/edgetunnel/main/src/worker-vless.js -o dist/_worker.js
+```
+
+### 替换 UUID
+
+打开下载好的 `dist/_worker.js`，找到顶部的 `userID` 变量声明：
+
+```javascript
+// 修改前
+let userID = 'd342d11e-d424-4583-b36e-524ab1f0afa4';
+
+// 修改后（请使用 uuidgen 生成属于您的安全 UUID）
+let userID = 'YOUR_GENERATED_UUID_HERE';
+```
+
+## 3. 编写自动化部署脚本
+
+我们在项目根目录下创建一个 `deploy.sh` 脚本。这个脚本会自动创建 KV 命名空间、生成 `wrangler.toml` 配置文件，并执行部署。
+
+```bash
+#!/bin/bash
+
+# Exit on error
+set -e
+
+PROJECT_NAME="my-vless-node"
+KV_TITLE="MY_VLESS_KV"
+KV_BINDING_NAME="KV"
+DEPLOY_DIR="./dist"
+DOMAIN="node.your-domain.com" # 替换为您的域名
+ADMIN_PASSWORD="YOUR_SECURE_PASSWORD" # 替换为您的管理密码
+TOML_FILE="wrangler.toml"
+
+echo "Starting Cloudflare Pages deployment process..."
+
+# 1. 创建并获取 KV 命名空间 ID
+echo "📦 Managing KV Namespace: $KV_TITLE..."
+CREATE_OUTPUT=$(wrangler kv namespace create "$KV_TITLE" 2>/dev/null || true)
+KV_ID=$(echo "$CREATE_OUTPUT" | grep -oE 'id = "[^"]+"' | cut -d '"' -f 2 | head -n 1)
+
+if [ -z "$KV_ID" ]; then
+    KV_ID=$(wrangler kv namespace list | jq -r ".[] | select(.title == \"$KV_TITLE\") | .id")
+fi
+
+echo "✅ KV Namespace ID: $KV_ID"
+
+# 2. 动态生成 wrangler.toml
+echo "📝 Generating $TOML_FILE..."
+cat > "$TOML_FILE" << EOF
+name = "$PROJECT_NAME"
+pages_build_output_dir = "$DEPLOY_DIR"
+compatibility_date = "2024-06-14"
+
+[vars]
+ADM = "$ADMIN_PASSWORD"
+
+[[kv_namespaces]]
+binding = "$KV_BINDING_NAME"
+id = "$KV_ID"
+EOF
+
+# 3. 部署到 Cloudflare Pages
+echo "🚀 Creating Pages project (if it doesn't exist)..."
+wrangler pages project create "$PROJECT_NAME" --production-branch main 2>/dev/null || true
+
+echo "⬆️ Deploying to Cloudflare Pages..."
+wrangler pages deploy "$DEPLOY_DIR" --project-name "$PROJECT_NAME" --branch main
+
+echo "🎉 Deployment complete!"
+```
+
+## 4. 执行部署
+
+首先，赋予脚本执行权限：
+
+```bash
+chmod +x deploy.sh
+```
+
+确保您已经登录了 Cloudflare 账户：
+
+```bash
+wrangler login
+```
+
+最后，运行部署脚本：
+
+```bash
+./deploy.sh
+```
+
+## 5. 绑定自定义域名
+
+脚本运行成功后，您的节点已经上线并获得了一个 `*.pages.dev` 的默认域名。
+
+为了获得更好的使用体验和安全性，强烈建议您绑定自定义域名：
+1. 登录 Cloudflare Dashboard。
+2. 进入 **Workers & Pages** -> 选择您的项目 `my-vless-node`。
+3. 切换到 **Custom domains** 选项卡，点击 **Set up a custom domain**。
+4. 输入您的域名（例如 `node.your-domain.com`）并按照向导完成 DNS 配置。
+
+## 结语
+
+完成以上步骤后，您就可以通过 `https://您的域名/您的UUID` 访问节点面板并获取订阅链接了。
+
+这种基于 Serverless 的部署方式不仅轻量、免维护，而且可以白嫖 Cloudflare 的全球 CDN 加速节点，非常适合个人使用。
