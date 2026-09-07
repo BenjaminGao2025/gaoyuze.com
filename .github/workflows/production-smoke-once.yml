@@ -1,0 +1,105 @@
+name: Production smoke verification
+on:
+  push:
+    branches: [verify/production-b8ff603]
+permissions:
+  contents: read
+jobs:
+  production-http:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check deployed public website with real HTTPS requests
+        shell: bash
+        run: |
+          mkdir -p verification
+          python3 - <<'PY'
+          import json, re, time
+          from pathlib import Path
+          from urllib.request import Request, urlopen
+          from urllib.error import HTTPError
+          from urllib.parse import urljoin
+          import xml.etree.ElementTree as ET
+
+          origin = 'https://gaoyuze.com'
+          report = {'release': 'b8ff6037a3cb0011f103f876f1ef0f12ed3ebfb5', 'requests': [], 'checks': {}}
+          def fetch(path, expected=200):
+              request = Request(origin + path, headers={'User-Agent': 'gaoyuze-release-verification/1.0', 'Cache-Control': 'no-cache'})
+              try:
+                  response = urlopen(request, timeout=30)
+              except HTTPError as exc:
+                  response = exc
+              body = response.read().decode('utf-8')
+              report['requests'].append({'path': path, 'status': response.code, 'url': response.geturl(), 'content_type': response.headers.get('Content-Type'), 'cache': response.headers.get('CF-Cache-Status')})
+              assert response.code == expected, f'{path}: expected {expected}, got {response.code}'
+              return body
+          try:
+              home = fetch('/')
+              assert '你好，我是高瑜泽。' in home, 'Root URL still serves the old homepage'
+              assert '<html lang="zh-Hans"' in home
+              assert not re.search(r'<meta[^>]+name="robots"[^>]+content="[^"]*noindex', home), 'Production must not inherit preview noindex'
+              assert not re.search(r'<script\b', home), 'Homepage unexpectedly loads client JS'
+              Path('verification/home.html').write_text(home)
+              report['checks']['production_home_is_new_chinese_design'] = True
+
+              old_paths = [
+                  '/articles/api-authorization-imbalance/zh/',
+                  '/articles/api-authorization-imbalance/en/',
+                  '/articles/public-mind-begins/zh/',
+                  '/articles/public-mind-begins/en/',
+                  '/articles/deploy-vless-cloudflare-pages/zh/',
+                  '/articles/attention-ledger/en/',
+                  '/books/1000-hours/', '/books/principles-in-progress/'
+              ]
+              for path in old_paths:
+                  html = fetch(path)
+                  assert '<title>' in html and 'rel="canonical"' in html
+                  assert 'content="noindex' not in html
+              report['checks']['all_8_existing_content_urls_preserved'] = True
+              for path in ['/articles/', '/archive/', '/about/', '/search/']:
+                  assert '<title>' in fetch(path)
+              index_text = fetch('/search-index.json')
+              entries = json.loads(index_text)
+              assert len(entries) == 6, f'Expected six language versions, got {len(entries)}'
+              assert any('会话校验通过' in entry['text'] for entry in entries)
+              assert 'pages-cms-test' not in index_text
+              Path('verification/search-index.json').write_text(index_text)
+              report['checks']['live_search_index_chinese_full_text_and_no_test_article'] = True
+
+              rss_text = fetch('/rss.xml')
+              rss = ET.fromstring(rss_text)
+              assert len(rss.findall('./channel/item')) == 4
+              assert 'pages-cms-test' not in rss_text
+              assert '/articles/api-authorization-imbalance/zh/' in rss_text
+              Path('verification/rss.xml').write_text(rss_text)
+              report['checks']['live_rss_four_canonical_articles'] = True
+              sitemap = fetch('/sitemap-index.xml')
+              root = ET.fromstring(sitemap)
+              for location in root.iter('{http://www.sitemaps.org/schemas/sitemap/0.9}loc'):
+                  assert location.text.startswith(origin + '/')
+                  assert 'pages-cms-test' not in fetch(location.text[len(origin):])
+              fetch('/articles/pages-cms-test/zh/', expected=404)
+              report['checks']['removed_test_url_is_404_and_not_in_sitemap'] = True
+              css_paths = re.findall(r'href="([^\"]+\.css)"', home)
+              assert css_paths, 'Missing stylesheet'
+              for css_path in css_paths:
+                  assert css_path.startswith('/') and not css_path.startswith('//')
+                  css = fetch(css_path)
+                  assert '44rem' in css, 'Expected editorial reading CSS'
+              report['checks']['linked_editorial_css_served'] = True
+              report['result'] = 'PASS'
+          except Exception as exc:
+              report['result'] = 'FAIL'
+              report['error'] = str(exc)
+              raise
+          finally:
+              report['checked_at_utc'] = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
+              Path('verification/report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2))
+              print(json.dumps(report, ensure_ascii=False, indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: production-http-verification
+          path: verification/
+          retention-days: 7
