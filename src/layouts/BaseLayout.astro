@@ -6,9 +6,9 @@ import '../styles/global.css';
 interface Props {
   title?: string; description?: string; image?: string;
   lang?: 'zh-Hans' | 'en'; article?: boolean; published?: string; modified?: string;
-  alternates?: { lang: string; href: string }[]; noindex?: boolean;
+  alternates?: { lang: string; href: string }[]; noindex?: boolean; wide?: boolean;
 }
-const { title = siteConfig.title, description = siteConfig.description, image, lang = 'zh-Hans', article = false, published, modified, alternates = [], noindex = false } = Astro.props;
+const { title = siteConfig.title, description = siteConfig.description, image, lang = 'zh-Hans', article = false, published, modified, alternates = [], noindex = false, wide = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, siteConfig.url).href;
 const preview = import.meta.env.CF_PAGES === '1' && import.meta.env.CF_PAGES_BRANCH !== 'main';
 ---
@@ -19,7 +19,7 @@ const preview = import.meta.env.CF_PAGES === '1' && import.meta.env.CF_PAGES_BRA
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#faf9f6" />
+    <meta name="theme-color" content="#f8f6f1" />
     {(noindex || preview) && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -40,9 +40,9 @@ const preview = import.meta.env.CF_PAGES === '1' && import.meta.env.CF_PAGES_BRA
     {image && <meta name="twitter:image" content={new URL(image, siteConfig.url).href} />}
   </head>
   <body>
-    <a class="skip-link" href="#main">跳到正文</a>
+    <a class="skip-link" href="#main" lang="zh-Hans">跳到正文</a>
     <SiteHeader />
-    <main id="main" tabindex="-1"><slot /></main>
+    <main id="main" tabindex="-1" class:list={[{ wide }]}><slot /></main>
     <SiteFooter />
   </body>
 </html>

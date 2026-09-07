@@ -3,19 +3,26 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ArticleCard from '../components/ArticleCard.astro';
 import { getPublishedArticles, getCanonicalArticles, getArticleLanguages } from '../utils/content';
 const all = await getPublishedArticles();
-const recent = getCanonicalArticles(all).slice(0, 8);
+const articles = getCanonicalArticles(all);
+const recent = articles.slice(0, 8);
 ---
-<BaseLayout>
+<BaseLayout wide>
   <section class="intro">
-    <p class="eyebrow">个人博客 · 始于 2026</p>
-    <h1>你好，我是高瑜泽。</h1>
-    <p>记录生活、学习与实践，<br class="mobile-break" />也把一些事情想清楚。</p>
-    <a class="quiet-link" href="/about/">关于这个网站 <span aria-hidden="true">↗</span></a>
+    <div>
+      <p class="eyebrow">一个人的记录 · 始于 2026</p>
+      <h1>你好，我是高瑜泽。</h1>
+      <p class="intro-lede">记录生活、学习与实践，<br />也把一些事情想清楚。</p>
+    </div>
+    <aside class="intro-aside" aria-label="关于这个网站">
+      <p class="margin-label">写在这里</p>
+      <p>长一点的思考，短一点的记录。<br />有关技术，也有关日常。</p>
+      <a class="quiet-link" href="/about/">关于这个网站 <span aria-hidden="true">↗</span></a>
+    </aside>
   </section>
   <section aria-labelledby="recent-heading">
-    <div class="section-heading"><h2 id="recent-heading">最近写的</h2><a href="/archive/">按年份查看 <span aria-hidden="true">→</span></a></div>
+    <div class="section-heading"><h2 id="recent-heading">最近写的 <span>{String(articles.length).padStart(2, '0')} 篇</span></h2><a href="/archive/">全部归档 <span aria-hidden="true">↗</span></a></div>
     <div class="article-list">{recent.map(article => <ArticleCard article={article} languages={getArticleLanguages(article, all).map(item => item.label)} />)}</div>
-    {!recent.length && <p class="empty">还没有公开的文章。</p>}
+    {!recent.length && <p class="empty">还没有公开的文章。写好一篇，就从这里开始。</p>}
     <a class="all-link" href="/articles/">查看全部文章 <span aria-hidden="true">→</span></a>
   </section>
 </BaseLayout>

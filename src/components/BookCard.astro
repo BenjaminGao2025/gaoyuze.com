@@ -3,4 +3,4 @@ import { getBookStatusLabel, type BookEntry } from '../utils/content';
 interface Props { book: BookEntry; }
 const { book } = Astro.props;
 ---
-<article class="article-row"><p class="item-meta">{book.data.year} · {getBookStatusLabel(book.data.status)}</p><h2><a href={`/books/${book.data.pageSlug}/`}>{book.data.title}</a></h2><p class="summary">{book.data.summary}</p></article>
+<article class="article-row book-row"><p class="item-meta">{book.data.year} · {getBookStatusLabel(book.data.status)}</p><h2><a href={`/books/${book.data.pageSlug}/`}>{book.data.title}</a></h2><p class="summary">{book.data.summary}</p></article>
