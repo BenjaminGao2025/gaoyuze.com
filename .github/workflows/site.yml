@@ -1,0 +1,45 @@
+name: Site checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: site-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install exact locked dependencies
+        run: npm ci
+      - name: Record audit and block high-severity advisories
+        run: |
+          mkdir -p qa
+          npm ls --depth=0 > qa/dependencies.txt
+          npm audit --audit-level=high --json > qa/npm-audit.json
+      - run: npm run build
+      - run: npm run test:static
+      - run: npm run test:privacy
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: site-review
+          path: |
+            dist/
+            qa/
+            playwright-report/
+            test-results/
+          retention-days: 7

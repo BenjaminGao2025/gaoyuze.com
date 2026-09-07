@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="搜索 · 高瑜泽" description="搜索文章标题、标签与正文。" noindex>
+  <header class="page-heading"><p class="eyebrow">Search</p><h1>搜索</h1><p>找一篇文章，或一个曾经想过的问题。</p></header>
+  <form id="search-form" class="search-form" role="search">
+    <label for="query">搜索文章标题、标签和正文</label>
+    <div><input id="query" name="q" type="search" autocomplete="off" placeholder="输入关键词，例如：学习、API" maxlength="200" /><button type="submit">搜索</button></div>
+  </form>
+  <p id="search-status" role="status" aria-live="polite">输入关键词开始搜索。中英文文章都可以找到。</p>
+  <div id="search-results" class="search-results"></div>
+  <noscript><p>站内搜索需要 JavaScript。也可以在<a href="/archive/">归档页</a>按时间查找文章。</p></noscript>
+</BaseLayout>
+<script>
+  type Entry = { title: string; summary: string; tags: string[]; lang: string; href: string; text: string };
+  const form = document.querySelector<HTMLFormElement>('#search-form')!;
+  const input = document.querySelector<HTMLInputElement>('#query')!;
+  const status = document.querySelector<HTMLElement>('#search-status')!;
+  const results = document.querySelector<HTMLElement>('#search-results')!;
+  let entries: Entry[] | null = null;
+  let generation = 0;
+  async function search() {
+    const current = ++generation;
+    const query = input.value.trim().slice(0, 200);
+    results.replaceChildren();
+    const url = new URL(location.href);
+    if (query) url.searchParams.set('q', query); else url.searchParams.delete('q');
+    history.replaceState(null, '', url);
+    if (!query) { status.textContent = '输入关键词开始搜索。中英文文章都可以找到。'; return; }
+    status.textContent = '正在搜索…';
+    try {
+      if (!entries) {
+        const response = await fetch('/search-index.json');
+        if (!response.ok) throw new Error('Search index unavailable');
+        entries = await response.json();
+      }
+      if (current !== generation) return;
+      const terms = query.toLocaleLowerCase().split(/\s+/).filter(Boolean);
+      const matches = (entries ?? []).map(entry => {
+        const title = entry.title.toLocaleLowerCase();
+        const meta = `${entry.summary} ${entry.tags.join(' ')}`.toLocaleLowerCase();
+        const all = `${title} ${meta} ${entry.text.toLocaleLowerCase()}`;
+        return { entry, score: terms.every(term => all.includes(term)) ? terms.reduce((sum, term) => sum + (title.includes(term) ? 4 : meta.includes(term) ? 2 : 1), 0) : 0 };
+      }).filter(item => item.score > 0).sort((a, b) => b.score - a.score);
+      status.textContent = matches.length ? `找到 ${matches.length} 篇文章${matches.length > 40 ? '，显示前 40 篇' : ''}。` : '没有找到相关文章。试试更短的关键词。';
+      for (const { entry } of matches.slice(0, 40)) {
+        const article = document.createElement('article');
+        const heading = document.createElement('h2');
+        const link = document.createElement('a');
+        link.href = entry.href;
+        link.textContent = entry.title;
+        heading.append(link);
+        const text = document.createElement('p');
+        text.textContent = entry.summary || entry.text.slice(0, 160);
+        article.lang = entry.lang === 'zh' ? 'zh-Hans' : 'en';
+        article.append(heading, text);
+        results.append(article);
+      }
+    } catch {
+      if (current === generation) { entries = null; status.textContent = '搜索暂时无法加载，请重试，或从归档页查找文章。'; }
+    }
+  }
+  form.addEventListener('submit', event => { event.preventDefault(); void search(); });
+  input.addEventListener('input', () => { if (!input.value.trim()) void search(); });
+  input.value = new URLSearchParams(location.search).get('q')?.slice(0, 200) ?? '';
+  if (input.value) void search();
+</script>

@@ -1,0 +1,77 @@
+# Public repository: draft source, history and uploaded media are NOT private.
+# Configuration references: https://pagescms.org/docs/configuration/
+media:
+  input: public/uploads
+  output: /uploads
+content:
+  - name: articles
+    label: '新文章（公开仓库内草稿也可见）'
+    type: collection
+    path: src/content/articles
+    format: yaml-frontmatter
+    filename: '{fields.pageSlug}.{fields.lang}.md'
+    exclude: ['*.mdx']
+    subfolders: false
+    operations:
+      rename: false
+    view:
+      primary: title
+      fields: [title, date, draft]
+      sort: date
+      order: desc
+    fields:
+      - name: title
+        label: 标题
+        type: string
+        required: true
+      - name: pageSlug
+        label: 网址标识
+        type: string
+        required: true
+        pattern:
+          regex: '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+          message: '只用小写英文字母、数字和短横线，例如 learning-french。'
+        description: '发布后不要更改，以免旧链接失效。'
+      - name: lang
+        label: 语言
+        type: select
+        default: zh
+        required: true
+        options:
+          values:
+            - name: zh
+              label: 中文
+            - name: en
+              label: English
+      - name: date
+        label: 发布日期
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: draft
+        label: 草稿（关闭后才会发布）
+        type: boolean
+        default: true
+        description: '草稿不会生成网页，但公开仓库中的文件、历史及上传图片仍可见。日期不控制定时发布。'
+      - name: summary
+        label: 简介
+        type: text
+        description: 一两句话，可留空。
+      - name: tags
+        label: 标签
+        type: string
+        list: true
+      - name: body
+        label: 正文
+        type: rich-text
+      - name: updated
+        label: 最后修订日期
+        type: date
+        default: ''
+        options:
+          format: yyyy-MM-dd
+      - name: translationKey
+        label: 中英文关联标识（可选）
+        type: string
+        description: 同一篇文章的两个语言版本使用相同标识；单语文章可留空。

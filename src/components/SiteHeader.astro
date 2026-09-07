@@ -1,24 +1,15 @@
 ---
 import { siteConfig } from '../config';
-
-const currentPath = Astro.url.pathname;
+const pathname = Astro.url.pathname;
 ---
-
-<header class="site-header">
-  <a class="brand" href="/" aria-label={`${siteConfig.name} home`}>
-    <span class="brand-mark">GY</span>
-    <span>{siteConfig.name}</span>
+<header class="site-header" lang="zh-Hans">
+  <a class="brand" href="/" aria-label="高瑜泽，返回首页">
+    <span class="brand-seal" aria-hidden="true">高</span>
+    <span class="brand-text"><span class="brand-name">高瑜泽</span><span class="brand-roman" lang="en">GAO YUZE</span></span>
   </a>
-  <nav class="site-nav" aria-label="Primary navigation">
-    {
-      siteConfig.nav.map((item) => (
-        <a
-          href={item.href}
-          class:list={[{ active: currentPath.startsWith(item.href) }, 'nav-link']}
-        >
-          {item.label}
-        </a>
-      ))
-    }
+  <nav class="site-nav" aria-label="主导航">
+    {siteConfig.nav.map(item => <a href={item.href} data-active={pathname.startsWith(item.href) ? 'true' : undefined} aria-current={pathname === item.href ? 'page' : undefined}>
+      {item.href === '/search/' && <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 4 4" /></svg>}{item.label}
+    </a>)}
   </nav>
 </header>

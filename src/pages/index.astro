@@ -1,43 +1,28 @@
 ---
-import { getCollection } from 'astro:content';
-import ArticleCard from '../components/ArticleCard.astro';
-import BookCard from '../components/BookCard.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { languageLabels, siteConfig } from '../config';
-import { getArticleLanguages, getCanonicalArticles, sortArticlesByDate } from '../utils/content';
-
-const allArticles = await getCollection('articles', ({ data }) => !data.draft);
-const recentArticles = sortArticlesByDate(getCanonicalArticles(allArticles)).slice(0, 3);
-const books = (await getCollection('books')).sort((a, b) => a.data.order - b.data.order);
+import ArticleCard from '../components/ArticleCard.astro';
+import { getPublishedArticles, getCanonicalArticles, getArticleLanguages } from '../utils/content';
+const all = await getPublishedArticles();
+const articles = getCanonicalArticles(all);
+const recent = articles.slice(0, 8);
 ---
-
-<BaseLayout>
-  <section class="hero-section">
-    <div class="hero-copy">
-      <p class="eyebrow">Public mind · {siteConfig.since}</p>
-      <h1>Gao Yuze</h1>
-      <p class="lede">Long-term thoughts, books in progress, and the visible record of becoming more capable through writing.</p>
-      <dl class="hero-facts">
-        {siteConfig.stats.map((stat) => <div><dt>{stat.label}</dt><dd>{stat.value}</dd></div>)}
-      </dl>
+<BaseLayout wide>
+  <section class="intro">
+    <div>
+      <p class="eyebrow">一个人的记录 · 始于 2026</p>
+      <h1>你好，我是高瑜泽。</h1>
+      <p class="intro-lede">记录生活、学习与实践，<br />也把一些事情想清楚。</p>
     </div>
-    <figure class="hero-visual"><img src="/assets/mind-archive.svg" alt="Abstract paper field for Gao Yuze public mind archive" /></figure>
+    <aside class="intro-aside" aria-label="关于这个网站">
+      <p class="margin-label">写在这里</p>
+      <p>长一点的思考，短一点的记录。<br />有关技术，也有关日常。</p>
+      <a class="quiet-link" href="/about/">关于这个网站 <span aria-hidden="true">↗</span></a>
+    </aside>
   </section>
-
-  <section class="status-band" aria-label="Current status">
-    <div><p>{siteConfig.current.label}</p><strong>{siteConfig.current.title}</strong><span>{siteConfig.current.detail}</span></div>
-    <p>{siteConfig.statusLine.join(' · ')}</p>
-  </section>
-
-  <section class="section-block">
-    <div class="section-heading"><p class="section-kicker">§ 01 · Articles</p><h2>The journal — thoughts kept in public</h2><a href="/articles/">All articles</a></div>
-    <div class="article-grid">
-      {recentArticles.map((article) => <ArticleCard article={article} languages={getArticleLanguages(article, allArticles).map((item) => languageLabels[item.lang] ?? item.lang)} />)}
-    </div>
-  </section>
-
-  <section class="section-block">
-    <div class="section-heading"><p class="section-kicker">§ 02 · Books</p><h2>The shelf — long projects in rotation</h2><a href="/books/">Open catalogue</a></div>
-    <div class="book-grid">{books.slice(0, 4).map((book) => <BookCard book={book} />)}</div>
+  <section aria-labelledby="recent-heading">
+    <div class="section-heading"><h2 id="recent-heading">最近写的 <span>{String(articles.length).padStart(2, '0')} 篇</span></h2><a href="/archive/">全部归档 <span aria-hidden="true">↗</span></a></div>
+    <div class="article-list">{recent.map(article => <ArticleCard article={article} languages={getArticleLanguages(article, all).map(item => item.label)} />)}</div>
+    {!recent.length && <p class="empty">还没有公开的文章。写好一篇，就从这里开始。</p>}
+    <a class="all-link" href="/articles/">查看全部文章 <span aria-hidden="true">→</span></a>
   </section>
 </BaseLayout>
