@@ -1,33 +1,36 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { render } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { siteConfig } from '../../../config';
-import { formatDate, getArticleLanguages, getReadingStats } from '../../../utils/content';
-
+import { getPublishedArticles, getArticleLanguages, formatDate, getReadingStats, type ArticleEntry } from '../../../utils/content';
 export async function getStaticPaths() {
-  const articles = await getCollection('articles', ({ data }) => !data.draft);
-  return articles.map((article) => ({
-    params: { slug: article.data.pageSlug, lang: article.data.lang },
-    props: { article, translations: getArticleLanguages(article, articles) }
-  }));
+  const all = await getPublishedArticles();
+  return all.map(article => ({ params: { slug: article.data.pageSlug, lang: article.data.lang }, props: { article, translations: getArticleLanguages(article, all) } }));
 }
-
+interface Props { article: ArticleEntry; translations: { label: string; lang: string; href: string }[]; }
 const { article, translations } = Astro.props;
-const { Content } = await render(article);
-const stats = getReadingStats(article.body, article.data.lang);
+const { data } = article;
+const { Content, headings } = await render(article);
+const toc = headings.filter(item => item.depth === 2 || item.depth === 3);
+const stats = getReadingStats(article.body, data.lang);
+const en = data.lang === 'en';
 ---
-
-<BaseLayout title={`${article.data.title} | ${siteConfig.name}`} description={article.data.summary} image={article.data.cover}>
-  <article class="reading-page" lang={article.data.lang === 'zh' ? 'zh-Hans' : 'en'}>
+<BaseLayout title={`${data.title} · 高瑜泽`} description={data.summary} image={data.cover} lang={en ? 'en' : 'zh-Hans'} article published={data.date.toISOString()} modified={data.updated?.toISOString()} alternates={translations}>
+  <article class="reading-page">
     <header class="reading-header">
-      <a class="back-link" href="/articles/">Articles</a>
-      <p class="item-meta"><time datetime={article.data.date.toISOString()}>{formatDate(article.data.date, article.data.lang)}</time><span>{stats.count}</span><span>{stats.minutes}</span></p>
-      <h1>{article.data.title}</h1>
-      <p>{article.data.summary}</p>
-      {translations.length > 1 && <nav class="language-switch" aria-label="Available languages">{translations.map((item) => <a class:list={[{ active: item.lang === article.data.lang }]} href={item.href}>{item.label}</a>)}</nav>}
+      <a class="back-link" href="/articles/">← {en ? 'All articles' : '全部文章'}</a>
+      <div class="item-meta"><time datetime={data.date.toISOString().slice(0, 10)}>{formatDate(data.date, data.lang)}</time><span>{stats.minutes}</span></div>
+      <h1>{data.title}</h1>
+      {data.summary && <p class="article-summary">{data.summary}</p>}
+      {data.updated && <p class="updated">{en ? 'Updated' : '更新于'} <time datetime={data.updated.toISOString().slice(0, 10)}>{formatDate(data.updated, data.lang)}</time></p>}
+      {translations.length > 1 && <nav class="language-switch" aria-label={en ? 'Article languages' : '文章语言'}>{translations.map(item => <a href={item.href} hreflang={item.lang === 'zh' ? 'zh-Hans' : 'en'} aria-current={item.lang === data.lang ? 'page' : undefined}>{item.label}</a>)}</nav>}
     </header>
-    {article.data.cover && <img class="article-cover" src={article.data.cover} alt="" />}
+    {data.cover && <figure class="article-cover"><img src={data.cover} alt={data.coverAlt ?? ''} decoding="async" /></figure>}
+    {toc.length >= 3 && <details class="toc"><summary>{en ? 'On this page' : '文章目录'}</summary><ol>{toc.map(item => <li class:list={[{ nested: item.depth === 3 }]}><a href={`#${item.slug}`}>{item.text}</a></li>)}</ol></details>}
     <div class="prose"><Content /></div>
-    <footer class="reading-footer"><a href="/articles/">Back to articles</a></footer>
+    <footer class="reading-footer">
+      <ul class="tag-list" aria-label={en ? 'Tags' : '标签'}>{data.tags.map(tag => <li><a href={`/search/?q=${encodeURIComponent(tag)}`}>{tag}</a></li>)}</ul>
+      <p>{en ? 'Written by Gao Yuze.' : '写于当时，也会在新的理解中继续修正。'}</p>
+      <div><a href="/articles/">← {en ? 'All articles' : '全部文章'}</a><a href="/rss.xml">{en ? 'Subscribe via RSS' : 'RSS 订阅'}</a></div>
+    </footer>
   </article>
 </BaseLayout>

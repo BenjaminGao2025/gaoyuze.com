@@ -1,20 +1,20 @@
 {
-  "name": "gaoyuze-public-mind",
-  "version": "0.1.0",
+  "name": "gaoyuze-writing",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
+  "engines": { "node": ">=22 <23" },
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "test:static": "node tests/static.mjs",
+    "test:privacy": "node tests/privacy.mjs",
+    "test:browser": "playwright test"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.4",
-    "@astrojs/mdx": "^4.0.8",
-    "@astrojs/rss": "^4.0.11",
-    "@astrojs/sitemap": "^3.2.1",
-    "astro": "^5.1.1",
-    "typescript": "^5.7.2"
+    "@astrojs/check": "^0.9.4", "@astrojs/mdx": "^4.0.8", "@astrojs/rss": "^4.0.11",
+    "@astrojs/sitemap": "^3.2.1", "astro": "^5.1.1", "typescript": "^5.7.2"
   },
-  "devDependencies": {}
+  "devDependencies": { "@playwright/test": "^1.51.1" }
 }

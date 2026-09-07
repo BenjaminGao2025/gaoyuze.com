@@ -1,29 +1,16 @@
 ---
-import type { ArticleEntry } from '../utils/content';
-import { formatDate, getReadingStats } from '../utils/content';
-
-interface Props {
-  article: ArticleEntry;
-  languages?: string[];
-}
-
+import { articleHref, formatDate, getReadingStats, type ArticleEntry } from '../utils/content';
+interface Props { article: ArticleEntry; languages?: string[]; }
 const { article, languages = [] } = Astro.props;
-const stats = getReadingStats(article.body, article.data.lang);
-const href = `/articles/${article.data.pageSlug}/${article.data.lang}/`;
+const { data } = article;
+const stats = getReadingStats(article.body, data.lang);
 ---
-
-<article class="article-card">
-  <p class="item-meta">
-    <time datetime={article.data.date.toISOString()}>{formatDate(article.data.date, article.data.lang)}</time>
-    <span>{stats.count}</span>
-    <span>{stats.minutes}</span>
-  </p>
-  <h3><a href={href}>{article.data.title}</a></h3>
-  <p>{article.data.summary}</p>
-  <div class="card-foot">
-    <ul class="tag-list" aria-label="Tags">
-      {article.data.tags.map((tag) => <li>{tag}</li>)}
-    </ul>
-    {languages.length > 1 && <span class="language-note">{languages.join(' · ')}</span>}
+<article class="article-row" lang={data.lang === 'zh' ? 'zh-Hans' : 'en'}>
+  <div class="item-meta"><time datetime={data.date.toISOString().slice(0, 10)}>{formatDate(data.date)}</time><span>{stats.minutes}</span>{data.lang === 'en' && <span lang="en">English</span>}</div>
+  <h2><a href={articleHref(article)}>{data.title}</a></h2>
+  {data.summary && <p class="summary">{data.summary}</p>}
+  <div class="row-bottom">
+    <ul class="tag-list" aria-label="标签">{data.tags.map(tag => <li><a href={`/search/?q=${encodeURIComponent(tag)}`}>{tag}</a></li>)}</ul>
+    {languages.length > 1 && <span class="translation-note">{languages.join(' / ')}</span>}
   </div>
 </article>

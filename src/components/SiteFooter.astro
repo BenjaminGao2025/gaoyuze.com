@@ -1,10 +1,7 @@
 ---
-import { siteConfig } from '../config';
+const year = new Date().getUTCFullYear();
 ---
-
 <footer class="site-footer">
-  <p>{siteConfig.footer}</p>
-  <nav aria-label="Elsewhere">
-    {siteConfig.socialLinks.map((link) => <a href={link.href}>{link.label}</a>)}
-  </nav>
+  <p>© {year} 高瑜泽<span>写下来，留给以后的自己。</span></p>
+  <nav aria-label="页脚导航"><a href="/rss.xml">RSS 订阅</a><a href="/books/">旧书架</a></nav>
 </footer>

@@ -1,40 +1,17 @@
 export const siteConfig = {
-  name: 'Gao Yuze',
-  title: 'Gao Yuze | Public Mind',
-  description:
-    'Long-form thoughts, books, and records of learning from Gao Yuze.',
+  name: '高瑜泽',
+  title: '高瑜泽 · 个人博客',
+  description: '记录生活、学习与实践，也把一些事情想清楚。',
   url: 'https://gaoyuze.com',
-  language: 'en',
+  language: 'zh-Hans',
   since: '2026',
-  cadence: '~2 essays / month',
   nav: [
-    { label: 'Articles', href: '/articles/' },
-    { label: 'Books', href: '/books/' },
-    { label: 'About', href: '/about/' }
+    { label: '文章', href: '/articles/' },
+    { label: '归档', href: '/archive/' },
+    { label: '关于', href: '/about/' },
+    { label: '搜索', href: '/search/' }
   ],
-  current: {
-    label: 'Currently',
-    title: 'Building a public mind',
-    detail: 'Writing, reading, and keeping score in the open.'
-  },
-  stats: [
-    { label: 'Since', value: '2026' },
-    { label: 'Languages', value: 'English · 中文' },
-    { label: 'Cadence', value: '~2 essays / month' },
-    { label: 'Mode', value: 'Long apprenticeship' }
-  ],
-  statusLine: [
-    'Public mind',
-    'Bilingual notes',
-    'Books in progress',
-    'Daily evidence'
-  ],
-  socialLinks: [{ label: 'RSS', href: '/rss.xml' }],
-  footer:
-    'Maintained by Gao Yuze. Set in a Newsreader and Inter inspired typographic system. Built in public where possible.'
+  socialLinks: [{ label: 'RSS 订阅', href: '/rss.xml' }],
+  footer: '记录生活、学习与实践。'
 };
-
-export const languageLabels: Record<string, string> = {
-  en: 'English',
-  zh: '中文'
-};
+export const languageLabels: Record<string, string> = { en: 'English', zh: '中文' };

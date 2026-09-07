@@ -1,0 +1,66 @@
+# Before storing private drafts, make the repository private and verify access.
+# Published public content only while the repository remains public.
+media:
+  input: public/uploads
+  output: /uploads
+content:
+  - name: articles
+    label: '新文章（公开仓库内草稿也可见）'
+    type: collection
+    path: src/content/articles
+    format: yaml-frontmatter
+    filename: '{fields.pageSlug}.{fields.lang}.md'
+    exclude: ['*.mdx']
+    subfolders: false
+    view:
+      primary: title
+      fields: [title, date, draft]
+      sort: date
+      order: desc
+    fields:
+      - name: title
+        label: 标题
+        type: string
+        required: true
+      - name: pageSlug
+        label: 网址标识
+        type: string
+        required: true
+        description: '例如 learning-french。只用小写英文、数字和短横线；发布后不要更改。'
+      - name: lang
+        label: 语言
+        type: select
+        default: zh
+        options:
+          values:
+            - label: 中文
+              value: zh
+            - label: English
+              value: en
+      - name: date
+        label: 发布日期
+        type: date
+        required: true
+      - name: draft
+        label: 草稿（关闭后才会发布）
+        type: boolean
+        default: true
+        description: '草稿不会生成网页，但公开仓库中的文件、历史及上传图片仍可见。日期不控制定时发布。'
+      - name: summary
+        label: 简介
+        type: text
+        description: 一两句话，可留空。
+      - name: tags
+        label: 标签
+        type: string
+        list: true
+      - name: body
+        label: 正文
+        type: rich-text
+      - name: updated
+        label: 最后修订日期
+        type: date
+      - name: translationKey
+        label: 中英文关联标识（可选）
+        type: string
+        description: 同一篇文章的两个语言版本使用相同标识；单语文章可留空。

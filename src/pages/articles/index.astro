@@ -1,21 +1,13 @@
 ---
-import { getCollection } from 'astro:content';
-import ArticleCard from '../../components/ArticleCard.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { languageLabels, siteConfig } from '../../config';
-import { getArticleLanguages, getCanonicalArticles, sortArticlesByDate } from '../../utils/content';
-
-const allArticles = await getCollection('articles', ({ data }) => !data.draft);
-const articles = sortArticlesByDate(getCanonicalArticles(allArticles));
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getPublishedArticles, getCanonicalArticles, getArticleLanguages } from '../../utils/content';
+const all = await getPublishedArticles();
+const articles = getCanonicalArticles(all);
 ---
-
-<BaseLayout title={`Articles | ${siteConfig.name}`} description="Essays and long-form notes from Gao Yuze.">
-  <section class="page-heading">
-    <p class="section-kicker">§ 01 · Articles</p>
-    <h1>The journal</h1>
-    <p>Essays, notes, and long-term thoughts. Some pieces exist in both English and Chinese; some begin in one language.</p>
-  </section>
-  <section class="article-list" aria-label="Articles">
-    {articles.map((article) => <ArticleCard article={article} languages={getArticleLanguages(article, allArticles).map((item) => languageLabels[item.lang] ?? item.lang)} />)}
-  </section>
+<BaseLayout title="文章 · 高瑜泽" description="高瑜泽的全部文章，记录生活、学习与实践。">
+  <header class="page-heading"><p class="eyebrow">Writing</p><h1>文章</h1><p>长一点的思考，短一点的记录，都留在这里。</p></header>
+  <div class="list-tools"><span>共 {articles.length} 篇 · 中文优先显示</span><a href="/search/">搜索文章 →</a></div>
+  <div class="article-list">{articles.map(article => <ArticleCard article={article} languages={getArticleLanguages(article, all).map(item => item.label)} />)}</div>
+  {!articles.length && <p class="empty">还没有公开的文章。</p>}
 </BaseLayout>
