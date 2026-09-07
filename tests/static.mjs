@@ -18,7 +18,8 @@ for (const slug of ['api-authorization-imbalance', 'public-mind-begins']) {
 }
 assert.ok(existsSync('dist/articles/deploy-vless-cloudflare-pages/zh/index.html'));
 assert.ok(existsSync('dist/articles/attention-ledger/en/index.html'));
-for (const slug of ['one-thousand-hours', 'principles-in-progress']) assert.ok(existsSync(`dist/books/${slug}/index.html`));
+// The original file one-thousand-hours.mdx uses pageSlug: 1000-hours.
+for (const slug of ['1000-hours', 'principles-in-progress']) assert.ok(existsSync(`dist/books/${slug}/index.html`));
 assert.ok(!read('index.html').includes('fonts.googleapis.com'));
 assert.ok(read('rss.xml').includes('/articles/api-authorization-imbalance/zh/'));
 function walk(path) { return readdirSync(path, { withFileTypes: true }).flatMap(item => item.isDirectory() ? walk(join(path, item.name)) : [join(path, item.name)]); }
@@ -26,8 +27,8 @@ for (const path of walk('dist').filter(path => path.endsWith('.html'))) {
   const html = readFileSync(path, 'utf8');
   for (const match of html.matchAll(/(?:href|src)="(\/(?!\/)[^"?#]*)(?:[?#][^"]*)?"/g)) {
     const target = decodeURI(match[1]);
-    // All internal links must resolve to a built file (including assets and old chapters).
-    assert.ok(existsSync(join('dist', target.endsWith('/') ? target + 'index.html' : target)), `${path}: broken internal link ${target}`);
+    const file = join('dist', target.endsWith('/') ? target + 'index.html' : target);
+    assert.ok(existsSync(file), `${path}: broken internal link ${target}`);
   }
 }
 console.log(`PASS: ${entries.length} language versions; existing URLs, HTML metadata, RSS and internal links.`);

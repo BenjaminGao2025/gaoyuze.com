@@ -1,5 +1,5 @@
-# Before storing private drafts, make the repository private and verify access.
-# Published public content only while the repository remains public.
+# Public repository: draft source, history and uploaded media are NOT private.
+# Configuration references: https://pagescms.org/docs/configuration/
 media:
   input: public/uploads
   output: /uploads
@@ -12,6 +12,8 @@ content:
     filename: '{fields.pageSlug}.{fields.lang}.md'
     exclude: ['*.mdx']
     subfolders: false
+    operations:
+      rename: false
     view:
       primary: title
       fields: [title, date, draft]
@@ -26,21 +28,27 @@ content:
         label: 网址标识
         type: string
         required: true
-        description: '例如 learning-french。只用小写英文、数字和短横线；发布后不要更改。'
+        pattern:
+          regex: '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+          message: '只用小写英文字母、数字和短横线，例如 learning-french。'
+        description: '发布后不要更改，以免旧链接失效。'
       - name: lang
         label: 语言
         type: select
         default: zh
+        required: true
         options:
           values:
-            - label: 中文
-              value: zh
-            - label: English
-              value: en
+            - name: zh
+              label: 中文
+            - name: en
+              label: English
       - name: date
         label: 发布日期
         type: date
         required: true
+        options:
+          format: yyyy-MM-dd
       - name: draft
         label: 草稿（关闭后才会发布）
         type: boolean
@@ -60,6 +68,9 @@ content:
       - name: updated
         label: 最后修订日期
         type: date
+        default: ''
+        options:
+          format: yyyy-MM-dd
       - name: translationKey
         label: 中英文关联标识（可选）
         type: string
