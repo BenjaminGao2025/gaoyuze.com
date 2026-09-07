@@ -6,9 +6,9 @@ test('desktop, mobile and keyboard reading', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('html')).toHaveAttribute('lang', 'zh-Hans');
   await expect(page.locator('h1')).toHaveText('你好，我是高瑜泽。');
+  await page.screenshot({ path: 'qa/home-desktop.png', fullPage: true });
   await page.keyboard.press('Tab');
   await expect(page.locator('.skip-link')).toBeFocused();
-  await page.screenshot({ path: 'qa/home-desktop.png', fullPage: true });
   await page.goto(article);
   await expect(page.locator('.prose h2').first()).toBeVisible();
   await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveCount(1);

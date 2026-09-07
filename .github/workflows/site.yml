@@ -1,7 +1,7 @@
 name: Site checks
 on:
   push:
-    branches: [main, redesign/writing-first]
+    branches: [main]
   pull_request:
     branches: [main]
 permissions:
@@ -15,16 +15,19 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-      - name: Install dependencies and record audit
+          cache: npm
+      - name: Install exact locked dependencies
+        run: npm ci
+      - name: Record audit and block high-severity advisories
         run: |
-          if [ -f package-lock.json ]; then npm ci; else npm install; fi
           mkdir -p qa
-          npm ls --depth=0
-          npm audit --json > qa/npm-audit.json || true
-          node -e 'const a=JSON.parse(require("fs").readFileSync("qa/npm-audit.json","utf8")); console.log(JSON.stringify(Object.fromEntries(Object.entries(a.vulnerabilities||{}).map(([k,v])=>[k,{severity:v.severity,range:v.range,via:v.via,fixAvailable:v.fixAvailable}])),null,2))'
+          npm ls --depth=0 > qa/dependencies.txt
+          npm audit --audit-level=high --json > qa/npm-audit.json
       - run: npm run build
       - run: npm run test:static
       - run: npm run test:privacy
@@ -40,34 +43,3 @@ jobs:
             playwright-report/
             test-results/
           retention-days: 7
-      - uses: actions/upload-artifact@v4
-        with:
-          name: tested-package-lock
-          path: package-lock.json
-          retention-days: 7
-  preserve-initial-lock:
-    needs: check
-    if: github.event_name == 'push' && github.ref == 'refs/heads/redesign/writing-first'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: tested-package-lock
-          path: /tmp/tested-lock
-      - name: Preserve tested lock only on the isolated redesign branch
-        env:
-          EXPECTED_SHA: ${{ github.sha }}
-        run: |
-          set -eu
-          if [ -f package-lock.json ]; then exit 0; fi
-          current=$(git ls-remote origin refs/heads/redesign/writing-first | cut -f1)
-          if [ "$current" != "$EXPECTED_SHA" ]; then echo 'Branch advanced; no write.'; exit 0; fi
-          cp /tmp/tested-lock/package-lock.json package-lock.json
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- package-lock.json
-          git commit -m 'chore: preserve dependencies validated by site checks'
-          git push origin HEAD:refs/heads/redesign/writing-first
