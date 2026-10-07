@@ -1,0 +1,1010 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="加拿大法语键盘练习 (Canadian - CSA) · 高瑜泽"
+  description="针对 macOS Canadian - CSA 键盘布局的痛点键位（é, è, à, ç, 死键 ^/¨ 与标点搬迁）定制的个人法语打字靶向练习工具。"
+  wide
+  noindex
+>
+  <div class="french-practice">
+    <header class="practice-header">
+      <div class="eyebrow-row">
+        <p class="eyebrow">Clavier Canadien - CSA · Entraînement</p>
+        <span class="badge">macOS 专属优化</span>
+      </div>
+      <h1>加拿大法语键盘靶向练习</h1>
+      <p class="lead">
+        加拿大 CSA（CAN/CSA Z243.200）保留了 QWERTY 字母区，却彻底重构了<strong>右手标点区</strong>。
+        这个工具专门用于攻克 <code>é è à ç</code> 直出、死键 <code>^ ¨</code> 以及最反人类的 <code>'</code>（Shift+,）与 <code>?</code>（Shift+6）。
+      </p>
+    </header>
+
+    <!-- 顶部核心速查卡 -->
+    <section class="cheat-card" aria-label="核心键位速查">
+      <div class="cheat-header">
+        <span class="cheat-title">🎯 痛点键位秒查（美式物理键盘 vs CSA 输出）</span>
+        <button id="toggle-cheat" class="btn-subtle" type="button" aria-expanded="true">收起速查</button>
+      </div>
+      <div id="cheat-body" class="cheat-grid">
+        <div class="cheat-item danger">
+          <div class="cheat-key">Shift + ,</div>
+          <div class="cheat-arrow">➔</div>
+          <div class="cheat-char">‘ 单引号</div>
+          <div class="cheat-desc">原单引号键变成了 è！打 <code>c'est</code> 必须用 Shift+,</div>
+        </div>
+        <div class="cheat-item danger">
+          <div class="cheat-key">Shift + 6</div>
+          <div class="cheat-arrow">➔</div>
+          <div class="cheat-char">? 问号</div>
+          <div class="cheat-desc">原 /? 键变成了 é！打问号必须用 Shift+6</div>
+        </div>
+        <div class="cheat-item success">
+          <div class="cheat-key">/ 键</div>
+          <div class="cheat-arrow">➔</div>
+          <div class="cheat-char">é / É (Shift)</div>
+          <div class="cheat-desc">直接按下出 é，带 Shift 出 É</div>
+        </div>
+        <div class="cheat-item success">
+          <div class="cheat-key">' 键</div>
+          <div class="cheat-arrow">➔</div>
+          <div class="cheat-char">è / È (Shift)</div>
+          <div class="cheat-desc">直接按下出 è，带 Shift 出 È</div>
+        </div>
+        <div class="cheat-item success">
+          <div class="cheat-key">\ 键</div>
+          <div class="cheat-arrow">➔</div>
+          <div class="cheat-char">à / À (Shift)</div>
+          <div class="cheat-desc">直接按下出 à，带 Shift 出 À</div>
+        </div>
+        <div class="cheat-item success">
+          <div class="cheat-key">] 键</div>
+          <div class="cheat-arrow">➔</div>
+          <div class="cheat-char">ç / Ç (Shift)</div>
+          <div class="cheat-desc">直接按下出 ç，带 Shift 出 Ç</div>
+        </div>
+        <div class="cheat-item warn">
+          <div class="cheat-key">[ 键 (死键)</div>
+          <div class="cheat-arrow">➔</div>
+          <div class="cheat-char">^ 长音符</div>
+          <div class="cheat-desc">按 [ 无反应，紧接着按 e/a/i/o/u 得到 ê â î ô û</div>
+        </div>
+        <div class="cheat-item warn">
+          <div class="cheat-key">Shift + [</div>
+          <div class="cheat-arrow">➔</div>
+          <div class="cheat-char">¨ 分音符</div>
+          <div class="cheat-desc">按 Shift+[，再按 e/i/u 得到 ë ï ü</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 练习控制台 -->
+    <div class="practice-controls">
+      <div class="mode-selector" role="tablist" aria-label="训练关卡">
+        <button class="mode-tab active" data-mode="accents" role="tab" aria-selected="true">
+          <span class="tab-step">01</span>
+          <span class="tab-name">四大直出变音 (é è à ç)</span>
+        </button>
+        <button class="mode-tab" data-mode="punctuation" role="tab" aria-selected="false">
+          <span class="tab-step">02</span>
+          <span class="tab-name">致命标点与缩写 (' 与 ?)</span>
+        </button>
+        <button class="mode-tab" data-mode="deadkeys" role="tab" aria-selected="false">
+          <span class="tab-step">03</span>
+          <span class="tab-name">死键专项 (^ 与 ¨)</span>
+        </button>
+        <button class="mode-tab" data-mode="vocab" role="tab" aria-selected="false">
+          <span class="tab-step">04</span>
+          <span class="tab-name">高频核心法文词汇</span>
+        </button>
+        <button class="mode-tab" data-mode="sentences" role="tab" aria-selected="false">
+          <span class="tab-step">05</span>
+          <span class="tab-name">实用日常金句实战</span>
+        </button>
+        <button class="mode-tab" data-mode="custom" role="tab" aria-selected="false">
+          <span class="tab-step">自由</span>
+          <span class="tab-name">自定义输入练习</span>
+        </button>
+      </div>
+
+      <div class="action-bar">
+        <button id="btn-restart" class="btn-action" type="button" title="重新开始当前关卡 (快捷键: Esc)">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></svg>
+          重新开始 (Esc)
+        </button>
+        <button id="btn-next" class="btn-action" type="button" title="下一批文本">换一组内容</button>
+        <div class="stats-group">
+          <div class="stat-pill"><span class="stat-label">WPM</span><span id="stat-wpm" class="stat-val">0</span></div>
+          <div class="stat-pill"><span class="stat-label">正确率</span><span id="stat-acc" class="stat-val">100%</span></div>
+          <div class="stat-pill"><span class="stat-label">进度</span><span id="stat-prog" class="stat-val">0 / 0</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 自定义文本输入抽屉 -->
+    <div id="custom-drawer" class="custom-drawer" hidden>
+      <label for="custom-text-input">粘贴你想要练习的法语文本：</label>
+      <textarea id="custom-text-input" rows="3" placeholder="例如：C'est la vie ! Où est la gare ? J'apprends le français..."></textarea>
+      <button id="btn-load-custom" class="btn-primary" type="button">加载自定义文本</button>
+    </div>
+
+    <!-- 交互提示栏（实时告知下一个字符该怎么按） -->
+    <div class="live-hint-bar" id="live-hint" aria-live="polite">
+      <span class="hint-icon">💡</span>
+      <span class="hint-text" id="hint-text">点击下方文本区域，或直接按键开始打字。</span>
+    </div>
+
+    <!-- 打字核心展示区 -->
+    <div class="typing-box" id="typing-box" tabindex="0" role="region" aria-label="打字练习文本区">
+      <div id="text-display" class="text-display"></div>
+      <input id="hidden-input" class="hidden-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-hidden="true" />
+    </div>
+
+    <!-- 键盘动态高亮视窗 -->
+    <section class="mini-keyboard-wrap" aria-label="键盘右手区映射">
+      <div class="kb-header">
+        <span>右手高频变动区（灰字为物理键帽，大字为 CSA 实际输出）</span>
+        <span class="kb-tip">当前键位在按压时会变色提醒</span>
+      </div>
+      <div class="mini-keyboard" id="mini-kb">
+        <!-- 第 1 排数字行 -->
+        <div class="kb-row">
+          <div class="kb-key" data-key="Digit6" data-chars="6 ?">
+            <span class="phys">6 ^</span>
+            <span class="norm">6</span>
+            <span class="shift">?</span>
+          </div>
+          <div class="kb-key-sep"></div>
+          <div class="kb-key" data-key="Minus" data-chars="- _ |">
+            <span class="phys">- _</span>
+            <span class="norm">-</span>
+            <span class="shift">_</span>
+          </div>
+          <div class="kb-key" data-key="Equal" data-chars="= +">
+            <span class="phys">= +</span>
+            <span class="norm">=</span>
+            <span class="shift">+</span>
+          </div>
+        </div>
+        <!-- 第 2 排 -->
+        <div class="kb-row">
+          <div class="kb-key dead" data-key="BracketLeft" data-chars="^ ¨">
+            <span class="phys">[ &#123;</span>
+            <span class="norm">^ (死键)</span>
+            <span class="shift">¨</span>
+          </div>
+          <div class="kb-key special" data-key="BracketRight" data-chars="ç Ç">
+            <span class="phys">] &#125;</span>
+            <span class="norm">ç</span>
+            <span class="shift">Ç</span>
+          </div>
+          <div class="kb-key special" data-key="Backslash" data-chars="à À">
+            <span class="phys">\ |</span>
+            <span class="norm">à</span>
+            <span class="shift">À</span>
+          </div>
+        </div>
+        <!-- 第 3 排基准行 -->
+        <div class="kb-row">
+          <div class="kb-key" data-key="Semicolon" data-chars="; :">
+            <span class="phys">; :</span>
+            <span class="norm">;</span>
+            <span class="shift">:</span>
+          </div>
+          <div class="kb-key special" data-key="Quote" data-chars="è È">
+            <span class="phys">' "</span>
+            <span class="norm">è</span>
+            <span class="shift">È</span>
+          </div>
+        </div>
+        <!-- 第 4 排底行 -->
+        <div class="kb-row">
+          <div class="kb-key critical" data-key="Comma" data-chars=", '">
+            <span class="phys">, &lt;</span>
+            <span class="norm">,</span>
+            <span class="shift highlight-shift">' (单引号!)</span>
+          </div>
+          <div class="kb-key" data-key="Period" data-chars=". &quot;">
+            <span class="phys">. &gt;</span>
+            <span class="norm">.</span>
+            <span class="shift highlight-shift">" (双引号)</span>
+          </div>
+          <div class="kb-key special" data-key="Slash" data-chars="é É">
+            <span class="phys">/ ?</span>
+            <span class="norm">é</span>
+            <span class="shift">É</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 底部原理与技巧指导 -->
+    <footer class="practice-guide">
+      <div class="guide-col">
+        <h3>💡 为什么觉得难受？</h3>
+        <p>
+          在美式键盘上，你的右手已经建立了“单引号用小拇指敲回车左边、问号用小拇指敲 Shift+/”的牢固条件反射。
+          而在加拿大 CSA 上，按单引号键直接给你敲出 <code>è</code>，按问号直接敲出 <code>É</code>！
+          因此，<strong>先练 Level 02 的缩写专项（把 <code>'</code> 绑定到 <code>Shift+,</code>）</strong>，是消除别扭感最快的一步。
+        </p>
+      </div>
+      <div class="guide-col">
+        <h3>⌨️ 死键（Dead Key）的心智模型</h3>
+        <p>
+          所谓“死键”，就是按下之后屏幕光标不往前走，系统在默默等待你的下一个元音：
+        </p>
+        <ul>
+          <li>按 <code>[</code>（长音符死键）+ 按 <code>e</code> ➔ 得到 <code>ê</code></li>
+          <li>按 <code>Shift + [</code>（分音符死键）+ 按 <code>i</code> ➔ 得到 <code>ï</code></li>
+          <li>按 <code>Option + [</code>（抑音符死键）+ 按 <code>u</code> ➔ 得到 <code>ù</code>（在 <code>où</code> 中使用）</li>
+        </ul>
+      </div>
+      <div class="guide-col">
+        <h3>🍎 macOS 贴心技巧</h3>
+        <p>
+          在 Mac 菜单栏右上角的输入法图标里，点击<strong>“显示键盘查看器”（Show Keyboard Viewer）</strong>，它会在桌面上浮动一个小键盘。
+          当你按下 Shift 或 Option 时，可以直观看到键位实时切换，非常适合前期辅助。
+        </p>
+      </div>
+    </footer>
+  </div>
+</BaseLayout>
+
+<style>
+  .french-practice {
+    padding-block: 2rem 4rem;
+    max-width: 58rem;
+    margin-inline: auto;
+  }
+  .practice-header {
+    margin-bottom: 2rem;
+  }
+  .eyebrow-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .eyebrow-row .eyebrow {
+    margin: 0;
+  }
+  .badge {
+    font-size: 0.6875rem;
+    letter-spacing: 0.05em;
+    padding: 0.2rem 0.55rem;
+    background: var(--soft);
+    border: 1px solid var(--strong-line);
+    color: var(--muted);
+    border-radius: 3px;
+  }
+  .practice-header h1 {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    line-height: 1.3;
+    margin: 0 0 0.85rem;
+  }
+  .practice-header .lead {
+    color: var(--muted);
+    font-size: 0.9375rem;
+    line-height: 1.8;
+    margin: 0;
+  }
+  .practice-header code {
+    background: var(--soft);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    font-family: var(--mono);
+    font-size: 0.875em;
+  }
+
+  /* 速查卡片 */
+  .cheat-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  }
+  .cheat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .cheat-title {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--ink);
+  }
+  .btn-subtle {
+    background: none;
+    border: 1px solid var(--line);
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  .btn-subtle:hover {
+    color: var(--ink);
+    border-color: var(--strong-line);
+  }
+  .cheat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 0.85rem;
+  }
+  .cheat-item {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0.75rem;
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .cheat-item.danger {
+    border-left: 3px solid var(--accent);
+    background: #fdfaf8;
+  }
+  .cheat-item.success {
+    border-left: 3px solid #2e7d32;
+  }
+  .cheat-item.warn {
+    border-left: 3px solid #d97706;
+  }
+  .cheat-key {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--ink);
+  }
+  .cheat-arrow {
+    display: none;
+  }
+  .cheat-char {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .cheat-desc {
+    font-size: 0.75rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* 模式选择与控制 */
+  .practice-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .mode-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.75rem;
+  }
+  .mode-tab {
+    background: none;
+    border: 1px solid transparent;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.8125rem;
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.15s ease;
+  }
+  .mode-tab:hover {
+    color: var(--ink);
+    background: var(--soft);
+  }
+  .mode-tab.active {
+    background: var(--ink);
+    color: #fff;
+    font-weight: 600;
+  }
+  .tab-step {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    opacity: 0.75;
+  }
+
+  .action-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+  }
+  .btn-action {
+    background: #fff;
+    border: 1px solid var(--strong-line);
+    padding: 0.4rem 0.85rem;
+    font-size: 0.8125rem;
+    color: var(--ink);
+    cursor: pointer;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .btn-action:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 0.8125rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .btn-primary:hover {
+    opacity: 0.9;
+  }
+
+  .stats-group {
+    display: flex;
+    gap: 0.65rem;
+    margin-left: auto;
+  }
+  .stat-pill {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0.35rem 0.75rem;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.45rem;
+  }
+  .stat-label {
+    font-size: 0.6875rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  .stat-val {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--ink);
+  }
+
+  /* 自定义抽屉 */
+  .custom-drawer {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .custom-drawer label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+  .custom-drawer textarea {
+    width: 100%;
+    padding: 0.5rem;
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+  }
+
+  /* 实时键位提示条 */
+  .live-hint-bar {
+    background: #fdf6ec;
+    border: 1px solid #faecd8;
+    border-left: 4px solid #e6a23c;
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: 0.875rem;
+    color: #8a5300;
+    min-height: 3rem;
+  }
+  .hint-icon {
+    font-size: 1.1rem;
+  }
+  .hint-text {
+    line-height: 1.5;
+  }
+  .hint-text strong {
+    color: #b84318;
+  }
+
+  /* 打字展示区 */
+  .typing-box {
+    position: relative;
+    background: #fff;
+    border: 2px solid var(--strong-line);
+    border-radius: 8px;
+    padding: 2rem 2.25rem;
+    min-height: 10rem;
+    cursor: text;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+  .typing-box:focus-within, .typing-box:focus {
+    border-color: var(--accent);
+  }
+  .hidden-input {
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: default;
+    pointer-events: none;
+  }
+  .text-display {
+    font-family: var(--sans);
+    font-size: 1.45rem;
+    line-height: 2;
+    letter-spacing: 0.04em;
+    user-select: none;
+    word-break: break-word;
+  }
+  :global(.char) {
+    position: relative;
+    color: #9ca3af;
+    border-radius: 2px;
+    transition: color 0.1s ease;
+  }
+  :global(.char.correct) {
+    color: var(--ink);
+  }
+  :global(.char.incorrect) {
+    color: #dc2626;
+    background: #fee2e2;
+  }
+  :global(.char.current) {
+    color: var(--ink);
+    background: #fde68a;
+    font-weight: 600;
+  }
+  :global(.char.current::after) {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 2.5px;
+    background: var(--accent);
+    animation: blink 1s infinite;
+  }
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  /* 迷你高亮键盘映射 */
+  .mini-keyboard-wrap {
+    margin-top: 2rem;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 1.25rem;
+  }
+  .kb-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+  .mini-keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    max-width: 32rem;
+    margin-inline: auto;
+  }
+  .kb-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.45rem;
+  }
+  .kb-key-sep {
+    width: 1rem;
+  }
+  .kb-key {
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    border-radius: 6px;
+    width: 5.2rem;
+    height: 4.2rem;
+    padding: 0.35rem 0.45rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    box-shadow: 0 2px 0 #cbd5e1;
+    transition: all 0.15s ease;
+  }
+  .kb-key .phys {
+    font-size: 0.625rem;
+    font-family: var(--mono);
+    color: #94a3b8;
+  }
+  .kb-key .norm {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .kb-key .shift {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    color: var(--muted);
+    align-self: flex-end;
+  }
+  .kb-key.highlight-shift .shift {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .kb-key.active-target {
+    border-color: var(--accent);
+    background: #fff1ee;
+    transform: translateY(1px);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+  .kb-key.active-target .norm,
+  .kb-key.active-target .shift {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* 底部指导 */
+  .practice-guide {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 2rem;
+    margin-top: 3.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--strong-line);
+  }
+  .guide-col h3 {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    margin: 0 0 0.65rem;
+    color: var(--ink);
+  }
+  .guide-col p, .guide-col ul {
+    font-size: 0.8125rem;
+    line-height: 1.8;
+    color: var(--muted);
+    margin: 0;
+    padding-left: 0;
+  }
+  .guide-col ul {
+    list-style-type: none;
+    margin-top: 0.5rem;
+  }
+  .guide-col li {
+    margin-bottom: 0.4rem;
+  }
+  .guide-col code {
+    background: var(--soft);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    font-family: var(--mono);
+    color: var(--ink);
+  }
+
+  @media (max-width: 640px) {
+    .typing-box {
+      padding: 1.25rem;
+    }
+    .text-display {
+      font-size: 1.15rem;
+    }
+    .kb-key {
+      width: 4rem;
+      height: 3.6rem;
+    }
+  }
+</style>
+
+<script>
+  // 题库定义
+  const DRILL_SETS: Record<string, string[]> = {
+    accents: [
+      "é è à ç é è à ç é è à ç",
+      "été là ça café déjà près père mère",
+      "leçon garçon après voilà cinéma français",
+      "à côté de la fenêtre, le café est très chaud.",
+      "Ça va très bien, merci ! À bientôt."
+    ],
+    punctuation: [
+      "c'est j'ai l'eau d'un l'ami n'est-ce pas ?",
+      "Qui est-ce ? Comment ça va ? Pourquoi pas ?",
+      "C'est l'histoire d'un homme qui n'a pas peur.",
+      "J'aime l'été, l'automne et l'hiver.",
+      "Est-ce que c'est prêt ? Oui, c'est d'accord !"
+    ],
+    deadkeys: [
+      "être fête forêt hôtel fenêtre août château",
+      "rêve tête maître île boîte âge même",
+      "maïs naïf noël canoë coïncidence",
+      "Il fait une fête dans la forêt près de l'hôtel.",
+      "Où sont la boîte et la fenêtre de la maison ?"
+    ],
+    vocab: [
+      "bonjour merci beaucoup s'il vous plaît",
+      "au revoir enchanté aujourd'hui problème",
+      "développement système répondre écrire",
+      "mémoire sécurité réseau utilisateur",
+      "première fois, deuxième fois, dernière étape"
+    ],
+    sentences: [
+      "C'est en forgeant qu'on devient forgeron.",
+      "Le temps passe vite quand on apprend quelque chose d'intéressant.",
+      "Où est la bibliothèque la plus proche d'ici ?",
+      "J'ai déjà terminé mon travail pour aujourd'hui, et tout s'est très bien passé.",
+      "La simplicité est la sophistication suprême."
+    ]
+  };
+
+  // 键位映射提示字典 (针对 Canadian - CSA 键盘)
+  const CSA_HINTS: Record<string, { desc: string; keyId?: string }> = {
+    "'": { desc: "⚠️ 标点搬家：按【Shift + ,】（千万别按单引号键，那是 è！）", keyId: "Comma" },
+    "?": { desc: "⚠️ 标点搬家：按【Shift + 6】（千万别按 / 键，那是 é/É！）", keyId: "Digit6" },
+    '"': { desc: "标点搬家：按【Shift + .】（原句号键上部）", keyId: "Period" },
+    "é": { desc: "四大直出：直接按物理【/?】键（右 Shift 旁）", keyId: "Slash" },
+    "É": { desc: "四大直出：按【Shift + /?】键", keyId: "Slash" },
+    "è": { desc: "四大直出：直接按物理【'\"】键（回车键左边）", keyId: "Quote" },
+    "È": { desc: "四大直出：按【Shift + '\"】键", keyId: "Quote" },
+    "à": { desc: "四大直出：直接按物理【\\|】键（回车上方）", keyId: "Backslash" },
+    "À": { desc: "四大直出：按【Shift + \\|】键", keyId: "Backslash" },
+    "ç": { desc: "四大直出：直接按物理【]}】键（右方括号）", keyId: "BracketRight" },
+    "Ç": { desc: "四大直出：按【Shift + ]}】键", keyId: "BracketRight" },
+    "ê": { desc: "死键长音：先按【[】键（死键 ^，按一下无反应），再按【e】", keyId: "BracketLeft" },
+    "â": { desc: "死键长音：先按【[】键，再按【a】", keyId: "BracketLeft" },
+    "î": { desc: "死键长音：先按【[】键，再按【i】", keyId: "BracketLeft" },
+    "ô": { desc: "死键长音：先按【[】键，再按【o】", keyId: "BracketLeft" },
+    "û": { desc: "死键长音：先按【[】键，再按【u】", keyId: "BracketLeft" },
+    "ë": { desc: "死键分音：先按【Shift + [】（死键 ¨），再按【e】", keyId: "BracketLeft" },
+    "ï": { desc: "死键分音：先按【Shift + [】（死键 ¨），再按【i】", keyId: "BracketLeft" },
+    "ü": { desc: "死键分音：先按【Shift + [】（死键 ¨），再按【u】", keyId: "BracketLeft" },
+    "ù": { desc: "死键抑音：先按【Option + [】（死键 `），再按【u】", keyId: "BracketLeft" }
+  };
+
+  let currentMode = "accents";
+  let currentPromptIndex = 0;
+  let targetText = "";
+  let typedText = "";
+  let startTime: number | null = null;
+  let errorCount = 0;
+
+  const typingBox = document.getElementById("typing-box")!;
+  const hiddenInput = document.getElementById("hidden-input") as HTMLInputElement;
+  const textDisplay = document.getElementById("text-display")!;
+  const hintText = document.getElementById("hint-text")!;
+  const statWpm = document.getElementById("stat-wpm")!;
+  const statAcc = document.getElementById("stat-acc")!;
+  const statProg = document.getElementById("stat-prog")!;
+  const btnRestart = document.getElementById("btn-restart")!;
+  const btnNext = document.getElementById("btn-next")!;
+  const modeTabs = document.querySelectorAll<HTMLButtonElement>(".mode-tab");
+  const customDrawer = document.getElementById("custom-drawer")!;
+  const customTextInput = document.getElementById("custom-text-input") as HTMLTextAreaElement;
+  const btnLoadCustom = document.getElementById("btn-load-custom")!;
+  const toggleCheatBtn = document.getElementById("toggle-cheat")!;
+  const cheatBody = document.getElementById("cheat-body")!;
+  const kbKeys = document.querySelectorAll<HTMLElement>(".kb-key");
+
+  // 折叠速查卡
+  toggleCheatBtn.addEventListener("click", () => {
+    const isHidden = cheatBody.hasAttribute("hidden");
+    if (isHidden) {
+      cheatBody.removeAttribute("hidden");
+      toggleCheatBtn.textContent = "收起速查";
+      toggleCheatBtn.setAttribute("aria-expanded", "true");
+    } else {
+      cheatBody.setAttribute("hidden", "");
+      toggleCheatBtn.textContent = "展开速查";
+      toggleCheatBtn.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  // 模式切换
+  modeTabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      modeTabs.forEach(t => {
+        t.classList.remove("active");
+        t.setAttribute("aria-selected", "false");
+      });
+      tab.classList.add("active");
+      tab.setAttribute("aria-selected", "true");
+      currentMode = tab.dataset.mode!;
+      currentPromptIndex = 0;
+      if (currentMode === "custom") {
+        customDrawer.removeAttribute("hidden");
+      } else {
+        customDrawer.setAttribute("hidden", "");
+      }
+      initLevel();
+    });
+  });
+
+  btnLoadCustom.addEventListener("click", () => {
+    const val = customTextInput.value.trim();
+    if (val) {
+      targetText = val;
+      resetState();
+      renderText();
+      hiddenInput.focus();
+    }
+  });
+
+  btnRestart.addEventListener("click", () => {
+    resetState();
+    renderText();
+    hiddenInput.focus();
+  });
+
+  btnNext.addEventListener("click", () => {
+    if (currentMode !== "custom") {
+      const list = DRILL_SETS[currentMode] || [];
+      currentPromptIndex = (currentPromptIndex + 1) % list.length;
+    }
+    initLevel();
+  });
+
+  function initLevel() {
+    if (currentMode === "custom") {
+      targetText = customTextInput.value.trim() || "C'est la vie ! Où est la bibliothèque ?";
+    } else {
+      const list = DRILL_SETS[currentMode] || [];
+      targetText = list[currentPromptIndex] || list[0] || "";
+    }
+    resetState();
+    renderText();
+    hiddenInput.focus();
+  }
+
+  function resetState() {
+    typedText = "";
+    hiddenInput.value = "";
+    startTime = null;
+    errorCount = 0;
+    updateStats();
+    clearKeyboardHighlight();
+  }
+
+  function renderText() {
+    textDisplay.innerHTML = "";
+    const targetChars = Array.from(targetText);
+    const typedChars = Array.from(typedText);
+
+    targetChars.forEach((ch, idx) => {
+      const span = document.createElement("span");
+      span.className = "char";
+      span.textContent = ch;
+
+      if (idx < typedChars.length) {
+        if (typedChars[idx] === ch) {
+          span.classList.add("correct");
+        } else {
+          span.classList.add("incorrect");
+        }
+      } else if (idx === typedChars.length) {
+        span.classList.add("current");
+      }
+      textDisplay.appendChild(span);
+    });
+
+    updateHintAndKeyboard();
+  }
+
+  function updateHintAndKeyboard() {
+    clearKeyboardHighlight();
+    const currIndex = typedText.length;
+    if (currIndex >= targetText.length) {
+      hintText.innerHTML = "🎉 <strong>恭喜完成！</strong> 点击【换一组内容】或按 Esc 重新开始。";
+      return;
+    }
+
+    const nextChar = targetText[currIndex];
+    const hintObj = CSA_HINTS[nextChar];
+
+    if (hintObj) {
+      hintText.innerHTML = `<strong>${nextChar}</strong>：${hintObj.desc}`;
+      if (hintObj.keyId) {
+        const keyEl = document.querySelector<HTMLElement>(`.kb-key[data-key="${hintObj.keyId}"]`);
+        if (keyEl) keyEl.classList.add("active-target");
+      }
+    } else {
+      hintText.textContent = `下一个字符：${nextChar === ' ' ? '空格 (Space)' : nextChar}`;
+    }
+  }
+
+  function clearKeyboardHighlight() {
+    kbKeys.forEach(k => k.classList.remove("active-target"));
+  }
+
+  function updateStats() {
+    statProg.textContent = `${typedText.length} / ${targetText.length}`;
+    if (!startTime || typedText.length === 0) {
+      statWpm.textContent = "0";
+      statAcc.textContent = "100%";
+      return;
+    }
+
+    const elapsedMinutes = (Date.now() - startTime) / 60000;
+    const words = typedText.length / 5;
+    const wpm = elapsedMinutes > 0 ? Math.round(words / elapsedMinutes) : 0;
+    statWpm.textContent = String(wpm);
+
+    const totalTyped = typedText.length + errorCount;
+    const acc = totalTyped > 0 ? Math.round((typedText.length / totalTyped) * 100) : 100;
+    statAcc.textContent = `${acc}%`;
+  }
+
+  // 聚焦
+  typingBox.addEventListener("click", () => hiddenInput.focus());
+
+  // 捕获输入
+  hiddenInput.addEventListener("input", () => {
+    if (!startTime) startTime = Date.now();
+    const val = hiddenInput.value;
+
+    if (val.length < typedText.length) {
+      // 退格
+      typedText = val;
+    } else {
+      const addedChar = val.slice(typedText.length);
+      const expectedChar = targetText.slice(typedText.length, typedText.length + addedChar.length);
+
+      if (addedChar !== expectedChar) {
+        errorCount++;
+      }
+      typedText = val;
+    }
+
+    updateStats();
+    renderText();
+
+    // 如果完成当前句子
+    if (typedText.length >= targetText.length) {
+      if (currentMode !== "custom") {
+        const list = DRILL_SETS[currentMode] || [];
+        if (currentPromptIndex < list.length - 1) {
+          setTimeout(() => {
+            currentPromptIndex++;
+            initLevel();
+          }, 600);
+        }
+      }
+    }
+  });
+
+  window.addEventListener("keydown", (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      resetState();
+      renderText();
+      hiddenInput.focus();
+    }
+  });
+
+  // 初始启动
+  initLevel();
+</script>
