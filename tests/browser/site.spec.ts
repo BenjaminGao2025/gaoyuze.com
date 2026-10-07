@@ -46,3 +46,13 @@ test('published translations and missing draft URLs', async ({ page }) => {
   const response = await page.goto('/articles/qa-hidden-0/zh/');
   expect(response?.status()).toBe(404);
 });
+
+test('french typing practice curriculum and physical keyboard', async ({ page }) => {
+  await page.goto('/french/');
+  await expect(page.locator('h1')).toContainText('加拿大法语键盘');
+  await expect(page.locator('.lesson-card')).toHaveCount(22);
+  await page.locator('.lesson-card').first().click();
+  await expect(page.locator('#view-play-stage')).toBeVisible();
+  await expect(page.locator('#physical-keyboard')).toBeVisible();
+  await expect(page.locator('#text-display')).not.toBeEmpty();
+});

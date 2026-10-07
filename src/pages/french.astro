@@ -4,250 +4,216 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout
   title="加拿大法语键盘练习 (Canadian - CSA) · 高瑜泽"
-  description="针对 macOS Canadian - CSA 键盘布局的痛点键位定制的个人物理打字练习工具，参考 TypingClub 完整虚拟键盘与指法映射。"
+  description="针对 macOS Canadian - CSA 键盘布局定制的 TypingClub 风格 24 关阶梯式闯关课程，重点攻克 é è à ç 直出、死键 ^/¨ 与标点大迁徙。"
   wide
   noindex
 >
   <div class="french-practice">
+    <!-- 顶部导航与品牌区 -->
     <header class="practice-header">
       <div class="eyebrow-row">
-        <p class="eyebrow">Clavier Canadien - CSA · Entraînement TypeClub</p>
+        <p class="eyebrow">Clavier Canadien - CSA · TypingClub 课程体系</p>
         <div class="header-badges">
           <a href="https://tts.gaoyuze.com" target="_blank" rel="noopener noreferrer" class="badge-link" title="打开法语音频工作台">
             🎙️ 法语音频工作台 (1000H) ↗
           </a>
-          <span class="badge">macOS 物理键盘映射</span>
+          <span class="badge">macOS 物理键盘标准</span>
         </div>
       </div>
-      <h1>加拿大法语键盘物理指法练习</h1>
+      <h1>加拿大法语键盘闯关训练营</h1>
       <p class="lead">
-        像 <strong>TypingClub</strong> 一样对齐真实笔记本物理键盘。重点克服 <code>é è à ç</code> 直出、死键 <code>^ ¨</code> 以及最反人类的 <strong>撇号 <code>'</code></strong>（Shift + ,）与 <strong>问号 <code>?</code></strong>（Shift + 6）。
+        参考 <strong>TypingClub</strong> 教学法量身定制的 24 关渐进式课程。从单字母肌肉记忆、死键两步法到省音标点陷阱，手把手建立盲打反射。
       </p>
     </header>
 
-    <!-- 顶部核心速查卡 -->
-    <section class="cheat-card" aria-label="核心键位速查">
-      <div class="cheat-header">
-        <span class="cheat-title">🎯 核心痛点速查（物理按键 vs CSA 实际输出）</span>
-        <div class="cheat-actions">
-          <button id="toggle-finger-colors" class="btn-subtle" type="button" aria-pressed="true">🎨 指法分区配色：开</button>
-          <button id="toggle-cheat" class="btn-subtle" type="button" aria-expanded="true">收起速查</button>
+    <!-- 顶部总控制条 -->
+    <div class="app-nav-bar">
+      <div class="nav-tabs" role="tablist">
+        <button id="tab-course-view" class="main-tab active" type="button" role="tab" aria-selected="true">
+          📚 课程目录地图 (24 关)
+        </button>
+        <button id="tab-play-view" class="main-tab" type="button" role="tab" aria-selected="false">
+          ⌨️ 正在练习
+        </button>
+        <button id="tab-drills-view" class="main-tab" type="button" role="tab" aria-selected="false">
+          🎯 自由题库与自定义
+        </button>
+      </div>
+      <div class="user-stats-pill">
+        <span class="star-badge">⭐ <strong id="total-stars-count">0</strong> / 72</span>
+        <button id="toggle-sound" class="btn-subtle" type="button" aria-pressed="true" title="按键与通关音效">🔊 音效：开</button>
+        <button id="toggle-finger-colors" class="btn-subtle" type="button" aria-pressed="true" title="指法分区色彩">🎨 指法配色：开</button>
+      </div>
+    </div>
+
+    <!-- 视图 1: 课程地图 (TypingClub 风格 24 关卡网格) -->
+    <section id="view-course-map" class="course-map-section">
+      <div class="course-welcome-card">
+        <div class="welcome-text">
+          <h3>🎯 为什么选择阶梯式课程？</h3>
+          <p>
+            美式键盘用户学加拿大 CSA 键盘最忌讳“上来就打整篇小说”。加拿大 CSA 只有 6-8 个核心键发生了位移，
+            通过 24 个针对性小关卡，每关 2-3 分钟，打通肌肉记忆后再也不会感到任何别扭。
+          </p>
+        </div>
+        <button id="btn-continue-journey" class="btn-hero" type="button">继续最新关卡 ➔</button>
+      </div>
+
+      <div class="units-container" id="units-container">
+        <!-- 单元与关卡卡片由 JS 动态生成渲染 -->
+      </div>
+    </section>
+
+    <!-- 视图 2: 正在打字练习视图 (课程实战 + 自由题库) -->
+    <section id="view-play-stage" class="play-stage-section" hidden>
+      <!-- 当前关卡信息抬头 -->
+      <div class="lesson-banner" id="lesson-banner">
+        <div class="lesson-meta">
+          <span class="lesson-tag" id="lesson-tag">Unit 1 · 第 01 关</span>
+          <h2 class="lesson-title" id="lesson-title">基础右小指 —— é 直出初探</h2>
+          <div class="lesson-sub-row">
+            <span class="lesson-keys" id="lesson-keys">重点键：é</span>
+            <span class="lesson-target" id="lesson-target">目标：20 WPM · 正确率 ≥ 95%</span>
+          </div>
+        </div>
+        <div class="lesson-nav-actions">
+          <button id="btn-back-to-map" class="btn-action" type="button">🗺️ 返回课程目录</button>
+          <button id="btn-restart-lesson" class="btn-action" type="button" title="快捷键 Esc">↺ 重置本关</button>
         </div>
       </div>
-      <div id="cheat-body" class="cheat-grid">
-        <div class="cheat-item danger">
-          <div class="cheat-key">Shift + ,</div>
-          <div class="cheat-char">‘ 单引号 (撇号)</div>
-          <div class="cheat-desc">原单引号键变成了 è！打 <code>c'est</code> 必须用 <strong>Shift + ,</strong></div>
+
+      <!-- 实时指法与按键说明 -->
+      <div class="live-hint-bar" id="live-hint" aria-live="polite">
+        <div class="hint-main">
+          <span class="hint-icon">💡</span>
+          <span class="hint-text" id="hint-text">点击文本框或直接按键开始打字。</span>
         </div>
-        <div class="cheat-item danger">
-          <div class="cheat-key">Shift + 6</div>
-          <div class="cheat-char">? 问号</div>
-          <div class="cheat-desc">原 /? 键变成了 é！打问号必须用 <strong>Shift + 6</strong></div>
-        </div>
-        <div class="cheat-item success">
-          <div class="cheat-key">/ 键</div>
-          <div class="cheat-char">é / É (Shift)</div>
-          <div class="cheat-desc">右 Shift 旁的物理 / 键直接出 <strong>é</strong>，加 Shift 出 <strong>É</strong></div>
-        </div>
-        <div class="cheat-item success">
-          <div class="cheat-key">' 键</div>
-          <div class="cheat-char">è / È (Shift)</div>
-          <div class="cheat-desc">回车左边的物理 ' 键直接出 <strong>è</strong>，加 Shift 出 <strong>È</strong></div>
-        </div>
-        <div class="cheat-item success">
-          <div class="cheat-key">\ 键</div>
-          <div class="cheat-char">à / À (Shift)</div>
-          <div class="cheat-desc">回车上方的物理 \ 键直接出 <strong>à</strong>，加 Shift 出 <strong>À</strong></div>
-        </div>
-        <div class="cheat-item success">
-          <div class="cheat-key">] 键</div>
-          <div class="cheat-char">ç / Ç (Shift)</div>
-          <div class="cheat-desc">右中括号键直接出 <strong>ç</strong>，加 Shift 出 <strong>Ç</strong></div>
-        </div>
-        <div class="cheat-item warn">
-          <div class="cheat-key">[ 键 (死键)</div>
-          <div class="cheat-char">^ 长音符</div>
-          <div class="cheat-desc">先按 [（屏幕无反应），再按 e/a/i/o/u 得到 <strong>ê â î ô û</strong></div>
-        </div>
-        <div class="cheat-item warn">
-          <div class="cheat-key">Shift + [</div>
-          <div class="cheat-char">¨ 分音符</div>
-          <div class="cheat-desc">先按 Shift+[，再按 e/i/u 得到 <strong>ë ï ü</strong></div>
+        <div class="hint-finger-badge" id="hint-finger-badge">准备开始</div>
+      </div>
+
+      <!-- 打字文本核心展示框 -->
+      <div class="typing-box" id="typing-box" tabindex="0" role="region" aria-label="打字练习文本区">
+        <div id="text-display" class="text-display"></div>
+        <input id="hidden-input" class="hidden-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-hidden="true" />
+      </div>
+
+      <!-- 实时数据看板 -->
+      <div class="live-stats-bar">
+        <div class="stat-pill"><span class="stat-label">阶段进度</span><span id="stat-drill-step" class="stat-val">1 / 3</span></div>
+        <div class="stat-pill"><span class="stat-label">当前速度</span><span id="stat-wpm" class="stat-val">0 WPM</span></div>
+        <div class="stat-pill"><span class="stat-label">准确率</span><span id="stat-acc" class="stat-val">100%</span></div>
+        <div class="stat-pill"><span class="stat-label">字数进度</span><span id="stat-prog" class="stat-val">0 / 0</span></div>
+      </div>
+
+      <!-- 完整 ANSI 物理键盘 (TypingClub 风格) -->
+      <div class="keyboard-wrap">
+        <div class="physical-keyboard show-fingers" id="physical-keyboard">
+          <!-- 第 1 行: 数字行 -->
+          <div class="k-row">
+            <div class="k-key f-lp" data-code="Backquote"><span class="k-phys">~ `</span><span class="k-shift">~</span><span class="k-norm">`</span></div>
+            <div class="k-key f-lp" data-code="Digit1"><span class="k-phys">1 !</span><span class="k-shift">!</span><span class="k-norm">1</span></div>
+            <div class="k-key f-lr" data-code="Digit2"><span class="k-phys">2 @</span><span class="k-shift">@</span><span class="k-norm">2</span></div>
+            <div class="k-key f-lm" data-code="Digit3"><span class="k-phys">3 #</span><span class="k-shift">#</span><span class="k-norm">3</span></div>
+            <div class="k-key f-li" data-code="Digit4"><span class="k-phys">4 $</span><span class="k-shift">$</span><span class="k-norm">4</span></div>
+            <div class="k-key f-li" data-code="Digit5"><span class="k-phys">5 %</span><span class="k-shift">%</span><span class="k-norm">5</span></div>
+            <div class="k-key f-ri k-alert" data-code="Digit6"><span class="k-phys">6 ^</span><span class="k-shift k-highlight">?</span><span class="k-norm">6</span></div>
+            <div class="k-key f-ri" data-code="Digit7"><span class="k-phys">7 &amp;</span><span class="k-shift">&amp;</span><span class="k-norm">7</span></div>
+            <div class="k-key f-rm" data-code="Digit8"><span class="k-phys">8 *</span><span class="k-shift">*</span><span class="k-norm">8</span></div>
+            <div class="k-key f-rr" data-code="Digit9"><span class="k-phys">9 (</span><span class="k-shift">(</span><span class="k-norm">9</span></div>
+            <div class="k-key f-rp" data-code="Digit0"><span class="k-phys">0 )</span><span class="k-shift">)</span><span class="k-norm">0</span></div>
+            <div class="k-key f-rp" data-code="Minus"><span class="k-phys">- _</span><span class="k-shift">_</span><span class="k-norm">-</span></div>
+            <div class="k-key f-rp" data-code="Equal"><span class="k-phys">= +</span><span class="k-shift">+</span><span class="k-norm">=</span></div>
+            <div class="k-key k-w-backspace f-rp k-mod" data-code="Backspace"><span class="k-spec">delete ⌫</span></div>
+          </div>
+
+          <!-- 第 2 行: QWERTY 行 -->
+          <div class="k-row">
+            <div class="k-key k-w-tab f-lp k-mod" data-code="Tab"><span class="k-spec">tab ⇥</span></div>
+            <div class="k-key f-lp" data-code="KeyQ"><span class="k-norm">Q</span></div>
+            <div class="k-key f-lr" data-code="KeyW"><span class="k-norm">W</span></div>
+            <div class="k-key f-lm" data-code="KeyE"><span class="k-norm">E</span></div>
+            <div class="k-key f-li" data-code="KeyR"><span class="k-norm">R</span></div>
+            <div class="k-key f-li" data-code="KeyT"><span class="k-norm">T</span></div>
+            <div class="k-key f-ri" data-code="KeyY"><span class="k-norm">Y</span></div>
+            <div class="k-key f-ri" data-code="KeyU"><span class="k-norm">U</span></div>
+            <div class="k-key f-rm" data-code="KeyI"><span class="k-norm">I</span></div>
+            <div class="k-key f-rr" data-code="KeyO"><span class="k-norm">O</span></div>
+            <div class="k-key f-rp" data-code="KeyP"><span class="k-norm">P</span></div>
+            <div class="k-key f-rp k-dead" data-code="BracketLeft"><span class="k-phys">[ &#123;</span><span class="k-shift">¨</span><span class="k-norm">^</span></div>
+            <div class="k-key f-rp k-accent" data-code="BracketRight"><span class="k-phys">] &#125;</span><span class="k-shift">Ç</span><span class="k-norm">ç</span></div>
+            <div class="k-key k-w-backslash f-rp k-accent" data-code="Backslash"><span class="k-phys">\ |</span><span class="k-shift">À</span><span class="k-norm">à</span></div>
+          </div>
+
+          <!-- 第 3 行: 基准行 (Home Row) -->
+          <div class="k-row">
+            <div class="k-key k-w-caps f-lp k-mod" data-code="CapsLock"><span class="k-spec">caps lock ⇪</span></div>
+            <div class="k-key f-lp" data-code="KeyA"><span class="k-norm">A</span></div>
+            <div class="k-key f-lr" data-code="KeyS"><span class="k-norm">S</span></div>
+            <div class="k-key f-lm" data-code="KeyD"><span class="k-norm">D</span></div>
+            <div class="k-key f-li k-home" data-code="KeyF"><span class="k-norm">F</span><span class="k-bump"></span></div>
+            <div class="k-key f-li" data-code="KeyG"><span class="k-norm">G</span></div>
+            <div class="k-key f-ri" data-code="KeyH"><span class="k-norm">H</span></div>
+            <div class="k-key f-ri k-home" data-code="KeyJ"><span class="k-norm">J</span><span class="k-bump"></span></div>
+            <div class="k-key f-rm" data-code="KeyK"><span class="k-norm">K</span></div>
+            <div class="k-key f-rr" data-code="KeyL"><span class="k-norm">L</span></div>
+            <div class="k-key f-rp" data-code="Semicolon"><span class="k-phys">; :</span><span class="k-shift">:</span><span class="k-norm">;</span></div>
+            <div class="k-key f-rp k-accent" data-code="Quote"><span class="k-phys">' "</span><span class="k-shift">È</span><span class="k-norm">è</span></div>
+            <div class="k-key k-w-enter f-rp k-mod" data-code="Enter"><span class="k-spec">return ↵</span></div>
+          </div>
+
+          <!-- 第 4 行: Shift 行 -->
+          <div class="k-row">
+            <div class="k-key k-w-lshift f-lp k-mod" data-code="ShiftLeft"><span class="k-spec">⇧ shift</span></div>
+            <div class="k-key f-lp" data-code="KeyZ"><span class="k-norm">Z</span></div>
+            <div class="k-key f-lr" data-code="KeyX"><span class="k-norm">X</span></div>
+            <div class="k-key f-lm" data-code="KeyC"><span class="k-norm">C</span></div>
+            <div class="k-key f-li" data-code="KeyV"><span class="k-norm">V</span></div>
+            <div class="k-key f-li" data-code="KeyB"><span class="k-norm">B</span></div>
+            <div class="k-key f-ri" data-code="KeyN"><span class="k-norm">N</span></div>
+            <div class="k-key f-ri" data-code="KeyM"><span class="k-norm">M</span></div>
+            <div class="k-key f-rm k-alert" data-code="Comma"><span class="k-phys">, &lt;</span><span class="k-shift k-highlight">'</span><span class="k-norm">,</span></div>
+            <div class="k-key f-rr" data-code="Period"><span class="k-phys">. &gt;</span><span class="k-shift">"</span><span class="k-norm">.</span></div>
+            <div class="k-key f-rp k-accent" data-code="Slash"><span class="k-phys">/ ?</span><span class="k-shift">É</span><span class="k-norm">é</span></div>
+            <div class="k-key k-w-rshift f-rp k-mod" data-code="ShiftRight"><span class="k-spec">⇧ shift</span></div>
+          </div>
+
+          <!-- 第 5 行: 底栏修饰键与空格 -->
+          <div class="k-row">
+            <div class="k-key k-w-ctrl f-lp k-mod" data-code="ControlLeft"><span class="k-spec">control</span></div>
+            <div class="k-key k-w-opt f-lp k-mod" data-code="AltLeft"><span class="k-spec">⌥ option</span></div>
+            <div class="k-key k-w-cmd f-lp k-mod" data-code="MetaLeft"><span class="k-spec">⌘ command</span></div>
+            <div class="k-key k-w-space f-th" data-code="Space"><span class="k-norm">space</span></div>
+            <div class="k-key k-w-cmd f-rp k-mod" data-code="MetaRight"><span class="k-spec">⌘ command</span></div>
+            <div class="k-key k-w-opt f-rp k-mod" data-code="AltRight"><span class="k-spec">⌥ option</span></div>
+            <div class="k-key k-w-ctrl f-rp k-mod" data-code="ControlRight"><span class="k-spec">control</span></div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- 练习控制台 -->
-    <div class="practice-controls">
-      <div class="mode-selector" role="tablist" aria-label="训练关卡">
-        <button class="mode-tab active" data-mode="accents" role="tab" aria-selected="true">
-          <span class="tab-step">01</span>
-          <span class="tab-name">四大直出变音 (é è à ç)</span>
-        </button>
-        <button class="mode-tab" data-mode="punctuation" role="tab" aria-selected="false">
-          <span class="tab-step">02</span>
-          <span class="tab-name">致命标点与缩写 (' 与 ?)</span>
-        </button>
-        <button class="mode-tab" data-mode="deadkeys" role="tab" aria-selected="false">
-          <span class="tab-step">03</span>
-          <span class="tab-name">死键专项 (^ 与 ¨)</span>
-        </button>
-        <button class="mode-tab" data-mode="vocab" role="tab" aria-selected="false">
-          <span class="tab-step">04</span>
-          <span class="tab-name">高频核心法文词汇</span>
-        </button>
-        <button class="mode-tab" data-mode="sentences" role="tab" aria-selected="false">
-          <span class="tab-step">05</span>
-          <span class="tab-name">实用日常金句实战</span>
-        </button>
-        <button class="mode-tab" data-mode="custom" role="tab" aria-selected="false">
-          <span class="tab-step">自由</span>
-          <span class="tab-name">自定义输入练习</span>
-        </button>
-      </div>
-
-      <div class="action-bar">
-        <button id="btn-restart" class="btn-action" type="button" title="重新开始当前关卡 (快捷键: Esc)">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></svg>
-          重新开始 (Esc)
-        </button>
-        <button id="btn-next" class="btn-action" type="button" title="下一批文本">换一组内容</button>
-        <div class="stats-group">
-          <div class="stat-pill"><span class="stat-label">WPM</span><span id="stat-wpm" class="stat-val">0</span></div>
-          <div class="stat-pill"><span class="stat-label">正确率</span><span id="stat-acc" class="stat-val">100%</span></div>
-          <div class="stat-pill"><span class="stat-label">进度</span><span id="stat-prog" class="stat-val">0 / 0</span></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 自定义文本输入抽屉 -->
-    <div id="custom-drawer" class="custom-drawer" hidden>
-      <div class="custom-drawer-head">
-        <label for="custom-text-input">粘贴你想要练习的法语文本：</label>
-        <a href="https://tts.gaoyuze.com" target="_blank" rel="noopener noreferrer" class="link-inline">
-          🎙️ 从法语音频工作台生成句子与听力 ↗
-        </a>
-      </div>
-      <textarea id="custom-text-input" rows="3" placeholder="例如：C'est la vie ! Où est la gare ? J'apprends le français..."></textarea>
-      <button id="btn-load-custom" class="btn-primary" type="button">加载自定义文本</button>
-    </div>
-
-    <!-- 交互提示栏（实时指法与按键说明） -->
-    <div class="live-hint-bar" id="live-hint" aria-live="polite">
-      <div class="hint-main">
-        <span class="hint-icon">💡</span>
-        <span class="hint-text" id="hint-text">点击下方文本区域，或直接按键开始打字。</span>
-      </div>
-      <div class="hint-finger-badge" id="hint-finger-badge">准备开始</div>
-    </div>
-
-    <!-- 打字核心展示区 -->
-    <div class="typing-box" id="typing-box" tabindex="0" role="region" aria-label="打字练习文本区">
-      <div id="text-display" class="text-display"></div>
-      <input id="hidden-input" class="hidden-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-hidden="true" />
-    </div>
-
-    <!-- 完整物理键盘 (TypingClub 风格) -->
-    <section class="keyboard-section" aria-label="完整物理键盘交互视窗">
-      <div class="kb-meta">
-        <div class="kb-meta-left">
-          <span class="kb-tag">⌨️ 物理 ANSI 键盘布局</span>
-          <span class="kb-sub">灰字为键盘原物理字符，主字为 CSA 输出。按 Shift 键时键盘实时联动。</span>
-        </div>
-        <div class="kb-legend">
-          <span class="legend-item"><span class="legend-dot color-lp"></span>左手小指</span>
-          <span class="legend-item"><span class="legend-dot color-lr"></span>左手无名</span>
-          <span class="legend-item"><span class="legend-dot color-lm"></span>左手中指</span>
-          <span class="legend-item"><span class="legend-dot color-li"></span>左手食指</span>
-          <span class="legend-item"><span class="legend-dot color-th"></span>大拇指</span>
-          <span class="legend-item"><span class="legend-dot color-ri"></span>右手食指</span>
-          <span class="legend-item"><span class="legend-dot color-rm"></span>右手中指</span>
-          <span class="legend-item"><span class="legend-dot color-rr"></span>右手无名</span>
-          <span class="legend-item"><span class="legend-dot color-rp"></span>右手小指</span>
+    <!-- 视图 3: 自由题库与自定义抽屉 -->
+    <section id="view-drills-stage" class="drills-stage-section" hidden>
+      <div class="drills-card">
+        <h3>🎯 自由专项分类练习</h3>
+        <p class="card-desc">无需按课程顺序解锁，直接针对你的薄弱环节进行高强度反复刺激。</p>
+        <div class="drills-grid">
+          <button class="drill-launch-btn" data-drill="accents">01. 四大直出音符专项 (é, è, à, ç)</button>
+          <button class="drill-launch-btn" data-drill="punctuation">02. 致命标点与缩写专项 (' 与 ?)</button>
+          <button class="drill-launch-btn" data-drill="deadkeys">03. 死键长音与分音专项 (^ 与 ¨)</button>
+          <button class="drill-launch-btn" data-drill="vocab">04. 高频核心法文词汇</button>
+          <button class="drill-launch-btn" data-drill="sentences">05. 实用日常短句与名言</button>
         </div>
       </div>
 
-      <div class="physical-keyboard show-fingers" id="physical-keyboard">
-        <!-- 第 1 行: 数字行 -->
-        <div class="k-row">
-          <div class="k-key f-lp" data-code="Backquote"><span class="k-phys">~ `</span><span class="k-shift">~</span><span class="k-norm">`</span></div>
-          <div class="k-key f-lp" data-code="Digit1"><span class="k-phys">1 !</span><span class="k-shift">!</span><span class="k-norm">1</span></div>
-          <div class="k-key f-lr" data-code="Digit2"><span class="k-phys">2 @</span><span class="k-shift">@</span><span class="k-norm">2</span></div>
-          <div class="k-key f-lm" data-code="Digit3"><span class="k-phys">3 #</span><span class="k-shift">#</span><span class="k-norm">3</span></div>
-          <div class="k-key f-li" data-code="Digit4"><span class="k-phys">4 $</span><span class="k-shift">$</span><span class="k-norm">4</span></div>
-          <div class="k-key f-li" data-code="Digit5"><span class="k-phys">5 %</span><span class="k-shift">%</span><span class="k-norm">5</span></div>
-          <div class="k-key f-ri k-alert" data-code="Digit6"><span class="k-phys">6 ^</span><span class="k-shift k-highlight">?</span><span class="k-norm">6</span></div>
-          <div class="k-key f-ri" data-code="Digit7"><span class="k-phys">7 &amp;</span><span class="k-shift">&amp;</span><span class="k-norm">7</span></div>
-          <div class="k-key f-rm" data-code="Digit8"><span class="k-phys">8 *</span><span class="k-shift">*</span><span class="k-norm">8</span></div>
-          <div class="k-key f-rr" data-code="Digit9"><span class="k-phys">9 (</span><span class="k-shift">(</span><span class="k-norm">9</span></div>
-          <div class="k-key f-rp" data-code="Digit0"><span class="k-phys">0 )</span><span class="k-shift">)</span><span class="k-norm">0</span></div>
-          <div class="k-key f-rp" data-code="Minus"><span class="k-phys">- _</span><span class="k-shift">_</span><span class="k-norm">-</span></div>
-          <div class="k-key f-rp" data-code="Equal"><span class="k-phys">= +</span><span class="k-shift">+</span><span class="k-norm">=</span></div>
-          <div class="k-key k-w-backspace f-rp k-mod" data-code="Backspace"><span class="k-spec">delete ⌫</span></div>
+      <div class="custom-drawer">
+        <div class="custom-drawer-head">
+          <label for="custom-text-input">📝 自定义自由输入练习：</label>
+          <a href="https://tts.gaoyuze.com" target="_blank" rel="noopener noreferrer" class="link-inline">
+            🎙️ 从「法语音频工作台」生成地道文本 ↗
+          </a>
         </div>
-
-        <!-- 第 2 行: QWERTY 行 -->
-        <div class="k-row">
-          <div class="k-key k-w-tab f-lp k-mod" data-code="Tab"><span class="k-spec">tab ⇥</span></div>
-          <div class="k-key f-lp" data-code="KeyQ"><span class="k-norm">Q</span></div>
-          <div class="k-key f-lr" data-code="KeyW"><span class="k-norm">W</span></div>
-          <div class="k-key f-lm" data-code="KeyE"><span class="k-norm">E</span></div>
-          <div class="k-key f-li" data-code="KeyR"><span class="k-norm">R</span></div>
-          <div class="k-key f-li" data-code="KeyT"><span class="k-norm">T</span></div>
-          <div class="k-key f-ri" data-code="KeyY"><span class="k-norm">Y</span></div>
-          <div class="k-key f-ri" data-code="KeyU"><span class="k-norm">U</span></div>
-          <div class="k-key f-rm" data-code="KeyI"><span class="k-norm">I</span></div>
-          <div class="k-key f-rr" data-code="KeyO"><span class="k-norm">O</span></div>
-          <div class="k-key f-rp" data-code="KeyP"><span class="k-norm">P</span></div>
-          <div class="k-key f-rp k-dead" data-code="BracketLeft"><span class="k-phys">[ &#123;</span><span class="k-shift">¨</span><span class="k-norm">^</span></div>
-          <div class="k-key f-rp k-accent" data-code="BracketRight"><span class="k-phys">] &#125;</span><span class="k-shift">Ç</span><span class="k-norm">ç</span></div>
-          <div class="k-key k-w-backslash f-rp k-accent" data-code="Backslash"><span class="k-phys">\ |</span><span class="k-shift">À</span><span class="k-norm">à</span></div>
-        </div>
-
-        <!-- 第 3 行: 基准行 (Home Row) -->
-        <div class="k-row">
-          <div class="k-key k-w-caps f-lp k-mod" data-code="CapsLock"><span class="k-spec">caps lock ⇪</span></div>
-          <div class="k-key f-lp" data-code="KeyA"><span class="k-norm">A</span></div>
-          <div class="k-key f-lr" data-code="KeyS"><span class="k-norm">S</span></div>
-          <div class="k-key f-lm" data-code="KeyD"><span class="k-norm">D</span></div>
-          <div class="k-key f-li k-home" data-code="KeyF"><span class="k-norm">F</span><span class="k-bump"></span></div>
-          <div class="k-key f-li" data-code="KeyG"><span class="k-norm">G</span></div>
-          <div class="k-key f-ri" data-code="KeyH"><span class="k-norm">H</span></div>
-          <div class="k-key f-ri k-home" data-code="KeyJ"><span class="k-norm">J</span><span class="k-bump"></span></div>
-          <div class="k-key f-rm" data-code="KeyK"><span class="k-norm">K</span></div>
-          <div class="k-key f-rr" data-code="KeyL"><span class="k-norm">L</span></div>
-          <div class="k-key f-rp" data-code="Semicolon"><span class="k-phys">; :</span><span class="k-shift">:</span><span class="k-norm">;</span></div>
-          <div class="k-key f-rp k-accent" data-code="Quote"><span class="k-phys">' "</span><span class="k-shift">È</span><span class="k-norm">è</span></div>
-          <div class="k-key k-w-enter f-rp k-mod" data-code="Enter"><span class="k-spec">return ↵</span></div>
-        </div>
-
-        <!-- 第 4 行: Shift 行 -->
-        <div class="k-row">
-          <div class="k-key k-w-lshift f-lp k-mod" data-code="ShiftLeft"><span class="k-spec">⇧ shift</span></div>
-          <div class="k-key f-lp" data-code="KeyZ"><span class="k-norm">Z</span></div>
-          <div class="k-key f-lr" data-code="KeyX"><span class="k-norm">X</span></div>
-          <div class="k-key f-lm" data-code="KeyC"><span class="k-norm">C</span></div>
-          <div class="k-key f-li" data-code="KeyV"><span class="k-norm">V</span></div>
-          <div class="k-key f-li" data-code="KeyB"><span class="k-norm">B</span></div>
-          <div class="k-key f-ri" data-code="KeyN"><span class="k-norm">N</span></div>
-          <div class="k-key f-ri" data-code="KeyM"><span class="k-norm">M</span></div>
-          <div class="k-key f-rm k-alert" data-code="Comma"><span class="k-phys">, &lt;</span><span class="k-shift k-highlight">'</span><span class="k-norm">,</span></div>
-          <div class="k-key f-rr" data-code="Period"><span class="k-phys">. &gt;</span><span class="k-shift">"</span><span class="k-norm">.</span></div>
-          <div class="k-key f-rp k-accent" data-code="Slash"><span class="k-phys">/ ?</span><span class="k-shift">É</span><span class="k-norm">é</span></div>
-          <div class="k-key k-w-rshift f-rp k-mod" data-code="ShiftRight"><span class="k-spec">⇧ shift</span></div>
-        </div>
-
-        <!-- 第 5 行: 底栏修饰键与空格 -->
-        <div class="k-row">
-          <div class="k-key k-w-ctrl f-lp k-mod" data-code="ControlLeft"><span class="k-spec">control</span></div>
-          <div class="k-key k-w-opt f-lp k-mod" data-code="AltLeft"><span class="k-spec">⌥ option</span></div>
-          <div class="k-key k-w-cmd f-lp k-mod" data-code="MetaLeft"><span class="k-spec">⌘ command</span></div>
-          <div class="k-key k-w-space f-th" data-code="Space"><span class="k-norm">space</span></div>
-          <div class="k-key k-w-cmd f-rp k-mod" data-code="MetaRight"><span class="k-spec">⌘ command</span></div>
-          <div class="k-key k-w-opt f-rp k-mod" data-code="AltRight"><span class="k-spec">⌥ option</span></div>
-          <div class="k-key k-w-ctrl f-rp k-mod" data-code="ControlRight"><span class="k-spec">control</span></div>
-        </div>
+        <textarea id="custom-text-input" rows="3" placeholder="粘贴任意法语句子或段落... 例如：C'est la vie ! Où est la gare ? J'apprends le français..."></textarea>
+        <button id="btn-load-custom" class="btn-primary" type="button">加载并开始练习 ➔</button>
       </div>
     </section>
 
@@ -273,8 +239,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <h3>💡 为什么觉得难受？</h3>
         <p>
           在美式键盘上，你的右手已经建立了“单引号敲回车左边、问号敲 Shift+/”的牢固条件反射。
-          而在加拿大 CSA 上，按单引号键直接给你敲出 <code>è</code>，按问号直接敲出 <code>É</code>！
-          因此，<strong>先练 Level 02 的缩写专项（把 <code>'</code> 绑定到 <code>Shift+,</code>，问号绑定到 <code>Shift+6</code>）</strong>，是消除别扭感最快的一步。
+          而在加拿大 CSA 上，按单引号键直接敲出 <code>è</code>，按问号直接敲出 <code>É</code>！
+          因此，<strong>先在课程 Unit 2 攻克单引号（<code>Shift+,</code>）与问号（<code>Shift+6</code>）</strong>，是消除别扭感最快的一步。
         </p>
       </div>
       <div class="guide-col">
@@ -296,17 +262,60 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </p>
       </div>
     </footer>
+
+    <!-- 关卡完成结算模态弹窗 (TypingClub 风格) -->
+    <div id="lesson-modal" class="modal-backdrop" hidden>
+      <div class="modal-card">
+        <div class="modal-celebrate">🎉</div>
+        <h3 id="modal-lesson-title" class="modal-title">关卡完成！</h3>
+        <p id="modal-lesson-quote" class="modal-quote">Parfait ! 肌肉记忆正在加速形成。</p>
+
+        <!-- 星星评级 -->
+        <div class="modal-stars" id="modal-stars">
+          <span class="m-star">★</span>
+          <span class="m-star">★</span>
+          <span class="m-star">★</span>
+        </div>
+
+        <!-- 详细数据 -->
+        <div class="modal-stats-grid">
+          <div class="m-stat-box">
+            <span class="m-stat-label">速度</span>
+            <span id="modal-wpm" class="m-stat-val">32 WPM</span>
+          </div>
+          <div class="m-stat-box">
+            <span class="m-stat-label">正确率</span>
+            <span id="modal-acc" class="m-stat-val">98%</span>
+          </div>
+          <div class="m-stat-box">
+            <span class="m-stat-label">用时</span>
+            <span id="modal-time" class="m-stat-val">45s</span>
+          </div>
+        </div>
+
+        <!-- 模态操作 -->
+        <div class="modal-actions">
+          <button id="modal-btn-retry" class="btn-subtle-large" type="button">↺ 再练一次</button>
+          <button id="modal-btn-next" class="btn-primary-large" type="button">进入下一关 ➔</button>
+          <button id="modal-btn-close" class="btn-link" type="button">返回课程地图</button>
+        </div>
+      </div>
+    </div>
   </div>
 </BaseLayout>
 
 <style>
+  [hidden] {
+    display: none !important;
+  }
+
   .french-practice {
     padding-block: 2rem 4rem;
     max-width: 62rem;
     margin-inline: auto;
   }
   .practice-header {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
   .eyebrow-row {
     display: flex;
@@ -362,42 +371,60 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     line-height: 1.8;
     margin: 0;
   }
-  .practice-header code {
-    background: var(--soft);
-    padding: 0.15rem 0.4rem;
-    border-radius: 3px;
-    font-family: var(--mono);
-    font-size: 0.875em;
-  }
 
-  /* 速查卡片 */
-  .cheat-card {
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    padding: 1.25rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-  }
-  .cheat-header {
+  /* 顶部应用主导航条 */
+  .app-nav-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
+    gap: 1rem;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.75rem;
   }
-  .cheat-title {
-    font-weight: 600;
-    font-size: 0.875rem;
-    color: var(--ink);
-  }
-  .cheat-actions {
+  .nav-tabs {
     display: flex;
     gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .main-tab {
+    background: none;
+    border: 1px solid transparent;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+  }
+  .main-tab:hover {
+    background: var(--soft);
+    color: var(--ink);
+  }
+  .main-tab.active {
+    background: var(--ink);
+    color: #fff;
+    font-weight: 600;
+  }
+  .user-stats-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+  .star-badge {
+    font-family: var(--mono);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #b45309;
+    background: #fef3c7;
+    border: 1px solid #fde68a;
+    padding: 0.25rem 0.65rem;
+    border-radius: 14px;
   }
   .btn-subtle {
-    background: none;
+    background: #fff;
     border: 1px solid var(--line);
     padding: 0.25rem 0.65rem;
     font-size: 0.75rem;
@@ -409,193 +436,205 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .btn-subtle:hover {
     color: var(--ink);
     border-color: var(--strong-line);
-    background: var(--soft);
   }
-  .cheat-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
-    gap: 0.85rem;
-  }
-  .cheat-item {
+
+  /* 视图 1: 课程地图 (TypingClub 风格) */
+  .course-welcome-card {
+    background: #fff;
     border: 1px solid var(--line);
-    border-radius: 4px;
-    padding: 0.75rem;
-    background: var(--paper);
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-  .cheat-item.danger {
-    border-left: 3px solid var(--accent);
-    background: #fdfaf8;
-  }
-  .cheat-item.success {
-    border-left: 3px solid #2e7d32;
-  }
-  .cheat-item.warn {
-    border-left: 3px solid #d97706;
-  }
-  .cheat-key {
-    font-family: var(--mono);
-    font-weight: 600;
-    font-size: 0.875rem;
-    color: var(--ink);
-  }
-  .cheat-char {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--ink);
-  }
-  .cheat-desc {
-    font-size: 0.75rem;
-    color: var(--muted);
-    line-height: 1.4;
-  }
-
-  /* 模式选择与控制 */
-  .practice-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 1.25rem;
-  }
-  .mode-selector {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 0.75rem;
-  }
-  .mode-tab {
-    background: none;
-    border: 1px solid transparent;
-    padding: 0.45rem 0.85rem;
-    font-size: 0.8125rem;
-    color: var(--muted);
-    cursor: pointer;
-    border-radius: 4px;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: all 0.15s ease;
-  }
-  .mode-tab:hover {
-    color: var(--ink);
-    background: var(--soft);
-  }
-  .mode-tab.active {
-    background: var(--ink);
-    color: #fff;
-    font-weight: 600;
-  }
-  .tab-step {
-    font-family: var(--mono);
-    font-size: 0.6875rem;
-    opacity: 0.75;
-  }
-
-  .action-bar {
+    border-radius: 8px;
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 0.85rem;
+    gap: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  }
+  .welcome-text h3 {
+    margin: 0 0 0.4rem;
+    font-size: 1.0625rem;
+    font-weight: 600;
+  }
+  .welcome-text p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 42rem;
+  }
+  .btn-hero {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(152,74,50,0.2);
+    transition: transform 0.1s ease, opacity 0.15s ease;
+  }
+  .btn-hero:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+  }
+
+  .unit-block {
+    margin-bottom: 2.25rem;
+  }
+  .unit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.6rem;
+    margin-bottom: 1.25rem;
+  }
+  .unit-title {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0;
+  }
+  .unit-subtitle {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .lessons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
+    gap: 1rem;
+  }
+  .lesson-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 9.5rem;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  }
+  .lesson-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+  .lesson-card.completed {
+    border-left: 4px solid #16a34a;
+  }
+  .lesson-card.active-current {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(152,74,50,0.2);
+  }
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  .card-num {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--muted);
+    background: var(--soft);
+    padding: 0.15rem 0.45rem;
+    border-radius: 3px;
+  }
+  .card-stars {
+    font-size: 0.8125rem;
+    letter-spacing: 0.1em;
+    color: #d1d5db;
+  }
+  .card-stars .star-filled {
+    color: #eab308;
+  }
+  .card-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 0.35rem;
+    line-height: 1.4;
+  }
+  .card-keys {
+    font-size: 0.6875rem;
+    color: var(--accent);
+    font-family: var(--mono);
+    margin-bottom: 0.6rem;
+  }
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.6875rem;
+    color: var(--muted);
+    border-top: 1px dashed var(--line);
+    padding-top: 0.5rem;
+    margin-top: auto;
+  }
+
+  /* 视图 2: 正在打字关卡视图 */
+  .lesson-banner {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  }
+  .lesson-tag {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .lesson-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0.2rem 0 0.4rem;
+    color: var(--ink);
+  }
+  .lesson-sub-row {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .lesson-nav-actions {
+    display: flex;
+    gap: 0.5rem;
   }
   .btn-action {
     background: #fff;
     border: 1px solid var(--strong-line);
-    padding: 0.4rem 0.85rem;
+    padding: 0.45rem 0.85rem;
     font-size: 0.8125rem;
     color: var(--ink);
     cursor: pointer;
     border-radius: 4px;
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.35rem;
+    transition: all 0.15s ease;
   }
   .btn-action:hover {
     border-color: var(--accent);
     color: var(--accent);
   }
-  .btn-primary {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
-    font-size: 0.8125rem;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  .btn-primary:hover {
-    opacity: 0.9;
-  }
 
-  .stats-group {
-    display: flex;
-    gap: 0.65rem;
-    margin-left: auto;
-  }
-  .stat-pill {
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    padding: 0.35rem 0.75rem;
-    display: inline-flex;
-    align-items: baseline;
-    gap: 0.45rem;
-  }
-  .stat-label {
-    font-size: 0.6875rem;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-  }
-  .stat-val {
-    font-family: var(--mono);
-    font-weight: 600;
-    font-size: 0.9375rem;
-    color: var(--ink);
-  }
-
-  /* 自定义抽屉 */
-  .custom-drawer {
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    padding: 1rem;
-    margin-bottom: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
-  .custom-drawer-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  .link-inline {
-    font-size: 0.75rem;
-    color: var(--accent);
-    text-decoration: none;
-  }
-  .link-inline:hover {
-    text-decoration: underline;
-  }
-  .custom-drawer label {
-    font-size: 0.8125rem;
-    font-weight: 600;
-  }
-  .custom-drawer textarea {
-    width: 100%;
-    padding: 0.5rem;
-    font-family: var(--sans);
-    font-size: 0.875rem;
-    border: 1px solid var(--line);
-    border-radius: 4px;
-  }
-
-  /* 实时键位提示条 */
+  /* 提示条 */
   .live-hint-bar {
     background: #fdf6ec;
     border: 1px solid #faecd8;
@@ -643,7 +682,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     box-shadow: 0 2px 8px rgba(0,0,0,0.03);
     outline: none;
     transition: border-color 0.15s ease;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
   .typing-box:focus-within, .typing-box:focus {
     border-color: var(--accent);
@@ -699,74 +738,41 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     51%, 100% { opacity: 0; }
   }
 
-  /* 完整物理键盘 (TypingClub 风格) */
-  .keyboard-section {
+  .live-stats-bar {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .stat-pill {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0.35rem 0.75rem;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.45rem;
+  }
+  .stat-label {
+    font-size: 0.6875rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  .stat-val {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--ink);
+  }
+
+  /* 物理键盘样式 */
+  .keyboard-wrap {
     background: #f1f3f5;
     border: 1px solid #dcded4;
     border-radius: 12px;
     padding: 1.25rem 1.25rem 1.5rem;
     box-shadow: 0 4px 12px rgba(0,0,0,0.05), inset 0 1px 0 #fff;
   }
-  .kb-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
-    font-size: 0.75rem;
-  }
-  .kb-meta-left {
-    display: flex;
-    align-items: baseline;
-    gap: 0.6rem;
-  }
-  .kb-tag {
-    font-weight: 600;
-    color: var(--ink);
-  }
-  .kb-sub {
-    color: var(--muted);
-  }
-  .kb-legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.65rem;
-    font-size: 0.6875rem;
-    color: var(--muted);
-  }
-  .legend-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-  }
-  .legend-dot {
-    width: 0.6rem;
-    height: 0.6rem;
-    border-radius: 50%;
-  }
-
-  /* 指法色彩规范 (柔和自然淡彩，不辣眼) */
-  .color-lp, .f-lp { --finger-bg: #f5eeea; --finger-border: #e2d2ca; } /* 左手小指：淡米桃 */
-  .color-lr, .f-lr { --finger-bg: #f8f1e5; --finger-border: #ecdac0; } /* 左手无名：淡杏橙 */
-  .color-lm, .f-lm { --finger-bg: #f3f7ea; --finger-border: #dce7c9; } /* 左手中指：淡黄绿 */
-  .color-li, .f-li { --finger-bg: #eaf6f4; --finger-border: #c9e7e2; } /* 左手食指：淡青水 */
-  .color-th, .f-th { --finger-bg: #f4f4f4; --finger-border: #dedede; } /* 大拇指：纯净灰 */
-  .color-ri, .f-ri { --finger-bg: #eef4f9; --finger-border: #d2e3f2; } /* 右手食指：淡天蓝 */
-  .color-rm, .f-rm { --finger-bg: #f1eff8; --finger-border: #dcd8ee; } /* 右手中指：淡浅紫 */
-  .color-rr, .f-rr { --finger-bg: #f8eff6; --finger-border: #eed7e9; } /* 右手无名：淡丁香 */
-  .color-rp, .f-rp { --finger-bg: #fbeeef; --finger-border: #f6d4d7; } /* 右手小指：淡粉红 */
-
-  .legend-dot.color-lp { background: #e2d2ca; }
-  .legend-dot.color-lr { background: #ecdac0; }
-  .legend-dot.color-lm { background: #dce7c9; }
-  .legend-dot.color-li { background: #c9e7e2; }
-  .legend-dot.color-th { background: #dedede; }
-  .legend-dot.color-ri { background: #d2e3f2; }
-  .legend-dot.color-rm { background: #dcd8ee; }
-  .legend-dot.color-rr { background: #eed7e9; }
-  .legend-dot.color-rp { background: #f6d4d7; }
-
   .physical-keyboard {
     display: flex;
     flex-direction: column;
@@ -781,8 +787,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     display: flex;
     gap: 6px;
   }
-
-  /* 物理键帽基础样式 */
   .k-key {
     flex: 1 1 0;
     height: 50px;
@@ -800,13 +804,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     transition: transform 0.05s ease, box-shadow 0.05s ease, background-color 0.15s ease, border-color 0.15s ease;
   }
 
+  /* 指法色彩 */
+  .f-lp { --finger-bg: #f5eeea; --finger-border: #e2d2ca; }
+  .f-lr { --finger-bg: #f8f1e5; --finger-border: #ecdac0; }
+  .f-lm { --finger-bg: #f3f7ea; --finger-border: #dce7c9; }
+  .f-li { --finger-bg: #eaf6f4; --finger-border: #c9e7e2; }
+  .f-th { --finger-bg: #f4f4f4; --finger-border: #dedede; }
+  .f-ri { --finger-bg: #eef4f9; --finger-border: #d2e3f2; }
+  .f-rm { --finger-bg: #f1eff8; --finger-border: #dcd8ee; }
+  .f-rr { --finger-bg: #f8eff6; --finger-border: #eed7e9; }
+  .f-rp { --finger-bg: #fbeeef; --finger-border: #f6d4d7; }
+
   .show-fingers .k-key:not(.k-mod):not(.active-target):not(.active-shift):not(.pressed) {
     background: var(--finger-bg, #fff);
     border-color: var(--finger-border, #cbd5e1);
     box-shadow: 0 3px 0 var(--finger-border, #cbd5e1), 0 3px 4px rgba(0,0,0,0.04);
   }
 
-  /* 特殊键宽定义 (标准 ANSI 比例) */
   .k-w-backspace { flex: 2 2 0; }
   .k-w-tab       { flex: 1.5 1.5 0; }
   .k-w-backslash { flex: 1.5 1.5 0; }
@@ -819,7 +833,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .k-w-cmd       { flex: 1.5 1.5 0; }
   .k-w-space     { flex: 6 6 0; }
 
-  /* 键帽内部字符排版 (防溢出、防折行) */
   .k-phys {
     font-size: 0.5625rem;
     font-family: var(--mono);
@@ -848,7 +861,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin-top: auto;
     pointer-events: none;
   }
-  /* 单个大写字母居中 */
   .k-key:not(:has(.k-phys)) .k-norm {
     margin: auto;
     font-size: 1rem;
@@ -861,8 +873,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     white-space: nowrap;
     pointer-events: none;
   }
-
-  /* 定位凸起 (F 与 J 键) */
   .k-bump {
     position: absolute;
     bottom: 4px;
@@ -873,36 +883,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     background: #94a3b8;
     border-radius: 1px;
   }
+  .k-accent { border-color: #2e7d32 !important; }
+  .k-accent .k-norm { color: #1b5e20; font-weight: 700; }
+  .k-dead { border-color: #d97706 !important; }
+  .k-alert .k-highlight { color: var(--accent); font-weight: 700; }
 
-  /* 4 大直出变音特殊标记 */
-  .k-accent {
-    border-color: #2e7d32 !important;
-  }
-  .k-accent .k-norm {
-    color: #1b5e20;
-    font-weight: 700;
-  }
-
-  /* 死键标记 */
-  .k-dead {
-    border-color: #d97706 !important;
-  }
-
-  /* 标点陷阱标记 */
-  .k-alert .k-highlight {
-    color: var(--accent);
-    font-weight: 700;
-  }
-
-  /* 交互状态：用户物理按键按下瞬间 */
   .k-key.pressed {
     transform: translateY(3px) !important;
     box-shadow: 0 0 0 transparent !important;
     background: #cbd5e1 !important;
     border-color: #94a3b8 !important;
   }
-
-  /* 交互状态：TypingClub 风格目标键高亮 (Target Glow) */
   .k-key.active-target {
     background: #fef3c7 !important;
     border-color: #d97706 !important;
@@ -914,8 +905,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: #92400e !important;
     font-weight: 800 !important;
   }
-
-  /* 交互状态：Shift 联动高亮 (双键联动) */
   .k-key.active-shift {
     background: #fee2e2 !important;
     border-color: #dc2626 !important;
@@ -926,36 +915,105 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: #991b1b !important;
     font-weight: 700 !important;
   }
-
   @keyframes targetPulse {
     0% { transform: scale(1); }
     100% { transform: scale(1.03); }
   }
 
-  /* Shift 键按下时的全局键盘反转 */
-  .keyboard-shifted .k-norm {
-    opacity: 0.4;
-  }
+  .keyboard-shifted .k-norm { opacity: 0.35; }
   .keyboard-shifted .k-shift {
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     font-weight: 700;
     color: var(--ink);
   }
 
-  /* 法语音频工作台联动推荐卡 */
+  /* 视图 3: 自由题库与自定义 */
+  .drills-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .drills-card h3 {
+    margin: 0 0 0.4rem;
+    font-size: 1.0625rem;
+  }
+  .card-desc {
+    font-size: 0.8125rem;
+    color: var(--muted);
+    margin: 0 0 1rem;
+  }
+  .drills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 0.75rem;
+  }
+  .drill-launch-btn {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--ink);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .drill-launch-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: #fff;
+  }
+  .custom-drawer {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .custom-drawer-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+  }
+  .custom-drawer textarea {
+    width: 100%;
+    padding: 0.75rem;
+    font-family: var(--sans);
+    font-size: 0.9375rem;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    margin-bottom: 0.75rem;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 0.55rem 1.2rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  /* 联动卡片 */
   .french-studio-card {
     background: #fff;
     border: 1px solid var(--line);
     border-left: 4px solid var(--accent);
     border-radius: 8px;
     padding: 1.25rem 1.5rem;
-    margin-top: 2rem;
+    margin-top: 2.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 1.25rem;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
   }
   .studio-title-row {
     display: flex;
@@ -975,7 +1033,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin: 0;
     font-size: 1rem;
     font-weight: 600;
-    color: var(--ink);
   }
   .studio-info p {
     margin: 0;
@@ -993,12 +1050,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     border-radius: 4px;
     text-decoration: none;
     white-space: nowrap;
-    transition: opacity 0.15s ease;
-  }
-  .btn-studio:hover {
-    opacity: 0.9;
-    text-decoration: none;
-    color: #fff;
   }
 
   /* 底部指导 */
@@ -1014,7 +1065,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-size: 0.9375rem;
     font-weight: 600;
     margin: 0 0 0.65rem;
-    color: var(--ink);
   }
   .guide-col p, .guide-col ul {
     font-size: 0.8125rem;
@@ -1023,93 +1073,380 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin: 0;
     padding-left: 0;
   }
-  .guide-col ul {
-    list-style-type: none;
-    margin-top: 0.5rem;
-  }
-  .guide-col li {
-    margin-bottom: 0.4rem;
-  }
+  .guide-col ul { list-style: none; margin-top: 0.5rem; }
+  .guide-col li { margin-bottom: 0.4rem; }
   .guide-col code {
     background: var(--soft);
     padding: 0.1rem 0.35rem;
     border-radius: 3px;
     font-family: var(--mono);
-    color: var(--ink);
   }
 
+  /* 模态通关结算卡 */
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(38, 51, 46, 0.6);
+    backdrop-filter: blur(4px);
+    display: grid;
+    place-items: center;
+    z-index: 1000;
+    padding: 1rem;
+  }
+  .modal-card {
+    background: #fff;
+    border-radius: 12px;
+    max-width: 26rem;
+    width: 100%;
+    padding: 2.25rem 2rem;
+    text-align: center;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+    animation: modalPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  @keyframes modalPop {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .modal-celebrate { font-size: 2.5rem; margin-bottom: 0.5rem; }
+  .modal-title { margin: 0 0 0.4rem; font-size: 1.35rem; font-weight: 700; color: var(--ink); }
+  .modal-quote { font-size: 0.875rem; color: var(--muted); margin: 0 0 1.25rem; }
+  .modal-stars {
+    font-size: 2.25rem;
+    letter-spacing: 0.3rem;
+    color: #e5e7eb;
+    margin-bottom: 1.5rem;
+  }
+  .modal-stars .star-active { color: #eab308; }
+  .modal-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    background: var(--paper);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.75rem;
+  }
+  .m-stat-box { display: flex; flex-direction: column; gap: 0.2rem; }
+  .m-stat-label { font-size: 0.6875rem; color: var(--muted); }
+  .m-stat-val { font-family: var(--mono); font-size: 1.15rem; font-weight: 700; color: var(--ink); }
+  .modal-actions { display: flex; flex-direction: column; gap: 0.65rem; }
+  .btn-primary-large {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 0.75rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .btn-subtle-large {
+    background: var(--soft);
+    border: 1px solid var(--strong-line);
+    color: var(--ink);
+    padding: 0.65rem;
+    font-size: 0.875rem;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .btn-link {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 0.8125rem;
+    cursor: pointer;
+    margin-top: 0.25rem;
+  }
+  .btn-link:hover { text-decoration: underline; }
+
   @media (max-width: 768px) {
-    .typing-box {
-      padding: 1.25rem;
-    }
-    .text-display {
-      font-size: 1.15rem;
-    }
-    .k-key {
-      height: 38px;
-      padding: 2px 3px;
-    }
-    .k-phys {
-      font-size: 0.5rem;
-    }
-    .k-shift {
-      font-size: 0.5625rem;
-      top: 2px;
-      right: 3px;
-    }
-    .k-norm {
-      font-size: 0.75rem;
-    }
-    .k-spec {
-      font-size: 0.5625rem;
-    }
-    .kb-legend {
-      display: none;
-    }
+    .typing-box { padding: 1.25rem; }
+    .text-display { font-size: 1.15rem; }
+    .k-key { height: 38px; padding: 2px 3px; }
+    .k-phys { font-size: 0.5rem; }
+    .k-shift { font-size: 0.5625rem; top: 2px; right: 3px; }
+    .k-norm { font-size: 0.75rem; }
+    .k-spec { font-size: 0.5625rem; }
   }
 </style>
 
 <script>
-  // 题库定义
-  const DRILL_SETS: Record<string, string[]> = {
+  // 课程体系数据模型 (24 关，6 大单元)
+  interface LessonDef {
+    id: number;
+    unitNum: number;
+    unitTitle: string;
+    unitDesc: string;
+    title: string;
+    focusKeys: string;
+    targetWpm: number;
+    drills: string[];
+    quote: string;
+  }
+
+  const COURSE_LESSONS: LessonDef[] = [
+    // Unit 1: 四大直出变音专项
+    {
+      id: 1, unitNum: 1, unitTitle: "Unit 1: 四大直出变音专项", unitDesc: "攻克物理标点区直接输出的 é, è, à, ç",
+      title: "初识右小指：é 键肌肉记忆", focusKeys: "é (原 /? 键)", targetWpm: 18,
+      drills: [
+        "é é é é é é é é é",
+        "café été cinéma thé vidéo",
+        "Le café est chaud en été."
+      ],
+      quote: "Bravo ! 你已经掌握了法语使用频率最高的重音符 é！"
+    },
+    {
+      id: 2, unitNum: 1, unitTitle: "Unit 1: 四大直出变音专项", unitDesc: "攻克物理标点区直接输出的 é, è, à, ç",
+      title: "回车左侧：è 键肌肉记忆", focusKeys: "è (原 '\" 键)", targetWpm: 18,
+      drills: [
+        "è è è è è è è è è",
+        "père mère frère près très",
+        "Mon père et ma mère sont très fiers."
+      ],
+      quote: "Super ! 原单引号键现在就是你的专用 è 键！"
+    },
+    {
+      id: 3, unitNum: 1, unitTitle: "Unit 1: 四大直出变音专项", unitDesc: "攻克物理标点区直接输出的 é, è, à, ç",
+      title: "双剑合璧：é 与 è 快速切换", focusKeys: "é, è 对比", targetWpm: 20,
+      drills: [
+        "é è é è é è é è",
+        "été père café mère vérité frère",
+        "Après le café, mon frère préfère le thé."
+      ],
+      quote: "Magnifique ! 你的大脑已经开始区分 / 键与 ' 键的音标了。"
+    },
+    {
+      id: 4, unitNum: 1, unitTitle: "Unit 1: 四大直出变音专项", unitDesc: "攻克物理标点区直接输出的 é, è, à, ç",
+      title: "回车上方：à 与 ç 连击练习", focusKeys: "à (原 \\| 键), ç (原 ]} 键)", targetWpm: 20,
+      drills: [
+        "à ç à ç à ç à ç",
+        "là voilà à côté ça leçon garçon",
+        "Ça va très bien là-bas, merci !"
+      ],
+      quote: "Excellent ! 四大直出变音（é è à ç）已全部入库！"
+    },
+
+    // Unit 2: 致命标点大迁徙
+    {
+      id: 5, unitNum: 2, unitTitle: "Unit 2: 致命标点大迁徙", unitDesc: "彻底纠正习惯：单引号在 Shift+,，问号在 Shift+6",
+      title: "消除最大的别扭：单引号 (Shift + ,)", focusKeys: "' (按住 Shift 敲逗号)", targetWpm: 20,
+      drills: [
+        "' ' ' ' ' ' ' ' '",
+        "c' j' l' d' n' s' qu'",
+        "c'est j'ai l'ami d'un s'il n'est"
+      ],
+      quote: "Génial ! 再也不用担心打 c'est 打成 cèest 了！"
+    },
+    {
+      id: 6, unitNum: 2, unitTitle: "Unit 2: 致命标点大迁徙", unitDesc: "彻底纠正习惯：单引号在 Shift+,，问号在 Shift+6",
+      title: "终结问号迷茫：问号 (Shift + 6)", focusKeys: "? (按住 Shift 敲数字 6)", targetWpm: 20,
+      drills: [
+        "? ? ? ? ? ? ? ? ?",
+        "qui ? quoi ? quand ? où ? pourquoi ?",
+        "Qui est-ce ? Comment ça va ?"
+      ],
+      quote: "Très bien ! 记住问号在数字 6 上，而不是在 / 键上！"
+    },
+    {
+      id: 7, unitNum: 2, unitTitle: "Unit 2: 致命标点大迁徙", unitDesc: "彻底纠正习惯：单引号在 Shift+,，问号在 Shift+6",
+      title: "日常连字与反问实战", focusKeys: "' 与 ? 综合实战", targetWpm: 22,
+      drills: [
+        "Est-ce que c'est prêt ?",
+        "J'aime l'eau fraîche, et vous ?",
+        "C'est d'accord, n'est-ce pas ?"
+      ],
+      quote: "Parfait ! 标点迁徙区已经形成了坚实的肌肉记忆！"
+    },
+    {
+      id: 8, unitNum: 2, unitTitle: "Unit 2: 致命标点大迁徙", unitDesc: "彻底纠正习惯：单引号在 Shift+,，问号在 Shift+6",
+      title: "标点大满贯：引号 (Shift + .)", focusKeys: "\", ', ?", targetWpm: 22,
+      drills: [
+        "\"merci\" \"bonjour\" \"oui\" \"non\"",
+        "\"C'est parfait !\" a dit le garçon.",
+        "\"Est-ce que j'ai bien compris ?\""
+      ],
+      quote: "Formidable ! 标点符号大迁徙全部通关！"
+    },
+
+    // Unit 3: 死键长音与分音
+    {
+      id: 9, unitNum: 3, unitTitle: "Unit 3: 死键长音与分音", unitDesc: "学会“按键不走字”的死键两步法",
+      title: "长音符第一步：^ (先按 [ 键再按 e/a)", focusKeys: "ê, â (按 [ 然后按元音)", targetWpm: 20,
+      drills: [
+        "ê ê ê â â â ê â",
+        "être fête forêt pâte château",
+        "Il fait la fête dans la forêt."
+      ],
+      quote: "Chapeau ! 死键的感觉是不是就像给元音戴了一顶帽子？"
+    },
+    {
+      id: 10, unitNum: 3, unitTitle: "Unit 3: 死键长音与分音", unitDesc: "学会“按键不走字”的死键两步法",
+      title: "长音符第二步：î, ô, û 组合", focusKeys: "î, ô, û (按 [ 然后按 i/o/u)", targetWpm: 20,
+      drills: [
+        "î î î ô ô ô û û û",
+        "île boîte hôtel coût goût",
+        "L'hôtel est sur une île magnifique."
+      ],
+      quote: "Bien joué ! 长音死键所有元音搭配全部拿下！"
+    },
+    {
+      id: 11, unitNum: 3, unitTitle: "Unit 3: 死键长音与分音", unitDesc: "学会“按键不走字”的死键两步法",
+      title: "分音符死键：¨ (Shift + [ 组合)", focusKeys: "ë, ï (Shift+[ 然后按 e/i)", targetWpm: 22,
+      drills: [
+        "ë ë ë ï ï ï ë ï",
+        "Noël maïs naïf canoë coïncidence",
+        "C'est une coïncidence pour Noël !"
+      ],
+      quote: "Impressionnant ! 双点分音符操作十分熟练！"
+    },
+    {
+      id: 12, unitNum: 3, unitTitle: "Unit 3: 死键长音与分音", unitDesc: "学会“按键不走字”的死键两步法",
+      title: "抑音死键：ù 在哪里？", focusKeys: "ù (Option + [ 然后按 u)", targetWpm: 20,
+      drills: [
+        "ù ù ù ù ù ù",
+        "où d'où jusqu'où",
+        "Où est la bibliothèque la plus proche ?"
+      ],
+      quote: "Félicitations ! 死键家族的所有秘密已被你全部解开！"
+    },
+
+    // Unit 4: 大写变音与复合字符
+    {
+      id: 13, unitNum: 4, unitTitle: "Unit 4: 大写变音与复合字符", unitDesc: "掌握句首与专有名词的大写变音符",
+      title: "大写四大变音：É, È, À, Ç", focusKeys: "Shift + 直出键", targetWpm: 22,
+      drills: [
+        "É È À Ç É È À Ç",
+        "État Égypte À bientôt Ça va",
+        "Ça commence aujourd'hui à midi."
+      ],
+      quote: "Extraordinaire ! 大写变音输入行云流水！"
+    },
+    {
+      id: 14, unitNum: 4, unitTitle: "Unit 4: 大写变音与复合字符", unitDesc: "掌握句首与专有名词的大写变音符",
+      title: "特殊连字：œ 与 « » 尖引号", focusKeys: "Option + q (œ), Option + z/x (« »)", targetWpm: 20,
+      drills: [
+        "œ œ « » « »",
+        "cœur sœur œuvre «bonjour»",
+        "Mon cœur dit «oui» à cette belle idée."
+      ],
+      quote: "Sublime ! 法语出版级的高级排版字符也难不倒你！"
+    },
+
+    // Unit 5: 高频核心生活双语表达
+    {
+      id: 15, unitNum: 5, unitTitle: "Unit 5: 高频生活双语表达", unitDesc: "融入真实日常对话的高频词汇流速练习",
+      title: "社交礼貌与日常问候", focusKeys: "词汇流速", targetWpm: 24,
+      drills: [
+        "Bonjour, comment allez-vous ?",
+        "S'il vous plaît et merci beaucoup !",
+        "Bonne journée et à bientôt, enchanté."
+      ],
+      quote: "Remarquable ! 你的日常社交法语已达打字肌肉记忆！"
+    },
+    {
+      id: 16, unitNum: 5, unitTitle: "Unit 5: 高频生活双语表达", unitDesc: "融入真实日常对话的高频词汇流速练习",
+      title: "时间与日程规划", focusKeys: "时间词汇", targetWpm: 24,
+      drills: [
+        "Aujourd'hui, c'est lundi.",
+        "Hier soir, nous avons mangé au restaurant.",
+        "Demain matin, je serai à l'heure."
+      ],
+      quote: "Superbe ! 时间状语与复杂音节配合默契！"
+    },
+    {
+      id: 17, unitNum: 5, unitTitle: "Unit 5: 高频生活双语表达", unitDesc: "融入真实日常对话的高频词汇流速练习",
+      title: "城市出行与问路导航", focusKeys: "方向词汇", targetWpm: 25,
+      drills: [
+        "Où se trouve la gare centrale ?",
+        "Prenez la première rue à droite après le pont.",
+        "Le musée est fermé le dimanche."
+      ],
+      quote: "Formidable ! 出行问答已能快速敲出！"
+    },
+    {
+      id: 18, unitNum: 5, unitTitle: "Unit 5: 高频生活双语表达", unitDesc: "融入真实日常对话的高频词汇流速练习",
+      title: "工作、技术与系统词汇", focusKeys: "科技职场", targetWpm: 25,
+      drills: [
+        "Le système informatique fonctionne très bien.",
+        "Nous développons une nouvelle méthode.",
+        "La sécurité des données est essentielle."
+      ],
+      quote: "Génial ! 科技与职场法语轻松搞定！"
+    },
+
+    // Unit 6: 毕业终极考核
+    {
+      id: 19, unitNum: 6, unitTitle: "Unit 6: 终极盲打毕业考", unitDesc: "法式谚语、名家金句与长文综合挑战",
+      title: "法国经典谚语挑战", focusKeys: "全键盘盲打", targetWpm: 28,
+      drills: [
+        "C'est en forgeant qu'on devient forgeron.",
+        "Petit à petit, l'oiseau fait son nid.",
+        "Qui vivra verra."
+      ],
+      quote: "Merveilleux ! 熟能生巧，你正在成为真正的键盘匠人！"
+    },
+    {
+      id: 20, unitNum: 6, unitTitle: "Unit 6: 终极盲打毕业考", unitDesc: "法式谚语、名家金句与长文综合挑战",
+      title: "伏尔泰与加缪哲学语录", focusKeys: "标点与深层语流", targetWpm: 28,
+      drills: [
+        "Le mieux est l'ennemi du bien.",
+        "Au milieu de l'hiver, j'ai découvert en moi un invincible été.",
+        "La simplicité est la sophistication suprême."
+      ],
+      quote: "Poétique ! 文学思想在你的指尖流淌！"
+    },
+    {
+      id: 21, unitNum: 6, unitTitle: "Unit 6: 终极盲打毕业考", unitDesc: "法式谚语、名家金句与长文综合挑战",
+      title: "毕业考核（上）：《小王子》选段", focusKeys: "文学长句", targetWpm: 30,
+      drills: [
+        "On ne voit bien qu'avec le cœur.",
+        "L'essentiel est invisible pour les yeux.",
+        "C'est le temps que tu as perdu pour ta rose qui fait ta rose si importante."
+      ],
+      quote: "Émouvant ! 你敲出了法语文学中最动人的一句台词！"
+    },
+    {
+      id: 22, unitNum: 6, unitTitle: "Unit 6: 终极盲打毕业考", unitDesc: "法式谚语、名家金句与长文综合挑战",
+      title: "终极毕业考核（下）：全键盘极限冲刺", focusKeys: "综合大满贯", targetWpm: 32,
+      drills: [
+        "J'ai déjà terminé mon travail pour aujourd'hui, et tout s'est très bien passé.",
+        "Où irons-nous après la fête de Noël ? À Paris ou à Québec ?",
+        "Félicitations pour votre persévérance et votre talent !"
+      ],
+      quote: "🏆 Félicitations suprêmes ! 加拿大法语键盘（CSA）已彻底融为你的本能肌肉记忆！"
+    }
+  ];
+
+  // 自由练习经典库
+  const CLASSIC_DRILLS: Record<string, string[]> = {
     accents: [
       "é è à ç é è à ç é è à ç",
       "été là ça café déjà près père mère",
-      "leçon garçon après voilà cinéma français",
-      "à côté de la fenêtre, le café est très chaud.",
-      "Ça va très bien, merci ! À bientôt."
+      "leçon garçon après voilà cinéma français"
     ],
     punctuation: [
       "c'est j'ai l'eau d'un l'ami n'est-ce pas ?",
-      "Qui est-ce ? Comment ça va ? Pourquoi pas ?",
-      "C'est l'histoire d'un homme qui n'a pas peur.",
-      "J'aime l'été, l'automne et l'hiver.",
-      "Est-ce que c'est prêt ? Oui, c'est d'accord !"
+      "Qui est-ce ? Comment ça va ? Pourquoi pas ?"
     ],
     deadkeys: [
       "être fête forêt hôtel fenêtre août château",
-      "rêve tête maître île boîte âge même",
-      "maïs naïf noël canoë coïncidence",
-      "Il fait une fête dans la forêt près de l'hôtel.",
-      "Où sont la boîte et la fenêtre de la maison ?"
+      "rêve tête maître île boîte âge même"
     ],
     vocab: [
       "bonjour merci beaucoup s'il vous plaît",
-      "au revoir enchanté aujourd'hui problème",
-      "développement système répondre écrire",
-      "mémoire sécurité réseau utilisateur",
-      "première fois, deuxième fois, dernière étape"
+      "au revoir enchanté aujourd'hui problème"
     ],
     sentences: [
       "C'est en forgeant qu'on devient forgeron.",
-      "Le temps passe vite quand on apprend quelque chose d'intéressant.",
-      "Où est la bibliothèque la plus proche d'ici ?",
-      "J'ai déjà terminé mon travail pour aujourd'hui, et tout s'est très bien passé.",
-      "La simplicité est la sophistication suprême."
+      "Le temps passe vite quand on apprend quelque chose d'intéressant."
     ]
   };
 
-  // TypingClub 风格全键位指法映射及击键指引
+  // 全键盘指法与按键说明表
   interface KeyGuide {
     code: string;
     shift?: boolean;
@@ -1122,43 +1459,40 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   const KEY_GUIDE_MAP: Record<string, KeyGuide> = {
-    // 标点陷阱
-    "'": { code: "Comma", shift: true, shiftKey: "ShiftLeft", desc: "⚠️ 标点搬家：【Shift + ,】（别按原单引号键，那是 è！）", finger: "左手小指按 Shift + 右手中指按逗号" },
-    "?": { code: "Digit6", shift: true, shiftKey: "ShiftLeft", desc: "⚠️ 标点搬家：【Shift + 6】（别按 / 键，那是 é！）", finger: "左手小指按 Shift + 右手食指按 6" },
-    '"': { code: "Period", shift: true, shiftKey: "ShiftLeft", desc: "标点搬家：【Shift + .】", finger: "左手小指按 Shift + 右手无名指按句号" },
+    "'": { code: "Comma", shift: true, shiftKey: "ShiftLeft", desc: "⚠️ 标点搬家：【Shift + ,】（千万别按原单引号键，那是 è！）", finger: "左手小指 Shift + 右手中指逗号" },
+    "?": { code: "Digit6", shift: true, shiftKey: "ShiftLeft", desc: "⚠️ 标点搬家：【Shift + 6】（千万别按 / 键，那是 é！）", finger: "左手小指 Shift + 右手食指 6" },
+    '"': { code: "Period", shift: true, shiftKey: "ShiftLeft", desc: "标点搬家：【Shift + .】", finger: "左手小指 Shift + 右手无名指句号" },
 
-    // 四大直出变音
     "é": { code: "Slash", shift: false, desc: "四大直出：直接按物理【/?】键", finger: "右手小指" },
-    "É": { code: "Slash", shift: true, shiftKey: "ShiftLeft", desc: "四大直出：按【Shift + /?】", finger: "左手小指按 Shift + 右手小指" },
+    "É": { code: "Slash", shift: true, shiftKey: "ShiftLeft", desc: "四大直出：按【Shift + /?】", finger: "左手小指 Shift + 右手小指" },
     "è": { code: "Quote", shift: false, desc: "四大直出：直接按物理【'\"】键（回车左侧）", finger: "右手小指" },
-    "È": { code: "Quote", shift: true, shiftKey: "ShiftLeft", desc: "四大直出：按【Shift + '\"】", finger: "左手小指按 Shift + 右手小指" },
+    "È": { code: "Quote", shift: true, shiftKey: "ShiftLeft", desc: "四大直出：按【Shift + '\"】", finger: "左手小指 Shift + 右手小指" },
     "à": { code: "Backslash", shift: false, desc: "四大直出：直接按物理【\\|】键（回车上方）", finger: "右手小指" },
-    "À": { code: "Backslash", shift: true, shiftKey: "ShiftLeft", desc: "四大直出：按【Shift + \\|】", finger: "左手小指按 Shift + 右手小指" },
+    "À": { code: "Backslash", shift: true, shiftKey: "ShiftLeft", desc: "四大直出：按【Shift + \\|】", finger: "左手小指 Shift + 右手小指" },
     "ç": { code: "BracketRight", shift: false, desc: "四大直出：直接按物理【]}】键", finger: "右手小指" },
-    "Ç": { code: "BracketRight", shift: true, shiftKey: "ShiftLeft", desc: "四大直出：按【Shift + ]}】", finger: "左手小指按 Shift + 右手小指" },
+    "Ç": { code: "BracketRight", shift: true, shiftKey: "ShiftLeft", desc: "四大直出：按【Shift + ]}】", finger: "左手小指 Shift + 右手小指" },
 
-    // 死键组合 (两步法)
-    "ê": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: false }, vowelStep: { code: "KeyE" }, desc: "死键长音：第 1 步先按【[】(^)，第 2 步按【e】", finger: "右手小指按 [ ➔ 左手中指按 E" },
-    "â": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: false }, vowelStep: { code: "KeyA" }, desc: "死键长音：第 1 步先按【[】(^)，第 2 步按【a】", finger: "右手小指按 [ ➔ 左手小指按 A" },
-    "î": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: false }, vowelStep: { code: "KeyI" }, desc: "死键长音：第 1 步先按【[】(^)，第 2 步按【i】", finger: "右手小指按 [ ➔ 右手中指按 I" },
-    "ô": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: false }, vowelStep: { code: "KeyO" }, desc: "死键长音：第 1 步先按【[】(^)，第 2 步按【o】", finger: "右手小指按 [ ➔ 右手无名指按 O" },
-    "û": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: false }, vowelStep: { code: "KeyU" }, desc: "死键长音：第 1 步先按【[】(^)，第 2 步按【u】", finger: "右手小指按 [ ➔ 右手食指按 U" },
+    "ê": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: false }, vowelStep: { code: "KeyE" }, desc: "死键长音：第 1 步按【[】(^)，第 2 步按【e】", finger: "右小指按 [ ➔ 左中指按 E" },
+    "â": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: false }, vowelStep: { code: "KeyA" }, desc: "死键长音：第 1 步按【[】(^)，第 2 步按【a】", finger: "右小指按 [ ➔ 左小指按 A" },
+    "î": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: false }, vowelStep: { code: "KeyI" }, desc: "死键长音：第 1 步按【[】(^)，第 2 步按【i】", finger: "右小指按 [ ➔ 右中指按 I" },
+    "ô": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: false }, vowelStep: { code: "KeyO" }, desc: "死键长音：第 1 步按【[】(^)，第 2 步按【o】", finger: "右小指按 [ ➔ 右无名指按 O" },
+    "û": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: false }, vowelStep: { code: "KeyU" }, desc: "死键长音：第 1 步按【[】(^)，第 2 步按【u】", finger: "右小指按 [ ➔ 右食指按 U" },
 
-    "ë": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: true }, vowelStep: { code: "KeyE" }, desc: "死键分音：第 1 步按【Shift + [】(¨)，第 2 步按【e】", finger: "左小指Shift + 右小指[ ➔ 左手中指E" },
-    "ï": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: true }, vowelStep: { code: "KeyI" }, desc: "死键分音：第 1 步按【Shift + [】(¨)，第 2 步按【i】", finger: "左小指Shift + 右小指[ ➔ 右手中指I" },
-    "ü": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: true }, vowelStep: { code: "KeyU" }, desc: "死键分音：第 1 步按【Shift + [】(¨)，第 2 步按【u】", finger: "左小指Shift + 右小指[ ➔ 右手食指U" },
+    "ë": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: true }, vowelStep: { code: "KeyE" }, desc: "死键分音：第 1 步按【Shift + [】(¨)，第 2 步按【e】", finger: "左Shift+右[ ➔ 左中指E" },
+    "ï": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: true }, vowelStep: { code: "KeyI" }, desc: "死键分音：第 1 步按【Shift + [】(¨)，第 2 步按【i】", finger: "左Shift+右[ ➔ 右中指I" },
+    "ü": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: true }, vowelStep: { code: "KeyU" }, desc: "死键分音：第 1 步按【Shift + [】(¨)，第 2 步按【u】", finger: "左Shift+右[ ➔ 右食指U" },
 
-    // 基础符号
+    "ù": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: false }, vowelStep: { code: "KeyU" }, desc: "死键抑音：先按【Option + [】(`)，再按【u】", finger: "右小指[ ➔ 右食指U" },
+
     " ": { code: "Space", desc: "按【空格键】", finger: "大拇指" },
     ",": { code: "Comma", desc: "按【逗号键】", finger: "右手中指" },
     ".": { code: "Period", desc: "按【句号键】", finger: "右手无名指" },
     ";": { code: "Semicolon", desc: "按【分号键】", finger: "右手小指" },
-    ":": { code: "Semicolon", shift: true, shiftKey: "ShiftLeft", desc: "按【Shift + 分号】", finger: "左手小指按 Shift + 右手小指" },
-    "!": { code: "Digit1", shift: true, shiftKey: "ShiftRight", desc: "按【Shift + 1】", finger: "右手小指按 Shift + 左手小指" },
+    ":": { code: "Semicolon", shift: true, shiftKey: "ShiftLeft", desc: "按【Shift + 分号】", finger: "左小指 Shift + 右小指" },
+    "!": { code: "Digit1", shift: true, shiftKey: "ShiftRight", desc: "按【Shift + 1】", finger: "右小指 Shift + 左小指 1" },
     "-": { code: "Minus", desc: "按【减号键】", finger: "右手小指" }
   };
 
-  // 生成 A-Z 字母指法表
   const LETTERS: Record<string, { code: string; finger: string; rightHand?: boolean }> = {
     a: { code: "KeyA", finger: "左手小指" }, b: { code: "KeyB", finger: "左手食指" },
     c: { code: "KeyC", finger: "左手中指" }, d: { code: "KeyD", finger: "左手中指" },
@@ -1176,145 +1510,353 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   };
 
   Object.entries(LETTERS).forEach(([letter, data]) => {
-    KEY_GUIDE_MAP[letter] = {
-      code: data.code,
-      shift: false,
-      desc: `按【${letter.toUpperCase()}】键`,
-      finger: data.finger
-    };
-    KEY_GUIDE_MAP[letter.toUpperCase()] = {
-      code: data.code,
-      shift: true,
-      shiftKey: data.rightHand ? "ShiftLeft" : "ShiftRight",
-      desc: `大写字母：【Shift + ${letter.toUpperCase()}】`,
-      finger: `${data.rightHand ? '左手小指' : '右手小指'}按 Shift + ${data.finger}`
-    };
+    KEY_GUIDE_MAP[letter] = { code: data.code, shift: false, desc: `按【${letter.toUpperCase()}】键`, finger: data.finger };
+    KEY_GUIDE_MAP[letter.toUpperCase()] = { code: data.code, shift: true, shiftKey: data.rightHand ? "ShiftLeft" : "ShiftRight", desc: `大写字母：【Shift + ${letter.toUpperCase()}】`, finger: `${data.rightHand ? '左小指' : '右小指'} Shift + ${data.finger}` };
   });
 
-  // 状态变量
-  let currentMode = "accents";
-  let currentPromptIndex = 0;
+  // 音频引擎 (Web Audio API 原生合成音)
+  class SoundEngine {
+    private ctx: AudioContext | null = null;
+    enabled = true;
+
+    init() {
+      if (!this.ctx && typeof window !== "undefined") {
+        const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+        if (AudioCtx) this.ctx = new AudioCtx();
+      }
+    }
+
+    playClick() {
+      if (!this.enabled || !this.ctx) return;
+      try {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(650, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.03);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.03);
+      } catch {}
+    }
+
+    playError() {
+      if (!this.enabled || !this.ctx) return;
+      try {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(140, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.08);
+      } catch {}
+    }
+
+    playSuccessChime() {
+      if (!this.enabled || !this.ctx) return;
+      try {
+        const now = this.ctx.currentTime;
+        [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+          const osc = this.ctx!.createOscillator();
+          const gain = this.ctx!.createGain();
+          osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+          gain.gain.setValueAtTime(0.06, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx!.destination);
+          osc.start(now + idx * 0.08);
+          osc.stop(now + idx * 0.08 + 0.35);
+        });
+      } catch {}
+    }
+  }
+
+  const sound = new SoundEngine();
+
+  // 课程持久化存储结构
+  interface LessonProgress {
+    stars: number;
+    wpm: number;
+    accuracy: number;
+    completed: boolean;
+  }
+  const STORAGE_KEY = "csa_french_course_v2";
+
+  function getSavedProgress(): Record<number, LessonProgress> {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  }
+
+  function saveProgress(id: number, stars: number, wpm: number, accuracy: number) {
+    try {
+      const all = getSavedProgress();
+      const prev = all[id] || { stars: 0, wpm: 0, accuracy: 0, completed: false };
+      all[id] = {
+        stars: Math.max(prev.stars, stars),
+        wpm: Math.max(prev.wpm, wpm),
+        accuracy: Math.max(prev.accuracy, accuracy),
+        completed: true
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+      updateTotalStarsBadge();
+    } catch {}
+  }
+
+  // 状态机
+  let isCourseMode = true;
+  let activeLessonId = 1;
+  let currentDrillIndex = 0;
+  let currentDrillList: string[] = [];
   let targetText = "";
   let typedText = "";
   let startTime: number | null = null;
   let errorCount = 0;
   let deadKeyInProgress = false;
 
-  // DOM 元素引用
+  // DOM 引用
+  const viewCourseMap = document.getElementById("view-course-map")!;
+  const viewPlayStage = document.getElementById("view-play-stage")!;
+  const viewDrillsStage = document.getElementById("view-drills-stage")!;
+  const tabCourseView = document.getElementById("tab-course-view")!;
+  const tabPlayView = document.getElementById("tab-play-view")!;
+  const tabDrillsView = document.getElementById("tab-drills-view")!;
+  const unitsContainer = document.getElementById("units-container")!;
+  const totalStarsCount = document.getElementById("total-stars-count")!;
+  const toggleSoundBtn = document.getElementById("toggle-sound")!;
+  const toggleFingerColorsBtn = document.getElementById("toggle-finger-colors")!;
+  const btnContinueJourney = document.getElementById("btn-continue-journey")!;
+
+  const lessonTag = document.getElementById("lesson-tag")!;
+  const lessonTitle = document.getElementById("lesson-title")!;
+  const lessonKeys = document.getElementById("lesson-keys")!;
+  const lessonTarget = document.getElementById("lesson-target")!;
+  const btnBackToMap = document.getElementById("btn-back-to-map")!;
+  const btnRestartLesson = document.getElementById("btn-restart-lesson")!;
+
   const typingBox = document.getElementById("typing-box")!;
   const hiddenInput = document.getElementById("hidden-input") as HTMLInputElement;
   const textDisplay = document.getElementById("text-display")!;
   const hintText = document.getElementById("hint-text")!;
   const hintFingerBadge = document.getElementById("hint-finger-badge")!;
+  const statDrillStep = document.getElementById("stat-drill-step")!;
   const statWpm = document.getElementById("stat-wpm")!;
   const statAcc = document.getElementById("stat-acc")!;
   const statProg = document.getElementById("stat-prog")!;
-  const btnRestart = document.getElementById("btn-restart")!;
-  const btnNext = document.getElementById("btn-next")!;
-  const modeTabs = document.querySelectorAll<HTMLButtonElement>(".mode-tab");
-  const customDrawer = document.getElementById("custom-drawer")!;
-  const customTextInput = document.getElementById("custom-text-input") as HTMLTextAreaElement;
-  const btnLoadCustom = document.getElementById("btn-load-custom")!;
-  const toggleCheatBtn = document.getElementById("toggle-cheat")!;
-  const cheatBody = document.getElementById("cheat-body")!;
-  const toggleFingerColorsBtn = document.getElementById("toggle-finger-colors")!;
   const physicalKeyboard = document.getElementById("physical-keyboard")!;
   const allKeys = document.querySelectorAll<HTMLElement>(".k-key");
 
-  // 折叠速查卡
-  toggleCheatBtn.addEventListener("click", () => {
-    const isHidden = cheatBody.hasAttribute("hidden");
-    if (isHidden) {
-      cheatBody.removeAttribute("hidden");
-      toggleCheatBtn.textContent = "收起速查";
-      toggleCheatBtn.setAttribute("aria-expanded", "true");
-    } else {
-      cheatBody.setAttribute("hidden", "");
-      toggleCheatBtn.textContent = "展开速查";
-      toggleCheatBtn.setAttribute("aria-expanded", "false");
+  const customTextInput = document.getElementById("custom-text-input") as HTMLTextAreaElement;
+  const btnLoadCustom = document.getElementById("btn-load-custom")!;
+
+  const lessonModal = document.getElementById("lesson-modal")!;
+  const modalLessonTitle = document.getElementById("modal-lesson-title")!;
+  const modalLessonQuote = document.getElementById("modal-lesson-quote")!;
+  const modalStars = document.getElementById("modal-stars")!;
+  const modalWpm = document.getElementById("modal-wpm")!;
+  const modalAcc = document.getElementById("modal-acc")!;
+  const modalTime = document.getElementById("modal-time")!;
+  const modalBtnRetry = document.getElementById("modal-btn-retry")!;
+  const modalBtnNext = document.getElementById("modal-btn-next")!;
+  const modalBtnClose = document.getElementById("modal-btn-close")!;
+
+  // 渲染课程地图
+  function renderCourseMap() {
+    unitsContainer.innerHTML = "";
+    const progress = getSavedProgress();
+
+    // 按单元分组
+    const unitsMap = new Map<number, LessonDef[]>();
+    COURSE_LESSONS.forEach(l => {
+      if (!unitsMap.has(l.unitNum)) unitsMap.set(l.unitNum, []);
+      unitsMap.get(l.unitNum)!.push(l);
+    });
+
+    unitsMap.forEach((lessons) => {
+      const uFirst = lessons[0];
+      const block = document.createElement("div");
+      block.className = "unit-block";
+
+      const header = document.createElement("div");
+      header.className = "unit-header";
+      header.innerHTML = `
+        <h3 class="unit-title">${uFirst.unitTitle}</h3>
+        <span class="unit-subtitle">${uFirst.unitDesc}</span>
+      `;
+      block.appendChild(header);
+
+      const grid = document.createElement("div");
+      grid.className = "lessons-grid";
+
+      lessons.forEach(l => {
+        const prog = progress[l.id];
+        const stars = prog ? prog.stars : 0;
+        const card = document.createElement("div");
+        card.className = `lesson-card ${prog?.completed ? 'completed' : ''} ${l.id === activeLessonId ? 'active-current' : ''}`;
+        card.innerHTML = `
+          <div class="card-top">
+            <span class="card-num">第 ${String(l.id).padStart(2, '0')} 关</span>
+            <span class="card-stars">
+              <span class="${stars >= 1 ? 'star-filled' : ''}">★</span>
+              <span class="${stars >= 2 ? 'star-filled' : ''}">★</span>
+              <span class="${stars >= 3 ? 'star-filled' : ''}">★</span>
+            </span>
+          </div>
+          <h4 class="card-title">${l.title}</h4>
+          <div class="card-keys">聚焦：${l.focusKeys}</div>
+          <div class="card-footer">
+            <span>目标: ${l.targetWpm} WPM</span>
+            <span>${prog ? `最高: ${prog.wpm} WPM` : '未开始'}</span>
+          </div>
+        `;
+        card.addEventListener("click", () => {
+          startCourseLesson(l.id);
+        });
+        grid.appendChild(card);
+      });
+
+      block.appendChild(grid);
+      unitsContainer.appendChild(block);
+    });
+
+    updateTotalStarsBadge();
+  }
+
+  function updateTotalStarsBadge() {
+    const progress = getSavedProgress();
+    let total = 0;
+    Object.values(progress).forEach(p => { total += (p.stars || 0); });
+    totalStarsCount.textContent = String(total);
+  }
+
+  // 切换主视图
+  function switchView(viewName: 'map' | 'play' | 'drills') {
+    viewCourseMap.hidden = viewName !== 'map';
+    viewPlayStage.hidden = viewName !== 'play';
+    viewDrillsStage.hidden = viewName !== 'drills';
+
+    tabCourseView.classList.toggle("active", viewName === 'map');
+    tabCourseView.setAttribute("aria-selected", String(viewName === 'map'));
+    tabPlayView.classList.toggle("active", viewName === 'play');
+    tabPlayView.setAttribute("aria-selected", String(viewName === 'play'));
+    tabDrillsView.classList.toggle("active", viewName === 'drills');
+    tabDrillsView.setAttribute("aria-selected", String(viewName === 'drills'));
+
+    if (viewName === 'play') {
+      setTimeout(() => hiddenInput.focus(), 100);
     }
+  }
+
+  tabCourseView.addEventListener("click", () => switchView('map'));
+  tabPlayView.addEventListener("click", () => switchView('play'));
+  tabDrillsView.addEventListener("click", () => switchView('drills'));
+  btnBackToMap.addEventListener("click", () => switchView('map'));
+
+  // 启动课程关卡
+  function startCourseLesson(lessonId: number) {
+    isCourseMode = true;
+    activeLessonId = lessonId;
+    const l = COURSE_LESSONS.find(item => item.id === lessonId) || COURSE_LESSONS[0];
+    currentDrillList = l.drills;
+    currentDrillIndex = 0;
+
+    lessonTag.textContent = `${l.unitTitle} · 第 ${String(l.id).padStart(2, '0')} 关`;
+    lessonTitle.textContent = l.title;
+    lessonKeys.textContent = `重点键：${l.focusKeys}`;
+    lessonTarget.textContent = `目标：${l.targetWpm} WPM · 正确率 ≥ 95%`;
+
+    loadCurrentDrillText();
+    switchView('play');
+    renderCourseMap();
+  }
+
+  function loadCurrentDrillText() {
+    targetText = currentDrillList[currentDrillIndex] || "";
+    typedText = "";
+    hiddenInput.value = "";
+    startTime = null;
+    errorCount = 0;
+    deadKeyInProgress = false;
+
+    statDrillStep.textContent = `${currentDrillIndex + 1} / ${currentDrillList.length}`;
+    updateStats();
+    renderText();
+    clearKeyboardHighlight();
+    updateHintAndKeyboard();
+    hiddenInput.focus();
+  }
+
+  // 继续未完成或最新关卡
+  btnContinueJourney.addEventListener("click", () => {
+    const prog = getSavedProgress();
+    const nextUnfinished = COURSE_LESSONS.find(l => !prog[l.id]?.completed);
+    startCourseLesson(nextUnfinished ? nextUnfinished.id : 1);
   });
 
-  // 切换指法分区配色
+  // 音效与配色切换
+  toggleSoundBtn.addEventListener("click", () => {
+    sound.init();
+    sound.enabled = !sound.enabled;
+    toggleSoundBtn.textContent = sound.enabled ? "🔊 音效：开" : "🔇 音效：关";
+    toggleSoundBtn.setAttribute("aria-pressed", String(sound.enabled));
+  });
+
   toggleFingerColorsBtn.addEventListener("click", () => {
     const hasClass = physicalKeyboard.classList.contains("show-fingers");
-    if (hasClass) {
-      physicalKeyboard.classList.remove("show-fingers");
-      toggleFingerColorsBtn.textContent = "🎨 指法分区配色：关";
-      toggleFingerColorsBtn.setAttribute("aria-pressed", "false");
-    } else {
-      physicalKeyboard.classList.add("show-fingers");
-      toggleFingerColorsBtn.textContent = "🎨 指法分区配色：开";
-      toggleFingerColorsBtn.setAttribute("aria-pressed", "true");
-    }
+    physicalKeyboard.classList.toggle("show-fingers", !hasClass);
+    toggleFingerColorsBtn.textContent = !hasClass ? "🎨 指法配色：开" : "🎨 指法配色：关";
+    toggleFingerColorsBtn.setAttribute("aria-pressed", String(!hasClass));
   });
 
-  // 模式切换
-  modeTabs.forEach(tab => {
-    tab.addEventListener("click", () => {
-      modeTabs.forEach(t => {
-        t.classList.remove("active");
-        t.setAttribute("aria-selected", "false");
-      });
-      tab.classList.add("active");
-      tab.setAttribute("aria-selected", "true");
-      currentMode = tab.dataset.mode!;
-      currentPromptIndex = 0;
-      if (currentMode === "custom") {
-        customDrawer.removeAttribute("hidden");
-      } else {
-        customDrawer.setAttribute("hidden", "");
-      }
-      initLevel();
+  // 自由题库与自定义输入
+  document.querySelectorAll<HTMLButtonElement>(".drill-launch-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      isCourseMode = false;
+      const key = btn.dataset.drill!;
+      currentDrillList = CLASSIC_DRILLS[key] || ["C'est la vie !"];
+      currentDrillIndex = 0;
+
+      lessonTag.textContent = "自由专项练习";
+      lessonTitle.textContent = btn.textContent || "专项训练";
+      lessonKeys.textContent = "自由靶向突破";
+      lessonTarget.textContent = "无星级考核限制";
+
+      loadCurrentDrillText();
+      switchView('play');
     });
   });
 
   btnLoadCustom.addEventListener("click", () => {
     const val = customTextInput.value.trim();
     if (val) {
-      targetText = val;
-      resetState();
-      renderText();
-      hiddenInput.focus();
+      isCourseMode = false;
+      currentDrillList = [val];
+      currentDrillIndex = 0;
+
+      lessonTag.textContent = "自定义练习";
+      lessonTitle.textContent = "个人专属文本输入";
+      lessonKeys.textContent = "自由词句";
+      lessonTarget.textContent = "无星级考核限制";
+
+      loadCurrentDrillText();
+      switchView('play');
     }
   });
 
-  btnRestart.addEventListener("click", () => {
-    resetState();
-    renderText();
-    hiddenInput.focus();
+  btnRestartLesson.addEventListener("click", () => {
+    loadCurrentDrillText();
   });
 
-  btnNext.addEventListener("click", () => {
-    if (currentMode !== "custom") {
-      const list = DRILL_SETS[currentMode] || [];
-      currentPromptIndex = (currentPromptIndex + 1) % list.length;
-    }
-    initLevel();
-  });
-
-  function initLevel() {
-    if (currentMode === "custom") {
-      targetText = customTextInput.value.trim() || "C'est la vie ! Où est la bibliothèque ?";
-    } else {
-      const list = DRILL_SETS[currentMode] || [];
-      targetText = list[currentPromptIndex] || list[0] || "";
-    }
-    resetState();
-    renderText();
-    hiddenInput.focus();
-  }
-
-  function resetState() {
-    typedText = "";
-    hiddenInput.value = "";
-    startTime = null;
-    errorCount = 0;
-    deadKeyInProgress = false;
-    updateStats();
-    clearKeyboardHighlight();
-  }
-
+  // 打字渲染逻辑
   function renderText() {
     textDisplay.innerHTML = "";
     const targetChars = Array.from(targetText);
@@ -1344,8 +1886,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     clearKeyboardHighlight();
     const currIndex = typedText.length;
     if (currIndex >= targetText.length) {
-      hintText.innerHTML = "🎉 <strong>恭喜完成！</strong> 点击【换一组内容】或按 Esc 重新开始。";
-      hintFingerBadge.textContent = "完成";
+      hintText.innerHTML = "✨ 本组已完成，准备进入下一组！";
+      hintFingerBadge.textContent = "即将过渡";
       return;
     }
 
@@ -1390,7 +1932,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   function updateStats() {
     statProg.textContent = `${typedText.length} / ${targetText.length}`;
     if (!startTime || typedText.length === 0) {
-      statWpm.textContent = "0";
+      statWpm.textContent = "0 WPM";
       statAcc.textContent = "100%";
       return;
     }
@@ -1398,34 +1940,27 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     const elapsedMinutes = (Date.now() - startTime) / 60000;
     const words = typedText.length / 5;
     const wpm = elapsedMinutes > 0 ? Math.round(words / elapsedMinutes) : 0;
-    statWpm.textContent = String(wpm);
+    statWpm.textContent = `${wpm} WPM`;
 
     const totalTyped = typedText.length + errorCount;
     const acc = totalTyped > 0 ? Math.round((typedText.length / totalTyped) * 100) : 100;
     statAcc.textContent = `${acc}%`;
   }
 
-  // 聚焦
-  typingBox.addEventListener("click", () => hiddenInput.focus());
-
-  // 捕获物理键盘按下 (TypingClub 风格即时物理按压下沉动画)
+  // 物理键盘联动与下沉
   window.addEventListener("keydown", (e: KeyboardEvent) => {
-    // 查找对应物理键
+    sound.init();
     const keyEl = document.querySelector<HTMLElement>(`.k-key[data-code="${e.code}"]`);
     if (keyEl) keyEl.classList.add("pressed");
 
-    // Shift 联动换挡
     if (e.key === "Shift") {
       physicalKeyboard.classList.add("keyboard-shifted");
     }
 
     if (e.key === "Escape") {
-      resetState();
-      renderText();
-      hiddenInput.focus();
+      loadCurrentDrillText();
     }
 
-    // 监听死键按压 (如按下了 [ 键)
     if (e.code === "BracketLeft") {
       deadKeyInProgress = true;
       updateHintAndKeyboard();
@@ -1441,21 +1976,27 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
   });
 
-  // 捕获真实文本输入
+  // 聚焦
+  typingBox.addEventListener("click", () => hiddenInput.focus());
+
+  // 输入监听
   hiddenInput.addEventListener("input", () => {
     if (!startTime) startTime = Date.now();
     deadKeyInProgress = false;
     const val = hiddenInput.value;
 
     if (val.length < typedText.length) {
-      // 退格
       typedText = val;
+      sound.playClick();
     } else {
       const addedChar = val.slice(typedText.length);
       const expectedChar = targetText.slice(typedText.length, typedText.length + addedChar.length);
 
-      if (addedChar !== expectedChar) {
+      if (addedChar === expectedChar) {
+        sound.playClick();
+      } else {
         errorCount++;
+        sound.playError();
       }
       typedText = val;
     }
@@ -1463,20 +2004,81 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     updateStats();
     renderText();
 
-    // 如果完成当前句子
+    // 完成单句
     if (typedText.length >= targetText.length) {
-      if (currentMode !== "custom") {
-        const list = DRILL_SETS[currentMode] || [];
-        if (currentPromptIndex < list.length - 1) {
-          setTimeout(() => {
-            currentPromptIndex++;
-            initLevel();
-          }, 600);
-        }
+      if (currentDrillIndex < currentDrillList.length - 1) {
+        setTimeout(() => {
+          currentDrillIndex++;
+          loadCurrentDrillText();
+        }, 350);
+      } else {
+        // 全关完成！
+        setTimeout(() => {
+          onLessonComplete();
+        }, 350);
       }
     }
   });
 
-  // 初始启动
-  initLevel();
+  // 关卡完成结算
+  function onLessonComplete() {
+    sound.playSuccessChime();
+    const elapsedSeconds = Math.max(1, Math.round(((Date.now() - (startTime || Date.now()))) / 1000));
+    const words = targetText.length / 5;
+    const finalWpm = Math.round((words / (elapsedSeconds / 60))) || 0;
+    const totalTyped = targetText.length + errorCount;
+    const finalAcc = totalTyped > 0 ? Math.round((targetText.length / totalTyped) * 100) : 100;
+
+    let starsEarned = 1;
+    if (finalAcc >= 95 && finalWpm >= 15) starsEarned = 2;
+    if (finalAcc >= 98 && finalWpm >= 20) starsEarned = 3;
+
+    if (isCourseMode) {
+      saveProgress(activeLessonId, starsEarned, finalWpm, finalAcc);
+      const l = COURSE_LESSONS.find(item => item.id === activeLessonId)!;
+      modalLessonTitle.textContent = `第 ${activeLessonId} 关完成！`;
+      modalLessonQuote.textContent = l.quote;
+    } else {
+      modalLessonTitle.textContent = "专项训练完成！";
+      modalLessonQuote.textContent = "保持练习，手感将越来越流畅！";
+    }
+
+    // 渲染星星
+    modalStars.innerHTML = `
+      <span class="${starsEarned >= 1 ? 'star-active' : ''}">★</span>
+      <span class="${starsEarned >= 2 ? 'star-active' : ''}">★</span>
+      <span class="${starsEarned >= 3 ? 'star-active' : ''}">★</span>
+    `;
+
+    modalWpm.textContent = `${finalWpm} WPM`;
+    modalAcc.textContent = `${finalAcc}%`;
+    modalTime.textContent = `${elapsedSeconds}s`;
+
+    lessonModal.removeAttribute("hidden");
+  }
+
+  // 模态弹窗交互
+  modalBtnRetry.addEventListener("click", () => {
+    lessonModal.setAttribute("hidden", "");
+    currentDrillIndex = 0;
+    loadCurrentDrillText();
+  });
+
+  modalBtnNext.addEventListener("click", () => {
+    lessonModal.setAttribute("hidden", "");
+    if (isCourseMode && activeLessonId < COURSE_LESSONS.length) {
+      startCourseLesson(activeLessonId + 1);
+    } else {
+      switchView('map');
+    }
+  });
+
+  modalBtnClose.addEventListener("click", () => {
+    lessonModal.setAttribute("hidden", "");
+    switchView('map');
+  });
+
+  // 初始化
+  renderCourseMap();
+  switchView('map');
 </script>
