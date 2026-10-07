@@ -12,7 +12,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <header class="practice-header">
       <div class="eyebrow-row">
         <p class="eyebrow">Clavier Canadien - CSA · Entraînement TypeClub</p>
-        <span class="badge">macOS 物理键盘映射</span>
+        <div class="header-badges">
+          <a href="https://tts.gaoyuze.com" target="_blank" rel="noopener noreferrer" class="badge-link" title="打开法语音频工作台">
+            🎙️ 法语音频工作台 (1000H) ↗
+          </a>
+          <span class="badge">macOS 物理键盘映射</span>
+        </div>
       </div>
       <h1>加拿大法语键盘物理指法练习</h1>
       <p class="lead">
@@ -118,7 +123,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <!-- 自定义文本输入抽屉 -->
     <div id="custom-drawer" class="custom-drawer" hidden>
-      <label for="custom-text-input">粘贴你想要练习的法语文本：</label>
+      <div class="custom-drawer-head">
+        <label for="custom-text-input">粘贴你想要练习的法语文本：</label>
+        <a href="https://tts.gaoyuze.com" target="_blank" rel="noopener noreferrer" class="link-inline">
+          🎙️ 从法语音频工作台生成句子与听力 ↗
+        </a>
+      </div>
       <textarea id="custom-text-input" rows="3" placeholder="例如：C'est la vie ! Où est la gare ? J'apprends le français..."></textarea>
       <button id="btn-load-custom" class="btn-primary" type="button">加载自定义文本</button>
     </div>
@@ -241,6 +251,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </section>
 
+    <!-- 法语音频工作台联动推荐卡 -->
+    <section class="french-studio-card" aria-label="法语音频工作台联动">
+      <div class="studio-info">
+        <div class="studio-title-row">
+          <span class="studio-badge">配套法语学习工具</span>
+          <h3>法语音频工作台 · 1000H French</h3>
+        </div>
+        <p>
+          结合大语言模型与微软 Edge 神经网络语音合成。支持自动改写润色、CEFR A1-C2 语法纠错与真人级朗读听力，生成的纯正法语文本可无缝复制到此处进行物理键盘打字强化。
+        </p>
+      </div>
+      <a href="https://tts.gaoyuze.com" target="_blank" rel="noopener noreferrer" class="btn-studio">
+        打开法语音频工作台 (tts.gaoyuze.com) ↗
+      </a>
+    </section>
+
     <!-- 底部原理与技巧指导 -->
     <footer class="practice-guide">
       <div class="guide-col">
@@ -291,6 +317,29 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
   .eyebrow-row .eyebrow {
     margin: 0;
+  }
+  .header-badges {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .badge-link {
+    font-size: 0.6875rem;
+    letter-spacing: 0.05em;
+    padding: 0.2rem 0.55rem;
+    background: #fff;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 3px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.15s ease;
+  }
+  .badge-link:hover {
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
   }
   .badge {
     font-size: 0.6875rem;
@@ -517,6 +566,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
+  }
+  .custom-drawer-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .link-inline {
+    font-size: 0.75rem;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .link-inline:hover {
+    text-decoration: underline;
   }
   .custom-drawer label {
     font-size: 0.8125rem;
@@ -860,6 +924,65 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-size: 0.8125rem;
     font-weight: 700;
     color: var(--ink);
+  }
+
+  /* 法语音频工作台联动推荐卡 */
+  .french-studio-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  }
+  .studio-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.4rem;
+  }
+  .studio-badge {
+    font-size: 0.625rem;
+    background: var(--soft);
+    color: var(--accent);
+    padding: 0.15rem 0.45rem;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+  .studio-title-row h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .studio-info p {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 40rem;
+  }
+  .btn-studio {
+    background: var(--ink);
+    color: #fff;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    padding: 0.55rem 1.15rem;
+    border-radius: 4px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: opacity 0.15s ease;
+  }
+  .btn-studio:hover {
+    opacity: 0.9;
+    text-decoration: none;
+    color: #fff;
   }
 
   /* 底部指导 */
