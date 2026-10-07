@@ -4,77 +4,71 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout
   title="加拿大法语键盘练习 (Canadian - CSA) · 高瑜泽"
-  description="针对 macOS Canadian - CSA 键盘布局的痛点键位（é, è, à, ç, 死键 ^/¨ 与标点搬迁）定制的个人法语打字靶向练习工具。"
+  description="针对 macOS Canadian - CSA 键盘布局的痛点键位定制的个人物理打字练习工具，参考 TypingClub 完整虚拟键盘与指法映射。"
   wide
   noindex
 >
   <div class="french-practice">
     <header class="practice-header">
       <div class="eyebrow-row">
-        <p class="eyebrow">Clavier Canadien - CSA · Entraînement</p>
-        <span class="badge">macOS 专属优化</span>
+        <p class="eyebrow">Clavier Canadien - CSA · Entraînement TypeClub</p>
+        <span class="badge">macOS 物理键盘映射</span>
       </div>
-      <h1>加拿大法语键盘靶向练习</h1>
+      <h1>加拿大法语键盘物理指法练习</h1>
       <p class="lead">
-        加拿大 CSA（CAN/CSA Z243.200）保留了 QWERTY 字母区，却彻底重构了<strong>右手标点区</strong>。
-        这个工具专门用于攻克 <code>é è à ç</code> 直出、死键 <code>^ ¨</code> 以及最反人类的 <code>'</code>（Shift+,）与 <code>?</code>（Shift+6）。
+        像 <strong>TypingClub</strong> 一样对齐真实笔记本物理键盘。重点克服 <code>é è à ç</code> 直出、死键 <code>^ ¨</code> 以及最反人类的 <strong>撇号 <code>'</code></strong>（Shift + ,）与 <strong>问号 <code>?</code></strong>（Shift + 6）。
       </p>
     </header>
 
     <!-- 顶部核心速查卡 -->
     <section class="cheat-card" aria-label="核心键位速查">
       <div class="cheat-header">
-        <span class="cheat-title">🎯 痛点键位秒查（美式物理键盘 vs CSA 输出）</span>
-        <button id="toggle-cheat" class="btn-subtle" type="button" aria-expanded="true">收起速查</button>
+        <span class="cheat-title">🎯 核心痛点速查（物理按键 vs CSA 实际输出）</span>
+        <div class="cheat-actions">
+          <button id="toggle-finger-colors" class="btn-subtle" type="button" aria-pressed="true">🎨 指法分区配色：开</button>
+          <button id="toggle-cheat" class="btn-subtle" type="button" aria-expanded="true">收起速查</button>
+        </div>
       </div>
       <div id="cheat-body" class="cheat-grid">
         <div class="cheat-item danger">
           <div class="cheat-key">Shift + ,</div>
-          <div class="cheat-arrow">➔</div>
-          <div class="cheat-char">‘ 单引号</div>
-          <div class="cheat-desc">原单引号键变成了 è！打 <code>c'est</code> 必须用 Shift+,</div>
+          <div class="cheat-char">‘ 单引号 (撇号)</div>
+          <div class="cheat-desc">原单引号键变成了 è！打 <code>c'est</code> 必须用 <strong>Shift + ,</strong></div>
         </div>
         <div class="cheat-item danger">
           <div class="cheat-key">Shift + 6</div>
-          <div class="cheat-arrow">➔</div>
           <div class="cheat-char">? 问号</div>
-          <div class="cheat-desc">原 /? 键变成了 é！打问号必须用 Shift+6</div>
+          <div class="cheat-desc">原 /? 键变成了 é！打问号必须用 <strong>Shift + 6</strong></div>
         </div>
         <div class="cheat-item success">
           <div class="cheat-key">/ 键</div>
-          <div class="cheat-arrow">➔</div>
           <div class="cheat-char">é / É (Shift)</div>
-          <div class="cheat-desc">直接按下出 é，带 Shift 出 É</div>
+          <div class="cheat-desc">右 Shift 旁的物理 / 键直接出 <strong>é</strong>，加 Shift 出 <strong>É</strong></div>
         </div>
         <div class="cheat-item success">
           <div class="cheat-key">' 键</div>
-          <div class="cheat-arrow">➔</div>
           <div class="cheat-char">è / È (Shift)</div>
-          <div class="cheat-desc">直接按下出 è，带 Shift 出 È</div>
+          <div class="cheat-desc">回车左边的物理 ' 键直接出 <strong>è</strong>，加 Shift 出 <strong>È</strong></div>
         </div>
         <div class="cheat-item success">
           <div class="cheat-key">\ 键</div>
-          <div class="cheat-arrow">➔</div>
           <div class="cheat-char">à / À (Shift)</div>
-          <div class="cheat-desc">直接按下出 à，带 Shift 出 À</div>
+          <div class="cheat-desc">回车上方的物理 \ 键直接出 <strong>à</strong>，加 Shift 出 <strong>À</strong></div>
         </div>
         <div class="cheat-item success">
           <div class="cheat-key">] 键</div>
-          <div class="cheat-arrow">➔</div>
           <div class="cheat-char">ç / Ç (Shift)</div>
-          <div class="cheat-desc">直接按下出 ç，带 Shift 出 Ç</div>
+          <div class="cheat-desc">右中括号键直接出 <strong>ç</strong>，加 Shift 出 <strong>Ç</strong></div>
         </div>
         <div class="cheat-item warn">
           <div class="cheat-key">[ 键 (死键)</div>
-          <div class="cheat-arrow">➔</div>
           <div class="cheat-char">^ 长音符</div>
-          <div class="cheat-desc">按 [ 无反应，紧接着按 e/a/i/o/u 得到 ê â î ô û</div>
+          <div class="cheat-desc">先按 [（屏幕无反应），再按 e/a/i/o/u 得到 <strong>ê â î ô û</strong></div>
         </div>
         <div class="cheat-item warn">
           <div class="cheat-key">Shift + [</div>
-          <div class="cheat-arrow">➔</div>
           <div class="cheat-char">¨ 分音符</div>
-          <div class="cheat-desc">按 Shift+[，再按 e/i/u 得到 ë ï ü</div>
+          <div class="cheat-desc">先按 Shift+[，再按 e/i/u 得到 <strong>ë ï ü</strong></div>
         </div>
       </div>
     </section>
@@ -129,10 +123,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <button id="btn-load-custom" class="btn-primary" type="button">加载自定义文本</button>
     </div>
 
-    <!-- 交互提示栏（实时告知下一个字符该怎么按） -->
+    <!-- 交互提示栏（实时指法与按键说明） -->
     <div class="live-hint-bar" id="live-hint" aria-live="polite">
-      <span class="hint-icon">💡</span>
-      <span class="hint-text" id="hint-text">点击下方文本区域，或直接按键开始打字。</span>
+      <div class="hint-main">
+        <span class="hint-icon">💡</span>
+        <span class="hint-text" id="hint-text">点击下方文本区域，或直接按键开始打字。</span>
+      </div>
+      <div class="hint-finger-badge" id="hint-finger-badge">准备开始</div>
     </div>
 
     <!-- 打字核心展示区 -->
@@ -141,80 +138,105 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <input id="hidden-input" class="hidden-input" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-hidden="true" />
     </div>
 
-    <!-- 键盘动态高亮视窗 -->
-    <section class="mini-keyboard-wrap" aria-label="键盘右手区映射">
-      <div class="kb-header">
-        <span>右手高频变动区（灰字为物理键帽，大字为 CSA 实际输出）</span>
-        <span class="kb-tip">当前键位在按压时会变色提醒</span>
+    <!-- 完整物理键盘 (TypingClub 风格) -->
+    <section class="keyboard-section" aria-label="完整物理键盘交互视窗">
+      <div class="kb-meta">
+        <div class="kb-meta-left">
+          <span class="kb-tag">⌨️ 物理 ANSI 键盘布局</span>
+          <span class="kb-sub">灰字为键盘原物理字符，主字为 CSA 输出。按 Shift 键时键盘实时联动。</span>
+        </div>
+        <div class="kb-legend">
+          <span class="legend-item"><span class="legend-dot color-lp"></span>左手小指</span>
+          <span class="legend-item"><span class="legend-dot color-lr"></span>左手无名</span>
+          <span class="legend-item"><span class="legend-dot color-lm"></span>左手中指</span>
+          <span class="legend-item"><span class="legend-dot color-li"></span>左手食指</span>
+          <span class="legend-item"><span class="legend-dot color-th"></span>大拇指</span>
+          <span class="legend-item"><span class="legend-dot color-ri"></span>右手食指</span>
+          <span class="legend-item"><span class="legend-dot color-rm"></span>右手中指</span>
+          <span class="legend-item"><span class="legend-dot color-rr"></span>右手无名</span>
+          <span class="legend-item"><span class="legend-dot color-rp"></span>右手小指</span>
+        </div>
       </div>
-      <div class="mini-keyboard" id="mini-kb">
-        <!-- 第 1 排数字行 -->
-        <div class="kb-row">
-          <div class="kb-key" data-key="Digit6" data-chars="6 ?">
-            <span class="phys">6 ^</span>
-            <span class="norm">6</span>
-            <span class="shift">?</span>
-          </div>
-          <div class="kb-key-sep"></div>
-          <div class="kb-key" data-key="Minus" data-chars="- _ |">
-            <span class="phys">- _</span>
-            <span class="norm">-</span>
-            <span class="shift">_</span>
-          </div>
-          <div class="kb-key" data-key="Equal" data-chars="= +">
-            <span class="phys">= +</span>
-            <span class="norm">=</span>
-            <span class="shift">+</span>
-          </div>
+
+      <div class="physical-keyboard show-fingers" id="physical-keyboard">
+        <!-- 第 1 行: 数字行 -->
+        <div class="k-row">
+          <div class="k-key f-lp" data-code="Backquote"><span class="k-phys">~ `</span><span class="k-shift">~</span><span class="k-norm">`</span></div>
+          <div class="k-key f-lp" data-code="Digit1"><span class="k-phys">1 !</span><span class="k-shift">!</span><span class="k-norm">1</span></div>
+          <div class="k-key f-lr" data-code="Digit2"><span class="k-phys">2 @</span><span class="k-shift">@</span><span class="k-norm">2</span></div>
+          <div class="k-key f-lm" data-code="Digit3"><span class="k-phys">3 #</span><span class="k-shift">#</span><span class="k-norm">3</span></div>
+          <div class="k-key f-li" data-code="Digit4"><span class="k-phys">4 $</span><span class="k-shift">$</span><span class="k-norm">4</span></div>
+          <div class="k-key f-li" data-code="Digit5"><span class="k-phys">5 %</span><span class="k-shift">%</span><span class="k-norm">5</span></div>
+          <div class="k-key f-ri k-alert" data-code="Digit6"><span class="k-phys">6 ^</span><span class="k-shift k-highlight">?</span><span class="k-norm">6</span></div>
+          <div class="k-key f-ri" data-code="Digit7"><span class="k-phys">7 &amp;</span><span class="k-shift">&amp;</span><span class="k-norm">7</span></div>
+          <div class="k-key f-rm" data-code="Digit8"><span class="k-phys">8 *</span><span class="k-shift">*</span><span class="k-norm">8</span></div>
+          <div class="k-key f-rr" data-code="Digit9"><span class="k-phys">9 (</span><span class="k-shift">(</span><span class="k-norm">9</span></div>
+          <div class="k-key f-rp" data-code="Digit0"><span class="k-phys">0 )</span><span class="k-shift">)</span><span class="k-norm">0</span></div>
+          <div class="k-key f-rp" data-code="Minus"><span class="k-phys">- _</span><span class="k-shift">_</span><span class="k-norm">-</span></div>
+          <div class="k-key f-rp" data-code="Equal"><span class="k-phys">= +</span><span class="k-shift">+</span><span class="k-norm">=</span></div>
+          <div class="k-key k-w-backspace f-rp k-mod" data-code="Backspace"><span class="k-spec">delete ⌫</span></div>
         </div>
-        <!-- 第 2 排 -->
-        <div class="kb-row">
-          <div class="kb-key dead" data-key="BracketLeft" data-chars="^ ¨">
-            <span class="phys">[ &#123;</span>
-            <span class="norm">^ (死键)</span>
-            <span class="shift">¨</span>
-          </div>
-          <div class="kb-key special" data-key="BracketRight" data-chars="ç Ç">
-            <span class="phys">] &#125;</span>
-            <span class="norm">ç</span>
-            <span class="shift">Ç</span>
-          </div>
-          <div class="kb-key special" data-key="Backslash" data-chars="à À">
-            <span class="phys">\ |</span>
-            <span class="norm">à</span>
-            <span class="shift">À</span>
-          </div>
+
+        <!-- 第 2 行: QWERTY 行 -->
+        <div class="k-row">
+          <div class="k-key k-w-tab f-lp k-mod" data-code="Tab"><span class="k-spec">tab ⇥</span></div>
+          <div class="k-key f-lp" data-code="KeyQ"><span class="k-norm">Q</span></div>
+          <div class="k-key f-lr" data-code="KeyW"><span class="k-norm">W</span></div>
+          <div class="k-key f-lm" data-code="KeyE"><span class="k-norm">E</span></div>
+          <div class="k-key f-li" data-code="KeyR"><span class="k-norm">R</span></div>
+          <div class="k-key f-li" data-code="KeyT"><span class="k-norm">T</span></div>
+          <div class="k-key f-ri" data-code="KeyY"><span class="k-norm">Y</span></div>
+          <div class="k-key f-ri" data-code="KeyU"><span class="k-norm">U</span></div>
+          <div class="k-key f-rm" data-code="KeyI"><span class="k-norm">I</span></div>
+          <div class="k-key f-rr" data-code="KeyO"><span class="k-norm">O</span></div>
+          <div class="k-key f-rp" data-code="KeyP"><span class="k-norm">P</span></div>
+          <div class="k-key f-rp k-dead" data-code="BracketLeft"><span class="k-phys">[ &#123;</span><span class="k-shift">¨ (死键)</span><span class="k-norm">^ (死键)</span></div>
+          <div class="k-key f-rp k-accent" data-code="BracketRight"><span class="k-phys">] &#125;</span><span class="k-shift">Ç</span><span class="k-norm">ç</span></div>
+          <div class="k-key k-w-backslash f-rp k-accent" data-code="Backslash"><span class="k-phys">\ |</span><span class="k-shift">À</span><span class="k-norm">à</span></div>
         </div>
-        <!-- 第 3 排基准行 -->
-        <div class="kb-row">
-          <div class="kb-key" data-key="Semicolon" data-chars="; :">
-            <span class="phys">; :</span>
-            <span class="norm">;</span>
-            <span class="shift">:</span>
-          </div>
-          <div class="kb-key special" data-key="Quote" data-chars="è È">
-            <span class="phys">' "</span>
-            <span class="norm">è</span>
-            <span class="shift">È</span>
-          </div>
+
+        <!-- 第 3 行: 基准行 (Home Row) -->
+        <div class="k-row">
+          <div class="k-key k-w-caps f-lp k-mod" data-code="CapsLock"><span class="k-spec">caps lock ⇪</span></div>
+          <div class="k-key f-lp" data-code="KeyA"><span class="k-norm">A</span></div>
+          <div class="k-key f-lr" data-code="KeyS"><span class="k-norm">S</span></div>
+          <div class="k-key f-lm" data-code="KeyD"><span class="k-norm">D</span></div>
+          <div class="k-key f-li k-home" data-code="KeyF"><span class="k-norm">F</span><span class="k-bump"></span></div>
+          <div class="k-key f-li" data-code="KeyG"><span class="k-norm">G</span></div>
+          <div class="k-key f-ri" data-code="KeyH"><span class="k-norm">H</span></div>
+          <div class="k-key f-ri k-home" data-code="KeyJ"><span class="k-norm">J</span><span class="k-bump"></span></div>
+          <div class="k-key f-rm" data-code="KeyK"><span class="k-norm">K</span></div>
+          <div class="k-key f-rr" data-code="KeyL"><span class="k-norm">L</span></div>
+          <div class="k-key f-rp" data-code="Semicolon"><span class="k-phys">; :</span><span class="k-shift">:</span><span class="k-norm">;</span></div>
+          <div class="k-key f-rp k-accent" data-code="Quote"><span class="k-phys">' "</span><span class="k-shift">È</span><span class="k-norm">è</span></div>
+          <div class="k-key k-w-enter f-rp k-mod" data-code="Enter"><span class="k-spec">return ↵</span></div>
         </div>
-        <!-- 第 4 排底行 -->
-        <div class="kb-row">
-          <div class="kb-key critical" data-key="Comma" data-chars=", '">
-            <span class="phys">, &lt;</span>
-            <span class="norm">,</span>
-            <span class="shift highlight-shift">' (单引号!)</span>
-          </div>
-          <div class="kb-key" data-key="Period" data-chars=". &quot;">
-            <span class="phys">. &gt;</span>
-            <span class="norm">.</span>
-            <span class="shift highlight-shift">" (双引号)</span>
-          </div>
-          <div class="kb-key special" data-key="Slash" data-chars="é É">
-            <span class="phys">/ ?</span>
-            <span class="norm">é</span>
-            <span class="shift">É</span>
-          </div>
+
+        <!-- 第 4 行: Shift 行 -->
+        <div class="k-row">
+          <div class="k-key k-w-lshift f-lp k-mod" data-code="ShiftLeft"><span class="k-spec">⇧ shift</span></div>
+          <div class="k-key f-lp" data-code="KeyZ"><span class="k-norm">Z</span></div>
+          <div class="k-key f-lr" data-code="KeyX"><span class="k-norm">X</span></div>
+          <div class="k-key f-lm" data-code="KeyC"><span class="k-norm">C</span></div>
+          <div class="k-key f-li" data-code="KeyV"><span class="k-norm">V</span></div>
+          <div class="k-key f-li" data-code="KeyB"><span class="k-norm">B</span></div>
+          <div class="k-key f-ri" data-code="KeyN"><span class="k-norm">N</span></div>
+          <div class="k-key f-ri" data-code="KeyM"><span class="k-norm">M</span></div>
+          <div class="k-key f-rm k-alert" data-code="Comma"><span class="k-phys">, &lt;</span><span class="k-shift k-highlight">' (撇号!)</span><span class="k-norm">,</span></div>
+          <div class="k-key f-rr" data-code="Period"><span class="k-phys">. &gt;</span><span class="k-shift">"</span><span class="k-norm">.</span></div>
+          <div class="k-key f-rp k-accent" data-code="Slash"><span class="k-phys">/ ?</span><span class="k-shift">É</span><span class="k-norm">é</span></div>
+          <div class="k-key k-w-rshift f-rp k-mod" data-code="ShiftRight"><span class="k-spec">⇧ shift</span></div>
+        </div>
+
+        <!-- 第 5 行: 底栏修饰键与空格 -->
+        <div class="k-row">
+          <div class="k-key k-w-ctrl f-lp k-mod" data-code="ControlLeft"><span class="k-spec">control</span></div>
+          <div class="k-key k-w-opt f-lp k-mod" data-code="AltLeft"><span class="k-spec">⌥ option</span></div>
+          <div class="k-key k-w-cmd f-lp k-mod" data-code="MetaLeft"><span class="k-spec">⌘ command</span></div>
+          <div class="k-key k-w-space f-th" data-code="Space"><span class="k-norm">space</span></div>
+          <div class="k-key k-w-cmd f-rp k-mod" data-code="MetaRight"><span class="k-spec">⌘ command</span></div>
+          <div class="k-key k-w-opt f-rp k-mod" data-code="AltRight"><span class="k-spec">⌥ option</span></div>
+          <div class="k-key k-w-ctrl f-rp k-mod" data-code="ControlRight"><span class="k-spec">control</span></div>
         </div>
       </div>
     </section>
@@ -224,9 +246,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="guide-col">
         <h3>💡 为什么觉得难受？</h3>
         <p>
-          在美式键盘上，你的右手已经建立了“单引号用小拇指敲回车左边、问号用小拇指敲 Shift+/”的牢固条件反射。
+          在美式键盘上，你的右手已经建立了“单引号敲回车左边、问号敲 Shift+/”的牢固条件反射。
           而在加拿大 CSA 上，按单引号键直接给你敲出 <code>è</code>，按问号直接敲出 <code>É</code>！
-          因此，<strong>先练 Level 02 的缩写专项（把 <code>'</code> 绑定到 <code>Shift+,</code>）</strong>，是消除别扭感最快的一步。
+          因此，<strong>先练 Level 02 的缩写专项（把 <code>'</code> 绑定到 <code>Shift+,</code>，问号绑定到 <code>Shift+6</code>）</strong>，是消除别扭感最快的一步。
         </p>
       </div>
       <div class="guide-col">
@@ -254,7 +276,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <style>
   .french-practice {
     padding-block: 2rem 4rem;
-    max-width: 58rem;
+    max-width: 62rem;
     margin-inline: auto;
   }
   .practice-header {
@@ -312,6 +334,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
     margin-bottom: 1rem;
   }
   .cheat-title {
@@ -319,18 +343,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-size: 0.875rem;
     color: var(--ink);
   }
+  .cheat-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
   .btn-subtle {
     background: none;
     border: 1px solid var(--line);
-    padding: 0.2rem 0.6rem;
+    padding: 0.25rem 0.65rem;
     font-size: 0.75rem;
     color: var(--muted);
     cursor: pointer;
-    border-radius: 3px;
+    border-radius: 4px;
+    transition: all 0.15s ease;
   }
   .btn-subtle:hover {
     color: var(--ink);
     border-color: var(--strong-line);
+    background: var(--soft);
   }
   .cheat-grid {
     display: grid;
@@ -361,9 +391,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-weight: 600;
     font-size: 0.875rem;
     color: var(--ink);
-  }
-  .cheat-arrow {
-    display: none;
   }
   .cheat-char {
     font-size: 1rem;
@@ -513,20 +540,31 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     padding: 0.75rem 1rem;
     margin-bottom: 1rem;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 0.65rem;
+    gap: 1rem;
     font-size: 0.875rem;
     color: #8a5300;
-    min-height: 3rem;
+    min-height: 3.25rem;
   }
-  .hint-icon {
-    font-size: 1.1rem;
-  }
-  .hint-text {
+  .hint-main {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
     line-height: 1.5;
   }
-  .hint-text strong {
-    color: #b84318;
+  .hint-icon {
+    font-size: 1.15rem;
+  }
+  .hint-finger-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.65rem;
+    background: #fff;
+    border: 1px solid #e6a23c;
+    border-radius: 12px;
+    color: #8a5300;
+    white-space: nowrap;
   }
 
   /* 打字展示区 */
@@ -536,11 +574,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     border: 2px solid var(--strong-line);
     border-radius: 8px;
     padding: 2rem 2.25rem;
-    min-height: 10rem;
+    min-height: 9.5rem;
     cursor: text;
     box-shadow: 0 2px 8px rgba(0,0,0,0.03);
     outline: none;
     transition: border-color 0.15s ease;
+    margin-bottom: 1.5rem;
   }
   .typing-box:focus-within, .typing-box:focus {
     border-color: var(--accent);
@@ -596,80 +635,231 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     51%, 100% { opacity: 0; }
   }
 
-  /* 迷你高亮键盘映射 */
-  .mini-keyboard-wrap {
-    margin-top: 2rem;
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 1.25rem;
+  /* 完整物理键盘 (TypingClub 风格) */
+  .keyboard-section {
+    background: #f1f3f5;
+    border: 1px solid #dcded4;
+    border-radius: 12px;
+    padding: 1.25rem 1.25rem 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05), inset 0 1px 0 #fff;
   }
-  .kb-header {
+  .kb-meta {
     display: flex;
     justify-content: space-between;
-    font-size: 0.75rem;
-    color: var(--muted);
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
     margin-bottom: 1rem;
+    font-size: 0.75rem;
   }
-  .mini-keyboard {
+  .kb-meta-left {
     display: flex;
-    flex-direction: column;
-    gap: 0.45rem;
-    max-width: 32rem;
-    margin-inline: auto;
+    align-items: baseline;
+    gap: 0.6rem;
   }
-  .kb-row {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.45rem;
-  }
-  .kb-key-sep {
-    width: 1rem;
-  }
-  .kb-key {
-    border: 1px solid #cbd5e1;
-    background: #f8fafc;
-    border-radius: 6px;
-    width: 5.2rem;
-    height: 4.2rem;
-    padding: 0.35rem 0.45rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-    box-shadow: 0 2px 0 #cbd5e1;
-    transition: all 0.15s ease;
-  }
-  .kb-key .phys {
-    font-size: 0.625rem;
-    font-family: var(--mono);
-    color: #94a3b8;
-  }
-  .kb-key .norm {
-    font-size: 0.9375rem;
+  .kb-tag {
     font-weight: 600;
     color: var(--ink);
   }
-  .kb-key .shift {
+  .kb-sub {
+    color: var(--muted);
+  }
+  .kb-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    font-size: 0.6875rem;
+    color: var(--muted);
+  }
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .legend-dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+  }
+
+  /* 指法色彩规范 (柔和自然淡彩，不辣眼) */
+  .color-lp, .f-lp { --finger-bg: #f5eeea; --finger-border: #e2d2ca; } /* 左手小指：淡米桃 */
+  .color-lr, .f-lr { --finger-bg: #f8f1e5; --finger-border: #ecdac0; } /* 左手无名：淡杏橙 */
+  .color-lm, .f-lm { --finger-bg: #f3f7ea; --finger-border: #dce7c9; } /* 左手中指：淡黄绿 */
+  .color-li, .f-li { --finger-bg: #eaf6f4; --finger-border: #c9e7e2; } /* 左手食指：淡青水 */
+  .color-th, .f-th { --finger-bg: #f4f4f4; --finger-border: #dedede; } /* 大拇指：纯净灰 */
+  .color-ri, .f-ri { --finger-bg: #eef4f9; --finger-border: #d2e3f2; } /* 右手食指：淡天蓝 */
+  .color-rm, .f-rm { --finger-bg: #f1eff8; --finger-border: #dcd8ee; } /* 右手中指：淡浅紫 */
+  .color-rr, .f-rr { --finger-bg: #f8eff6; --finger-border: #eed7e9; } /* 右手无名：淡丁香 */
+  .color-rp, .f-rp { --finger-bg: #fbeeef; --finger-border: #f6d4d7; } /* 右手小指：淡粉红 */
+
+  .legend-dot.color-lp { background: #e2d2ca; }
+  .legend-dot.color-lr { background: #ecdac0; }
+  .legend-dot.color-lm { background: #dce7c9; }
+  .legend-dot.color-li { background: #c9e7e2; }
+  .legend-dot.color-th { background: #dedede; }
+  .legend-dot.color-ri { background: #d2e3f2; }
+  .legend-dot.color-rm { background: #dcd8ee; }
+  .legend-dot.color-rr { background: #eed7e9; }
+  .legend-dot.color-rp { background: #f6d4d7; }
+
+  .physical-keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    user-select: none;
+    background: #e2e5e9;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #d0d4dc;
+  }
+  .k-row {
+    display: flex;
+    gap: 6px;
+  }
+
+  /* 物理键帽基础样式 */
+  .k-key {
+    flex: 1 1 0;
+    height: 48px;
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    box-shadow: 0 3px 0 #cbd5e1, 0 3px 4px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3px 5px;
+    position: relative;
+    cursor: default;
+    transition: transform 0.05s ease, box-shadow 0.05s ease, background-color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .show-fingers .k-key:not(.k-mod):not(.active-target):not(.active-shift):not(.pressed) {
+    background: var(--finger-bg, #fff);
+    border-color: var(--finger-border, #cbd5e1);
+    box-shadow: 0 3px 0 var(--finger-border, #cbd5e1), 0 3px 4px rgba(0,0,0,0.04);
+  }
+
+  /* 特殊键宽定义 (标准 ANSI 比例) */
+  .k-w-backspace { flex: 2 2 0; }
+  .k-w-tab       { flex: 1.5 1.5 0; }
+  .k-w-backslash { flex: 1.5 1.5 0; }
+  .k-w-caps      { flex: 1.75 1.75 0; }
+  .k-w-enter     { flex: 2.25 2.25 0; }
+  .k-w-lshift    { flex: 2.25 2.25 0; }
+  .k-w-rshift    { flex: 2.75 2.75 0; }
+  .k-w-ctrl      { flex: 1.25 1.25 0; }
+  .k-w-opt       { flex: 1.25 1.25 0; }
+  .k-w-cmd       { flex: 1.5 1.5 0; }
+  .k-w-space     { flex: 6 6 0; }
+
+  /* 键帽内部字符排版 */
+  .k-phys {
+    font-size: 0.5625rem;
+    font-family: var(--mono);
+    color: #94a3b8;
+    line-height: 1;
+  }
+  .k-shift {
+    font-size: 0.625rem;
+    font-weight: 500;
+    color: #64748b;
+    align-self: flex-end;
+    line-height: 1;
+  }
+  .k-norm {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1;
+    margin-top: auto;
+  }
+  .k-spec {
     font-size: 0.6875rem;
     font-weight: 500;
-    color: var(--muted);
-    align-self: flex-end;
+    color: #64748b;
+    margin: auto 0;
   }
-  .kb-key.highlight-shift .shift {
+
+  /* 定位凸起 (F 与 J 键) */
+  .k-bump {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 2px;
+    background: #94a3b8;
+    border-radius: 1px;
+  }
+
+  /* 4 大直出变音特殊标记 */
+  .k-accent {
+    border-color: #2e7d32 !important;
+  }
+  .k-accent .k-norm {
+    color: #1b5e20;
+    font-weight: 700;
+  }
+
+  /* 死键标记 */
+  .k-dead {
+    border-color: #d97706 !important;
+  }
+
+  /* 标点陷阱标记 */
+  .k-alert .k-highlight {
     color: var(--accent);
     font-weight: 700;
   }
-  .kb-key.active-target {
-    border-color: var(--accent);
-    background: #fff1ee;
-    transform: translateY(1px);
-    box-shadow: 0 0 0 2px var(--accent);
+
+  /* 交互状态：用户物理按键按下瞬间 */
+  .k-key.pressed {
+    transform: translateY(3px) !important;
+    box-shadow: 0 0 0 transparent !important;
+    background: #cbd5e1 !important;
+    border-color: #94a3b8 !important;
   }
-  .kb-key.active-target .norm,
-  .kb-key.active-target .shift {
-    color: var(--accent);
+
+  /* 交互状态：TypingClub 风格目标键高亮 (Target Glow) */
+  .k-key.active-target {
+    background: #fef3c7 !important;
+    border-color: #d97706 !important;
+    box-shadow: 0 3px 0 #b45309, 0 0 0 3px rgba(245, 158, 11, 0.4) !important;
+    animation: targetPulse 1.2s infinite alternate;
+  }
+  .k-key.active-target .k-norm,
+  .k-key.active-target .k-shift {
+    color: #92400e !important;
+    font-weight: 800 !important;
+  }
+
+  /* 交互状态：Shift 联动高亮 (双键联动) */
+  .k-key.active-shift {
+    background: #fee2e2 !important;
+    border-color: #dc2626 !important;
+    box-shadow: 0 3px 0 #b91c1c, 0 0 0 3px rgba(220, 38, 38, 0.35) !important;
+    animation: targetPulse 1.2s infinite alternate;
+  }
+  .k-key.active-shift .k-spec {
+    color: #991b1b !important;
+    font-weight: 700 !important;
+  }
+
+  @keyframes targetPulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.03); }
+  }
+
+  /* Shift 键按下时的全局键盘反转 */
+  .keyboard-shifted .k-norm {
+    opacity: 0.4;
+  }
+  .keyboard-shifted .k-shift {
+    font-size: 0.8125rem;
     font-weight: 700;
+    color: var(--ink);
   }
 
   /* 底部指导 */
@@ -709,16 +899,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: var(--ink);
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 768px) {
     .typing-box {
       padding: 1.25rem;
     }
     .text-display {
       font-size: 1.15rem;
     }
-    .kb-key {
-      width: 4rem;
-      height: 3.6rem;
+    .k-key {
+      height: 38px;
+      padding: 2px 3px;
+    }
+    .k-phys, .k-shift {
+      font-size: 0.5rem;
+    }
+    .k-norm {
+      font-size: 0.75rem;
+    }
+    .k-spec {
+      font-size: 0.5625rem;
+    }
+    .kb-legend {
+      display: none;
     }
   }
 </style>
@@ -763,41 +965,103 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     ]
   };
 
-  // 键位映射提示字典 (针对 Canadian - CSA 键盘)
-  const CSA_HINTS: Record<string, { desc: string; keyId?: string }> = {
-    "'": { desc: "⚠️ 标点搬家：按【Shift + ,】（千万别按单引号键，那是 è！）", keyId: "Comma" },
-    "?": { desc: "⚠️ 标点搬家：按【Shift + 6】（千万别按 / 键，那是 é/É！）", keyId: "Digit6" },
-    '"': { desc: "标点搬家：按【Shift + .】（原句号键上部）", keyId: "Period" },
-    "é": { desc: "四大直出：直接按物理【/?】键（右 Shift 旁）", keyId: "Slash" },
-    "É": { desc: "四大直出：按【Shift + /?】键", keyId: "Slash" },
-    "è": { desc: "四大直出：直接按物理【'\"】键（回车键左边）", keyId: "Quote" },
-    "È": { desc: "四大直出：按【Shift + '\"】键", keyId: "Quote" },
-    "à": { desc: "四大直出：直接按物理【\\|】键（回车上方）", keyId: "Backslash" },
-    "À": { desc: "四大直出：按【Shift + \\|】键", keyId: "Backslash" },
-    "ç": { desc: "四大直出：直接按物理【]}】键（右方括号）", keyId: "BracketRight" },
-    "Ç": { desc: "四大直出：按【Shift + ]}】键", keyId: "BracketRight" },
-    "ê": { desc: "死键长音：先按【[】键（死键 ^，按一下无反应），再按【e】", keyId: "BracketLeft" },
-    "â": { desc: "死键长音：先按【[】键，再按【a】", keyId: "BracketLeft" },
-    "î": { desc: "死键长音：先按【[】键，再按【i】", keyId: "BracketLeft" },
-    "ô": { desc: "死键长音：先按【[】键，再按【o】", keyId: "BracketLeft" },
-    "û": { desc: "死键长音：先按【[】键，再按【u】", keyId: "BracketLeft" },
-    "ë": { desc: "死键分音：先按【Shift + [】（死键 ¨），再按【e】", keyId: "BracketLeft" },
-    "ï": { desc: "死键分音：先按【Shift + [】（死键 ¨），再按【i】", keyId: "BracketLeft" },
-    "ü": { desc: "死键分音：先按【Shift + [】（死键 ¨），再按【u】", keyId: "BracketLeft" },
-    "ù": { desc: "死键抑音：先按【Option + [】（死键 `），再按【u】", keyId: "BracketLeft" }
+  // TypingClub 风格全键位指法映射及击键指引
+  interface KeyGuide {
+    code: string;
+    shift?: boolean;
+    shiftKey?: 'ShiftLeft' | 'ShiftRight';
+    isDead?: boolean;
+    deadStep?: { code: string; shift?: boolean };
+    vowelStep?: { code: string };
+    desc: string;
+    finger: string;
+  }
+
+  const KEY_GUIDE_MAP: Record<string, KeyGuide> = {
+    // 标点陷阱
+    "'": { code: "Comma", shift: true, shiftKey: "ShiftLeft", desc: "⚠️ 标点搬家：【Shift + ,】（别按原单引号键，那是 è！）", finger: "左手小指按 Shift + 右手中指按逗号" },
+    "?": { code: "Digit6", shift: true, shiftKey: "ShiftLeft", desc: "⚠️ 标点搬家：【Shift + 6】（别按 / 键，那是 é！）", finger: "左手小指按 Shift + 右手食指按 6" },
+    '"': { code: "Period", shift: true, shiftKey: "ShiftLeft", desc: "标点搬家：【Shift + .】", finger: "左手小指按 Shift + 右手无名指按句号" },
+
+    // 四大直出变音
+    "é": { code: "Slash", shift: false, desc: "四大直出：直接按物理【/?】键", finger: "右手小指" },
+    "É": { code: "Slash", shift: true, shiftKey: "ShiftLeft", desc: "四大直出：按【Shift + /?】", finger: "左手小指按 Shift + 右手小指" },
+    "è": { code: "Quote", shift: false, desc: "四大直出：直接按物理【'\"】键（回车左侧）", finger: "右手小指" },
+    "È": { code: "Quote", shift: true, shiftKey: "ShiftLeft", desc: "四大直出：按【Shift + '\"】", finger: "左手小指按 Shift + 右手小指" },
+    "à": { code: "Backslash", shift: false, desc: "四大直出：直接按物理【\\|】键（回车上方）", finger: "右手小指" },
+    "À": { code: "Backslash", shift: true, shiftKey: "ShiftLeft", desc: "四大直出：按【Shift + \\|】", finger: "左手小指按 Shift + 右手小指" },
+    "ç": { code: "BracketRight", shift: false, desc: "四大直出：直接按物理【]}】键", finger: "右手小指" },
+    "Ç": { code: "BracketRight", shift: true, shiftKey: "ShiftLeft", desc: "四大直出：按【Shift + ]}】", finger: "左手小指按 Shift + 右手小指" },
+
+    // 死键组合 (两步法)
+    "ê": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: false }, vowelStep: { code: "KeyE" }, desc: "死键长音：第 1 步先按【[】(^)，第 2 步按【e】", finger: "右手小指按 [ ➔ 左手中指按 E" },
+    "â": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: false }, vowelStep: { code: "KeyA" }, desc: "死键长音：第 1 步先按【[】(^)，第 2 步按【a】", finger: "右手小指按 [ ➔ 左手小指按 A" },
+    "î": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: false }, vowelStep: { code: "KeyI" }, desc: "死键长音：第 1 步先按【[】(^)，第 2 步按【i】", finger: "右手小指按 [ ➔ 右手中指按 I" },
+    "ô": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: false }, vowelStep: { code: "KeyO" }, desc: "死键长音：第 1 步先按【[】(^)，第 2 步按【o】", finger: "右手小指按 [ ➔ 右手无名指按 O" },
+    "û": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: false }, vowelStep: { code: "KeyU" }, desc: "死键长音：第 1 步先按【[】(^)，第 2 步按【u】", finger: "右手小指按 [ ➔ 右手食指按 U" },
+
+    "ë": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: true }, vowelStep: { code: "KeyE" }, desc: "死键分音：第 1 步按【Shift + [】(¨)，第 2 步按【e】", finger: "左小指Shift + 右小指[ ➔ 左手中指E" },
+    "ï": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: true }, vowelStep: { code: "KeyI" }, desc: "死键分音：第 1 步按【Shift + [】(¨)，第 2 步按【i】", finger: "左小指Shift + 右小指[ ➔ 右手中指I" },
+    "ü": { code: "BracketLeft", isDead: true, deadStep: { code: "BracketLeft", shift: true }, vowelStep: { code: "KeyU" }, desc: "死键分音：第 1 步按【Shift + [】(¨)，第 2 步按【u】", finger: "左小指Shift + 右小指[ ➔ 右手食指U" },
+
+    // 基础符号
+    " ": { code: "Space", desc: "按【空格键】", finger: "大拇指" },
+    ",": { code: "Comma", desc: "按【逗号键】", finger: "右手中指" },
+    ".": { code: "Period", desc: "按【句号键】", finger: "右手无名指" },
+    ";": { code: "Semicolon", desc: "按【分号键】", finger: "右手小指" },
+    ":": { code: "Semicolon", shift: true, shiftKey: "ShiftLeft", desc: "按【Shift + 分号】", finger: "左手小指按 Shift + 右手小指" },
+    "!": { code: "Digit1", shift: true, shiftKey: "ShiftRight", desc: "按【Shift + 1】", finger: "右手小指按 Shift + 左手小指" },
+    "-": { code: "Minus", desc: "按【减号键】", finger: "右手小指" }
   };
 
+  // 生成 A-Z 字母指法表
+  const LETTERS: Record<string, { code: string; finger: string; rightHand?: boolean }> = {
+    a: { code: "KeyA", finger: "左手小指" }, b: { code: "KeyB", finger: "左手食指" },
+    c: { code: "KeyC", finger: "左手中指" }, d: { code: "KeyD", finger: "左手中指" },
+    e: { code: "KeyE", finger: "左手中指" }, f: { code: "KeyF", finger: "左手食指" },
+    g: { code: "KeyG", finger: "左手食指" }, h: { code: "KeyH", finger: "右手食指", rightHand: true },
+    i: { code: "KeyI", finger: "右手中指", rightHand: true }, j: { code: "KeyJ", finger: "右手食指", rightHand: true },
+    k: { code: "KeyK", finger: "右手中指", rightHand: true }, l: { code: "KeyL", finger: "右手无名指", rightHand: true },
+    m: { code: "KeyM", finger: "右手食指", rightHand: true }, n: { code: "KeyN", finger: "右手食指", rightHand: true },
+    o: { code: "KeyO", finger: "右手无名指", rightHand: true }, p: { code: "KeyP", finger: "右手小指", rightHand: true },
+    q: { code: "KeyQ", finger: "左手小指" }, r: { code: "KeyR", finger: "左手食指" },
+    s: { code: "KeyS", finger: "左手无名指" }, t: { code: "KeyT", finger: "左手食指" },
+    u: { code: "KeyU", finger: "右手食指", rightHand: true }, v: { code: "KeyV", finger: "左手食指" },
+    w: { code: "KeyW", finger: "左手无名指" }, x: { code: "KeyX", finger: "左手无名指" },
+    y: { code: "KeyY", finger: "右手食指", rightHand: true }, z: { code: "KeyZ", finger: "左手小指" }
+  };
+
+  Object.entries(LETTERS).forEach(([letter, data]) => {
+    KEY_GUIDE_MAP[letter] = {
+      code: data.code,
+      shift: false,
+      desc: `按【${letter.toUpperCase()}】键`,
+      finger: data.finger
+    };
+    KEY_GUIDE_MAP[letter.toUpperCase()] = {
+      code: data.code,
+      shift: true,
+      shiftKey: data.rightHand ? "ShiftLeft" : "ShiftRight",
+      desc: `大写字母：【Shift + ${letter.toUpperCase()}】`,
+      finger: `${data.rightHand ? '左手小指' : '右手小指'}按 Shift + ${data.finger}`
+    };
+  });
+
+  // 状态变量
   let currentMode = "accents";
   let currentPromptIndex = 0;
   let targetText = "";
   let typedText = "";
   let startTime: number | null = null;
   let errorCount = 0;
+  let deadKeyInProgress = false;
 
+  // DOM 元素引用
   const typingBox = document.getElementById("typing-box")!;
   const hiddenInput = document.getElementById("hidden-input") as HTMLInputElement;
   const textDisplay = document.getElementById("text-display")!;
   const hintText = document.getElementById("hint-text")!;
+  const hintFingerBadge = document.getElementById("hint-finger-badge")!;
   const statWpm = document.getElementById("stat-wpm")!;
   const statAcc = document.getElementById("stat-acc")!;
   const statProg = document.getElementById("stat-prog")!;
@@ -809,7 +1073,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   const btnLoadCustom = document.getElementById("btn-load-custom")!;
   const toggleCheatBtn = document.getElementById("toggle-cheat")!;
   const cheatBody = document.getElementById("cheat-body")!;
-  const kbKeys = document.querySelectorAll<HTMLElement>(".kb-key");
+  const toggleFingerColorsBtn = document.getElementById("toggle-finger-colors")!;
+  const physicalKeyboard = document.getElementById("physical-keyboard")!;
+  const allKeys = document.querySelectorAll<HTMLElement>(".k-key");
 
   // 折叠速查卡
   toggleCheatBtn.addEventListener("click", () => {
@@ -822,6 +1088,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       cheatBody.setAttribute("hidden", "");
       toggleCheatBtn.textContent = "展开速查";
       toggleCheatBtn.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  // 切换指法分区配色
+  toggleFingerColorsBtn.addEventListener("click", () => {
+    const hasClass = physicalKeyboard.classList.contains("show-fingers");
+    if (hasClass) {
+      physicalKeyboard.classList.remove("show-fingers");
+      toggleFingerColorsBtn.textContent = "🎨 指法分区配色：关";
+      toggleFingerColorsBtn.setAttribute("aria-pressed", "false");
+    } else {
+      physicalKeyboard.classList.add("show-fingers");
+      toggleFingerColorsBtn.textContent = "🎨 指法分区配色：开";
+      toggleFingerColorsBtn.setAttribute("aria-pressed", "true");
     }
   });
 
@@ -886,6 +1166,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     hiddenInput.value = "";
     startTime = null;
     errorCount = 0;
+    deadKeyInProgress = false;
     updateStats();
     clearKeyboardHighlight();
   }
@@ -920,25 +1201,46 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     const currIndex = typedText.length;
     if (currIndex >= targetText.length) {
       hintText.innerHTML = "🎉 <strong>恭喜完成！</strong> 点击【换一组内容】或按 Esc 重新开始。";
+      hintFingerBadge.textContent = "完成";
       return;
     }
 
     const nextChar = targetText[currIndex];
-    const hintObj = CSA_HINTS[nextChar];
+    const guide = KEY_GUIDE_MAP[nextChar];
 
-    if (hintObj) {
-      hintText.innerHTML = `<strong>${nextChar}</strong>：${hintObj.desc}`;
-      if (hintObj.keyId) {
-        const keyEl = document.querySelector<HTMLElement>(`.kb-key[data-key="${hintObj.keyId}"]`);
-        if (keyEl) keyEl.classList.add("active-target");
+    if (guide) {
+      hintText.innerHTML = `<strong>${nextChar === ' ' ? '␣ 空格' : nextChar}</strong>：${guide.desc}`;
+      hintFingerBadge.textContent = guide.finger;
+
+      if (guide.isDead) {
+        if (!deadKeyInProgress) {
+          highlightKey(guide.deadStep!.code, guide.deadStep!.shift ? "ShiftLeft" : undefined);
+        } else {
+          highlightKey(guide.vowelStep!.code);
+        }
+      } else {
+        highlightKey(guide.code, guide.shift ? (guide.shiftKey || "ShiftLeft") : undefined);
       }
     } else {
-      hintText.textContent = `下一个字符：${nextChar === ' ' ? '空格 (Space)' : nextChar}`;
+      hintText.textContent = `下一个字符：${nextChar}`;
+      hintFingerBadge.textContent = "自由敲击";
+    }
+  }
+
+  function highlightKey(code: string, shiftCode?: string) {
+    const targetKeyEl = document.querySelector<HTMLElement>(`.k-key[data-code="${code}"]`);
+    if (targetKeyEl) targetKeyEl.classList.add("active-target");
+
+    if (shiftCode) {
+      const shiftKeyEl = document.querySelector<HTMLElement>(`.k-key[data-code="${shiftCode}"]`);
+      if (shiftKeyEl) shiftKeyEl.classList.add("active-shift");
     }
   }
 
   function clearKeyboardHighlight() {
-    kbKeys.forEach(k => k.classList.remove("active-target"));
+    allKeys.forEach(k => {
+      k.classList.remove("active-target", "active-shift");
+    });
   }
 
   function updateStats() {
@@ -962,9 +1264,43 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   // 聚焦
   typingBox.addEventListener("click", () => hiddenInput.focus());
 
-  // 捕获输入
+  // 捕获物理键盘按下 (TypingClub 风格即时物理按压下沉动画)
+  window.addEventListener("keydown", (e: KeyboardEvent) => {
+    // 查找对应物理键
+    const keyEl = document.querySelector<HTMLElement>(`.k-key[data-code="${e.code}"]`);
+    if (keyEl) keyEl.classList.add("pressed");
+
+    // Shift 联动换挡
+    if (e.key === "Shift") {
+      physicalKeyboard.classList.add("keyboard-shifted");
+    }
+
+    if (e.key === "Escape") {
+      resetState();
+      renderText();
+      hiddenInput.focus();
+    }
+
+    // 监听死键按压 (如按下了 [ 键)
+    if (e.code === "BracketLeft") {
+      deadKeyInProgress = true;
+      updateHintAndKeyboard();
+    }
+  });
+
+  window.addEventListener("keyup", (e: KeyboardEvent) => {
+    const keyEl = document.querySelector<HTMLElement>(`.k-key[data-code="${e.code}"]`);
+    if (keyEl) keyEl.classList.remove("pressed");
+
+    if (e.key === "Shift") {
+      physicalKeyboard.classList.remove("keyboard-shifted");
+    }
+  });
+
+  // 捕获真实文本输入
   hiddenInput.addEventListener("input", () => {
     if (!startTime) startTime = Date.now();
+    deadKeyInProgress = false;
     const val = hiddenInput.value;
 
     if (val.length < typedText.length) {
@@ -994,14 +1330,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           }, 600);
         }
       }
-    }
-  });
-
-  window.addEventListener("keydown", (e: KeyboardEvent) => {
-    if (e.key === "Escape") {
-      resetState();
-      renderText();
-      hiddenInput.focus();
     }
   });
 
