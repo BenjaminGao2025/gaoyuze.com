@@ -200,7 +200,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <div class="k-key f-rm" data-code="KeyI"><span class="k-norm">I</span></div>
           <div class="k-key f-rr" data-code="KeyO"><span class="k-norm">O</span></div>
           <div class="k-key f-rp" data-code="KeyP"><span class="k-norm">P</span></div>
-          <div class="k-key f-rp k-dead" data-code="BracketLeft"><span class="k-phys">[ &#123;</span><span class="k-shift">¨ (死键)</span><span class="k-norm">^ (死键)</span></div>
+          <div class="k-key f-rp k-dead" data-code="BracketLeft"><span class="k-phys">[ &#123;</span><span class="k-shift">¨</span><span class="k-norm">^</span></div>
           <div class="k-key f-rp k-accent" data-code="BracketRight"><span class="k-phys">] &#125;</span><span class="k-shift">Ç</span><span class="k-norm">ç</span></div>
           <div class="k-key k-w-backslash f-rp k-accent" data-code="Backslash"><span class="k-phys">\ |</span><span class="k-shift">À</span><span class="k-norm">à</span></div>
         </div>
@@ -232,7 +232,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <div class="k-key f-li" data-code="KeyB"><span class="k-norm">B</span></div>
           <div class="k-key f-ri" data-code="KeyN"><span class="k-norm">N</span></div>
           <div class="k-key f-ri" data-code="KeyM"><span class="k-norm">M</span></div>
-          <div class="k-key f-rm k-alert" data-code="Comma"><span class="k-phys">, &lt;</span><span class="k-shift k-highlight">' (撇号!)</span><span class="k-norm">,</span></div>
+          <div class="k-key f-rm k-alert" data-code="Comma"><span class="k-phys">, &lt;</span><span class="k-shift k-highlight">'</span><span class="k-norm">,</span></div>
           <div class="k-key f-rr" data-code="Period"><span class="k-phys">. &gt;</span><span class="k-shift">"</span><span class="k-norm">.</span></div>
           <div class="k-key f-rp k-accent" data-code="Slash"><span class="k-phys">/ ?</span><span class="k-shift">É</span><span class="k-norm">é</span></div>
           <div class="k-key k-w-rshift f-rp k-mod" data-code="ShiftRight"><span class="k-spec">⇧ shift</span></div>
@@ -785,7 +785,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   /* 物理键帽基础样式 */
   .k-key {
     flex: 1 1 0;
-    height: 48px;
+    height: 50px;
     background: #fff;
     border: 1px solid #cbd5e1;
     border-radius: 6px;
@@ -793,9 +793,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 3px 5px;
+    padding: 4px 6px;
     position: relative;
     cursor: default;
+    overflow: hidden;
     transition: transform 0.05s ease, box-shadow 0.05s ease, background-color 0.15s ease, border-color 0.15s ease;
   }
 
@@ -818,32 +819,47 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .k-w-cmd       { flex: 1.5 1.5 0; }
   .k-w-space     { flex: 6 6 0; }
 
-  /* 键帽内部字符排版 */
+  /* 键帽内部字符排版 (防溢出、防折行) */
   .k-phys {
     font-size: 0.5625rem;
     font-family: var(--mono);
     color: #94a3b8;
     line-height: 1;
+    white-space: nowrap;
+    pointer-events: none;
   }
   .k-shift {
-    font-size: 0.625rem;
-    font-weight: 500;
+    font-size: 0.6875rem;
+    font-weight: 600;
     color: #64748b;
-    align-self: flex-end;
+    position: absolute;
+    top: 4px;
+    right: 6px;
     line-height: 1;
+    white-space: nowrap;
+    pointer-events: none;
   }
   .k-norm {
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
     font-weight: 600;
     color: var(--ink);
     line-height: 1;
+    white-space: nowrap;
     margin-top: auto;
+    pointer-events: none;
+  }
+  /* 单个大写字母居中 */
+  .k-key:not(:has(.k-phys)) .k-norm {
+    margin: auto;
+    font-size: 1rem;
   }
   .k-spec {
     font-size: 0.6875rem;
     font-weight: 500;
     color: #64748b;
     margin: auto 0;
+    white-space: nowrap;
+    pointer-events: none;
   }
 
   /* 定位凸起 (F 与 J 键) */
@@ -1033,8 +1049,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       height: 38px;
       padding: 2px 3px;
     }
-    .k-phys, .k-shift {
+    .k-phys {
       font-size: 0.5rem;
+    }
+    .k-shift {
+      font-size: 0.5625rem;
+      top: 2px;
+      right: 3px;
     }
     .k-norm {
       font-size: 0.75rem;
